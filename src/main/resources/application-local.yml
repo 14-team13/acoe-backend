@@ -1,0 +1,45 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: ecoe
+
+# 임시
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url:
+    username:
+    password:
+    hikari:
+      maximumPoolSize: 2
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        use_sql_comments: true
+        order_inserts: true
+        order_updates: true
+        generate_statistics: false
+        default_batch_fetch_size: 1000
+        jdbc:
+          fetch_size: 100
+          batch_size: 100
+          batch_versioned_data: true
+
+debug: false  #비활성, 불필요 로그제거를 위해 필요시에만 활성화 합니다.
+
+# 로그레벨
+logging:
+  pattern:
+    console: "%d{yy-MM-dd E HH:mm:ss.SSS} [gid] %X{gid} [userid] %X{uid} [msg] %message %n"
+  level:
+    root: DEBUG
+    org:
+      hibernate:
+        SQL: DEBUG
+        type: TRACE
