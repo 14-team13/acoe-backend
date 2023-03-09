@@ -47,6 +47,7 @@ jobs:
         host: ${{ secrets.NPC_DEV_SERVER_IP }}
         username: ${{ secrets.NPC_DEV_SERVER_USER }}
         key: ${{ secrets.NPC_DEV_SERVER_KEY }}
+        password: ${{ secrets.NPC_DEV_SERVER_PASSWORD }}
         port: ${{ secrets.NPC_DEV_SERVER_PORT }}
         source: "./build/libs/*.jar"
         target: "~/deploy"
