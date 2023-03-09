@@ -59,5 +59,6 @@ jobs:
         host: ${{ secrets.NPC_DEV_SERVER_IP }}
         username: $ {{ secrets.NPC_DEV_SERVER_USER }}
         password: $ {{ secrets.NPC_DEV_SERVER_PASSWORD }}
+        port: ${{ secrets.NPC_DEV_SERVER_PORT }}
         script_stop: true
         script: chmod +x ~/deploy/deploy.sh && sh ~/deploy/deploy.sh
