@@ -5,8 +5,6 @@
 # This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
 
-# !! 추후 prod도 함께 디플로이 진행될 수 있도록 수정해야함.
-
 name: CD
 
 #dev브랜치가 push될 때 동작
@@ -47,8 +45,9 @@ jobs:
       if: contains(github.ref, 'dev')
       with:
         host: ${{ secrets.NPC_DEV_SERVER_IP }}
-        username: $ {{ secrets.NPC_DEV_SERVER_USER }}
-        password: $ {{ secrets.NPC_DEV_SERVER_PASSWORD }}
+        username: ${{ secrets.NPC_DEV_SERVER_USER }}
+        key: ${{ secrets.NPC_DEV_SERVER_KEY }}
+        port: ${{ secrets.NPC_DEV_SERVER_PORT }}
         source: "./build/libs/*.jar"
         target: "~/deploy"
       
