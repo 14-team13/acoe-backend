@@ -4,9 +4,9 @@
 
 ## ✔️ 프로젝트 생성
 - intelliJ > new Project > Spring Initializr 선택 및 project metadata 설정  
-  ![newProjectSpring](./springNewProject.png){: width="300" height="300"}  
+  ![newProjectSpring](./springNewProject.png)
 - initial dependencies 세팅  
-  ![initialDependencies](./initialDependencies.png){: width="300" height="300"}
+  ![initialDependencies](./initialDependencies.png)
 
 ## ✔️ 의존성 추가
 - 초기 세팅한 의존성 목록
@@ -42,13 +42,13 @@
 
 ## ✔️ GitIgnore 구성
 - intelliJ 플러그인 gitIgnore로 구성 > 기본 탬플릿
-  ![gitIgnore](./gitIgnore.png){: width="500" height="300"}
+  ![gitIgnore](./gitIgnore.png)
 
 
 ## ✔️ Application.yml
 - YAML 파일 환경별로 profile 분리함. [참고링크1](https://escapefromcoding.tistory.com/681), [참고링크2](https://wonyong-jang.github.io/spring/2022/08/11/Spring-Profile.html)
 - application.yml, application-local.yml, application-dev.yml
-- ![applicationProfile](./applicationProfile.png){: width="350" height="400"}
+- ![applicationProfile](./applicationProfile.png)
 
 
 ## ✔️ branch 분리
