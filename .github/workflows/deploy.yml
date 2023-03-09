@@ -5,7 +5,7 @@
 # This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
 
-# !! 추후 PROD도 함께 디플로이 진행될 수 있도록 수정해야함.
+# !! 추후 prod도 함께 디플로이 진행될 수 있도록 수정해야함.
 
 name: CD
 
@@ -50,18 +50,18 @@ jobs:
         username: $ {{ secrets.NPC_DEV_SERVER_USER }}
         password: $ {{ secrets.NPC_DEV_SERVER_PASSWORD }}
         source: "./build/libs/*.jar"
-        target: "/home/ubuntu/deploy"
+        target: "~/deploy"
       
-    # deploy 스크립트 전달
-    - name: Transfer Deploy Script use SCP
-      uses: appleboy/scp-action@master
-      if: contains(github.ref, 'dev')
-      with:
-        host: ${{ secrets.NPC_DEV_SERVER_IP }}
-        username: $ {{ secrets.NPC_DEV_SERVER_USER }}
-        password: $ {{ secrets.NPC_DEV_SERVER_PASSWORD }}
-        source: "deploy.sh"
-        target: "/home/ubuntu/deploy"
+    # deploy 스크립트 전달 -> 서버에 직접 저장함.
+#     - name: Transfer Deploy Script use SCP
+#       uses: appleboy/scp-action@master
+#       if: contains(github.ref, 'dev')
+#       with:
+#         host: ${{ secrets.NPC_DEV_SERVER_IP }}
+#         username: $ {{ secrets.NPC_DEV_SERVER_USER }}
+#         password: $ {{ secrets.NPC_DEV_SERVER_PASSWORD }}
+#         source: "deploy.sh"
+#         target: "/home/ubuntu/deploy"
 
     # 스크립트 실행
     - name: Execute Server Init Script
@@ -71,4 +71,4 @@ jobs:
         username: $ {{ secrets.NPC_DEV_SERVER_USER }}
         password: $ {{ secrets.NPC_DEV_SERVER_PASSWORD }}
         script_stop: true
-        script: chmod +x /home/ubuntu/deploy/deploy.sh && sh /home/ubuntu/deploy/deploy.sh
+        script: chmod +x ~/deploy/deploy.sh && sh ~/deploy/deploy.sh
