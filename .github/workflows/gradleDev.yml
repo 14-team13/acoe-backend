@@ -46,22 +46,11 @@ jobs:
       with:
         host: ${{ secrets.NPC_DEV_SERVER_IP }}
         username: ${{ secrets.NPC_DEV_SERVER_USER }}
-        key: ${{ secrets.NPC_DEV_SERVER_KEY }}
+        #key: ${{ secrets.NPC_DEV_SERVER_KEY }}
         password: ${{ secrets.NPC_DEV_SERVER_PASSWORD }}
         port: ${{ secrets.NPC_DEV_SERVER_PORT }}
         source: "./build/libs/*.jar"
         target: "~/deploy"
-      
-    # deploy 스크립트 전달 -> 서버에 직접 저장함.
-#     - name: Transfer Deploy Script use SCP
-#       uses: appleboy/scp-action@master
-#       if: contains(github.ref, 'dev')
-#       with:
-#         host: ${{ secrets.NPC_DEV_SERVER_IP }}
-#         username: $ {{ secrets.NPC_DEV_SERVER_USER }}
-#         password: $ {{ secrets.NPC_DEV_SERVER_PASSWORD }}
-#         source: "deploy.sh"
-#         target: "/home/ubuntu/deploy"
 
     # 스크립트 실행
     - name: Execute Server Init Script
