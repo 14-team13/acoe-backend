@@ -35,7 +35,7 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
       
-    # application-dev.yml 보도록 프로젝트 설정 완료함.
+    # application-dev.yml 보도록 프로젝트 설정 완료함, YAML은 submodule에서 copy
     - name: Build with Gradle
       if: contains(github.ref, 'dev')
-      run: SPRING_PROFILES_ACTIVE=[dev] ./gradlew clean build
+      run: SPRING_PROFILES_ACTIVE=[dev] ./gradlew clean submodule build
