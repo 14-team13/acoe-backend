@@ -1,4 +1,4 @@
-package com.aluminium.ecoe;
+package com.aluminium.acoe;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
