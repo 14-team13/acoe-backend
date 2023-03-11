@@ -28,6 +28,8 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
+        token: ${{ secrets.HYESOO_GITHUB_TOKEN }}
+        submodules: true
         
     # Gradlew 권한 설정
     - name: Grant execute permission for gradlew
