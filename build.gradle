@@ -77,6 +77,12 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+// submodule에 있는 yml 가져와서 빌드
+task copyGitSubmodule(type: Copy) {
+	from './config/BE/resources'
+	include '*.yml'
+	into './src/main/resources'
+}
 
 /*
  * queryDSL 설정 추가
