@@ -4,7 +4,9 @@ import com.aluminium.acoe.dto.LoginDto;
 import com.aluminium.acoe.dto.TokenDto;
 import com.aluminium.acoe.jwt.JwtFilter;
 import com.aluminium.acoe.jwt.TokenProvider;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +18,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api")
@@ -37,7 +38,8 @@ public class AuthController {
      * @return
      */
     @PostMapping("/authenticate")
-    @ApiOperation(value = "로그인", notes = "Username, Password로 인증 후 토큰 반환")
+    @ApiOperation(value = "로그인", notes = "Username, Password 인증 후 토큰 반환")
+    @ApiImplicitParam(name = "loginDto", dataType = "LoginDto", value = "접속 계정 정보 객체")
     public ResponseEntity<TokenDto> authorize(@Valid @RequestBody LoginDto loginDto) {
         // ID, PW를 받아 토큰 생성
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());

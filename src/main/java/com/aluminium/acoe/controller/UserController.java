@@ -2,8 +2,8 @@ package com.aluminium.acoe.controller;
 
 import com.aluminium.acoe.dto.UserDto;
 import com.aluminium.acoe.service.UserService;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,6 +25,7 @@ public class UserController {
      */
     @PostMapping("/signup")
     @ApiOperation(value = "회원 가입", notes = "Username, Password를 입력 받고 DB에 저장 후 토큰 반환")
+    @ApiImplicitParam(name = "userDto", dataType = "UserDto", value = "회원 정보 객체")
     public ResponseEntity<UserDto> signup(@Valid @RequestBody UserDto userDto) {
         return ResponseEntity.ok(userService.signup(userDto));
     }
@@ -37,7 +38,7 @@ public class UserController {
     @GetMapping("/user")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @ApiOperation(value = "접속한 회원 정보 반환", notes="접속한 회원의 정보를 반환")
-    public ResponseEntity<UserDto> getMyUserInfo(HttpServletRequest request) {
+    public ResponseEntity<UserDto> getMyUserInfo() {
         return ResponseEntity.ok(userService.getMyUserWithAuthorities());
     }
 
@@ -49,6 +50,7 @@ public class UserController {
     @GetMapping("/user/{username}")
     @PreAuthorize("hasAnyRole('ADMIN')")
     @ApiOperation(value = "특정 회원 정보 반환", notes="{username}의 회원의 정보를 반환")
+    @ApiImplicitParam(name = "username", dataType = "String", value = "회원 PK")
     public ResponseEntity<UserDto> getUserInfo(@PathVariable String username) {
         return ResponseEntity.ok(userService.getUserWithAuthorities(username));
     }

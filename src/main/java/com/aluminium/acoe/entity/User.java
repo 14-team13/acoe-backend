@@ -1,13 +1,16 @@
 package com.aluminium.acoe.entity;
 
-import lombok.*;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import java.util.Set;
 
 @Entity
 @Table(name = "`user`")
 @Getter
-@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
