@@ -4,7 +4,7 @@
 buildscript {
     // build.gradle에서 사용하는 전역 변수를 선언하는 블록
     ext {
-    
+        queryDslVersion = "5.0.0"
     }
 }
 
@@ -41,6 +41,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
 
     //annotationProcessor: 어노테이션 관련
     // lombok
@@ -52,28 +53,33 @@ dependencies {
     testRuntimeOnly('com.h2database:h2')
     runtimeOnly 'com.mysql:mysql-connector-j'
 
-    // Querydsl 설정
-    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
-    annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
+    // querydsl
+    implementation "com.querydsl:querydsl-jpa:5.0.0:jakarta"
+    annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
     annotationProcessor "jakarta.annotation:jakarta.annotation-api"
     annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 
     // ConfigurationProperties
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
-    //swagger
-    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
-
+    //swagger -> 버전 확인 필요
+    implementation 'io.springfox:springfox-swagger2:3.0.0'
+    implementation 'io.springfox:springfox-swagger-ui:3.0.0'
 
     //jwt토큰 -> 버전 확인 필요
-    implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
-    implementation 'io.jsonwebtoken:jjwt-impl:0.11.2'
-    implementation 'io.jsonwebtoken:jjwt-jackson:0.11.2'
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
     //test
     // 테스트 컴파일(단위테스팅)에 사용하는 라이브러리를 지정
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
+
+    // jwt
+    implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
 }
 
 tasks.named('test') {
