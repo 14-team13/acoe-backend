@@ -45,7 +45,7 @@ jobs:
 
     # 테스트
     - name: Test with Gradle
-      run: SPRING_PROFILES_ACTIVE=[test] ./gradlew test
+      run: SPRING_PROFILES_ACTIVE=[test] ./gradlew copyGitSubmodule test
     
     # SCP방식으로 Deploy
     - name: Deploy use SCP
