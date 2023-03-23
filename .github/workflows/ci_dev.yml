@@ -38,4 +38,8 @@ jobs:
     # application-dev.yml 보도록 프로젝트 설정 완료함, YAML은 submodule에서 copy
     - name: Build with Gradle
       if: contains(github.ref, 'dev')
-      run: SPRING_PROFILES_ACTIVE=[dev] ./gradlew clean submodule build
+      run: SPRING_PROFILES_ACTIVE=[dev] ./gradlew clean submodule build -x test
+
+    # 테스트
+    - name: Test with Gradle
+      run: SPRING_PROFILES_ACTIVE=[test] ./gradlew test
