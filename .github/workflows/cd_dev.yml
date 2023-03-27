@@ -38,10 +38,14 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
       
-    # application-dev.yml 보도록 프로젝트 설정 완료함, YAML은 submodule에서 copy
+    # 빌드단계에서 테스트는 제외.
     - name: Build with Gradle
       if: contains(github.ref, 'dev')
-      run: SPRING_PROFILES_ACTIVE=[dev] ./gradlew clean copyGitSubmodule build
+      run: SPRING_PROFILES_ACTIVE=[dev] ./gradlew clean copyGitSubmodule build -x test
+
+    # 테스트
+    - name: Test with Gradle
+      run: SPRING_PROFILES_ACTIVE=[test] ./gradlew copyGitSubmodule test
     
     # SCP방식으로 Deploy
     - name: Deploy use SCP

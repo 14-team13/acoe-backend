@@ -4,7 +4,6 @@
 buildscript {
     // build.gradle에서 사용하는 전역 변수를 선언하는 블록
     ext {
-        queryDslVersion = "5.0.0"
     }
 }
 
@@ -13,7 +12,11 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.0.3'
     id 'io.spring.dependency-management' version '1.1.0'
-    id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
+
+     /* springboot3 이상 버전 사용시
+     'attempt to recreate a file for type <entity>' 빌드 실패
+     queryDsl plugin 사용하지 않고 설정하는 방식으로 변경 */
+    // id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 }
 
 // project metadata
@@ -48,9 +51,8 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
-    // runtimeOnly: 런타임시에만 필요한 라이브러리
-    // DB
-    testRuntimeOnly('com.h2database:h2')
+    // runtimeOnly: 런타임시에만 필요한 라이브러리, testRuntimeOnly: 테스트 런타임시에만 필요한 라이브러리
+    testRuntimeOnly 'com.h2database:h2'
     runtimeOnly 'com.mysql:mysql-connector-j'
 
     // querydsl
@@ -65,11 +67,6 @@ dependencies {
     //swagger -> 버전 확인 필요
     implementation 'io.springfox:springfox-swagger2:3.0.0'
     implementation 'io.springfox:springfox-swagger-ui:3.0.0'
-
-    //jwt토큰 -> 버전 확인 필요
-    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
-    implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
-    implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
     //test
     // 테스트 컴파일(단위테스팅)에 사용하는 라이브러리를 지정
@@ -94,28 +91,19 @@ task copyGitSubmodule(type: Copy) {
 
 /*
  * queryDSL 설정 추가
+ * https://velog.io/@juhyeon1114/Spring-QueryDsl-gradle-%EC%84%A4%EC%A0%95-Spring-boot-3.0-%EC%9D%B4%EC%83%81
  */
-// querydsl에서 사용할 경로 설정
+//Querydsl Q Class 생성 위치
 def querydslDir = "$buildDir/generated/querydsl"
-// JPA 사용 여부와 사용할 경로를 설정
-querydsl {
-    jpa = true
-    querydslSourcesDir = querydslDir
+//Querydsl Q Class 생성 위치 지정
+tasks.withType(JavaCompile) {
+    options.getGeneratedSourceOutputDirectory().set(file(querydslDir))
 }
-
-// querydsl 컴파일시 사용할 옵션 설정
-compileQuerydsl{
-    options.annotationProcessorPath = configurations.querydsl
-}
-// querydsl 이 compileClassPath 를 상속하도록 설정
-configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
-    }
-    querydsl.extendsFrom compileClasspath
-}
-
-// build 시 사용할 sourceSet 추가
+//java source set 에 Querydsl Q Class 위치 추가
 sourceSets {
-    main.java.srcDir querydslDir
+    main.java.srcDirs += [ querydslDir ]
+}
+//gradle clean 시, Q Class 디렉토리까지 삭제하도록 설정
+clean {
+    delete file(querydslDir)
 }
