@@ -1,7 +1,7 @@
 package com.aluminium.acoe.com.exception;
 
-import com.aluminium.acoe.com.api.code.ExceptionCode;
-import com.aluminium.acoe.com.api.response.ExceptionResponse;
+import com.aluminium.acoe.com.api.code.ErrorCode;
+import com.aluminium.acoe.com.api.response.ErrorResponse;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.IOException;
@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -32,10 +33,10 @@ public class GlobalExceptionHandler {
      * [Exception] API 호출 시 '객체' 혹은 '파라미터' 데이터 값이 유효하지 않은 경우
      *
      * @param ex MethodArgumentNotValidException
-     * @return ResponseEntity<ExceptionResponse>
+     * @return ResponseEntity<ErrorResponse>
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    protected ResponseEntity<ExceptionResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+    protected ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
         log.error("handleMethodArgumentNotValidException", ex);
         BindingResult bindingResult = ex.getBindingResult();
         StringBuilder stringBuilder = new StringBuilder();
@@ -44,7 +45,20 @@ public class GlobalExceptionHandler {
             stringBuilder.append(fieldError.getDefaultMessage());
             stringBuilder.append(", ");
         }
-        final ExceptionResponse response = ExceptionResponse.of(ExceptionCode.NOT_VALID_ERROR, String.valueOf(stringBuilder));
+        final ErrorResponse response = ErrorResponse.of(ErrorCode.NOT_VALID_ERROR, String.valueOf(stringBuilder));
+        return new ResponseEntity<>(response, HTTP_STATUS_OK);
+    }
+
+    /**
+     * [Exception] API 호출 시 지원하지 않은 HTTP method 호출 할 경우 발생
+     *
+     * @param ex MissingRequestHeaderException
+     * @return ResponseEntity<ErrorResponse>
+     */
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    protected ResponseEntity<ErrorResponse> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException ex) {
+        log.error("handleHttpRequestMethodNotSupportedException", ex);
+        final ErrorResponse response = ErrorResponse.of(ErrorCode.NOT_ALLOWED_METHOD, ex.getMessage());
         return new ResponseEntity<>(response, HTTP_STATUS_OK);
     }
 
@@ -52,12 +66,12 @@ public class GlobalExceptionHandler {
      * [Exception] API 호출 시 'Header' 내에 데이터 값이 유효하지 않은 경우
      *
      * @param ex MissingRequestHeaderException
-     * @return ResponseEntity<ExceptionResponse>
+     * @return ResponseEntity<ErrorResponse>
      */
     @ExceptionHandler(MissingRequestHeaderException.class)
-    protected ResponseEntity<ExceptionResponse> handleMissingRequestHeaderException(MissingRequestHeaderException ex) {
-        log.error("MissingRequestHeaderException", ex);
-        final ExceptionResponse response = ExceptionResponse.of(ExceptionCode.REQUEST_BODY_MISSING_ERROR, ex.getMessage());
+    protected ResponseEntity<ErrorResponse> handleMissingRequestHeaderException(MissingRequestHeaderException ex) {
+        log.error("handleMissingRequestHeaderException", ex);
+        final ErrorResponse response = ErrorResponse.of(ErrorCode.REQUEST_BODY_MISSING_ERROR, ex.getMessage());
         return new ResponseEntity<>(response, HTTP_STATUS_OK);
     }
 
@@ -65,13 +79,13 @@ public class GlobalExceptionHandler {
      * [Exception] 클라이언트에서 Body로 '객체' 데이터가 넘어오지 않았을 경우
      *
      * @param ex HttpMessageNotReadableException
-     * @return ResponseEntity<ExceptionResponse>
+     * @return ResponseEntity<ErrorResponse>
      */
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    protected ResponseEntity<ExceptionResponse> handleHttpMessageNotReadableException(
+    protected ResponseEntity<ErrorResponse> handleHttpMessageNotReadableException(
         HttpMessageNotReadableException ex) {
         log.error("HttpMessageNotReadableException", ex);
-        final ExceptionResponse response = ExceptionResponse.of(ExceptionCode.REQUEST_BODY_MISSING_ERROR, ex.getMessage());
+        final ErrorResponse response = ErrorResponse.of(ErrorCode.REQUEST_BODY_MISSING_ERROR, ex.getMessage());
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
@@ -79,13 +93,13 @@ public class GlobalExceptionHandler {
      * [Exception] 클라이언트에서 request로 '파라미터로' 데이터가 넘어오지 않았을 경우
      *
      * @param ex MissingServletRequestParameterException
-     * @return ResponseEntity<ExceptionResponse>
+     * @return ResponseEntity<ErrorResponse>
      */
     @ExceptionHandler(MissingServletRequestParameterException.class)
-    protected ResponseEntity<ExceptionResponse> handleMissingRequestHeaderExceptionException(
+    protected ResponseEntity<ErrorResponse> handleMissingRequestHeaderExceptionException(
         MissingServletRequestParameterException ex) {
         log.error("handleMissingServletRequestParameterException", ex);
-        final ExceptionResponse response = ExceptionResponse.of(ExceptionCode.MISSING_REQUEST_PARAMETER_ERROR, ex.getMessage());
+        final ErrorResponse response = ErrorResponse.of(ErrorCode.MISSING_REQUEST_PARAMETER_ERROR, ex.getMessage());
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
@@ -94,12 +108,12 @@ public class GlobalExceptionHandler {
      * [Exception] 잘못된 서버 요청일 경우 발생한 경우
      *
      * @param e HttpClientErrorException
-     * @return ResponseEntity<ExceptionResponse>
+     * @return ResponseEntity<ErrorResponse>
      */
     @ExceptionHandler(HttpClientErrorException.BadRequest.class)
-    protected ResponseEntity<ExceptionResponse> handleBadRequestException(HttpClientErrorException e) {
+    protected ResponseEntity<ErrorResponse> handleBadRequestException(HttpClientErrorException e) {
         log.error("HttpClientErrorException.BadRequest", e);
-        final ExceptionResponse response = ExceptionResponse.of(ExceptionCode.BAD_REQUEST_ERROR, e.getMessage());
+        final ErrorResponse response = ErrorResponse.of(ErrorCode.BAD_REQUEST_ERROR, e.getMessage());
         return new ResponseEntity<>(response, HTTP_STATUS_OK);
     }
 
@@ -108,12 +122,12 @@ public class GlobalExceptionHandler {
      * [Exception] 잘못된 주소로 요청 한 경우
      *
      * @param e NoHandlerFoundException
-     * @return ResponseEntity<ExceptionResponse>
+     * @return ResponseEntity<ErrorResponse>
      */
     @ExceptionHandler(NoHandlerFoundException.class)
-    protected ResponseEntity<ExceptionResponse> handleNoHandlerFoundExceptionException(NoHandlerFoundException e) {
+    protected ResponseEntity<ErrorResponse> handleNoHandlerFoundExceptionException(NoHandlerFoundException e) {
         log.error("handleNoHandlerFoundExceptionException", e);
-        final ExceptionResponse response = ExceptionResponse.of(ExceptionCode.NOT_FOUND_ERROR, e.getMessage());
+        final ErrorResponse response = ErrorResponse.of(ErrorCode.NOT_FOUND_ERROR, e.getMessage());
         return new ResponseEntity<>(response, HTTP_STATUS_OK);
     }
 
@@ -122,12 +136,12 @@ public class GlobalExceptionHandler {
      * [Exception] NULL 값이 발생한 경우
      *
      * @param e NullPointerException
-     * @return ResponseEntity<ExceptionResponse>
+     * @return ResponseEntity<ErrorResponse>
      */
     @ExceptionHandler(NullPointerException.class)
-    protected ResponseEntity<ExceptionResponse> handleNullPointerException(NullPointerException e) {
+    protected ResponseEntity<ErrorResponse> handleNullPointerException(NullPointerException e) {
         log.error("handleNullPointerException", e);
-        final ExceptionResponse response = ExceptionResponse.of(ExceptionCode.NULL_POINT_ERROR, e.getMessage());
+        final ErrorResponse response = ErrorResponse.of(ErrorCode.NULL_POINT_ERROR, e.getMessage());
         return new ResponseEntity<>(response, HTTP_STATUS_OK);
     }
 
@@ -135,12 +149,12 @@ public class GlobalExceptionHandler {
      * Input / Output 내에서 발생한 경우
      *
      * @param ex IOException
-     * @return ResponseEntity<ExceptionResponse>
+     * @return ResponseEntity<ErrorResponse>
      */
     @ExceptionHandler(IOException.class)
-    protected ResponseEntity<ExceptionResponse> handleIOException(IOException ex) {
+    protected ResponseEntity<ErrorResponse> handleIOException(IOException ex) {
         log.error("handleIOException", ex);
-        final ExceptionResponse response = ExceptionResponse.of(ExceptionCode.IO_ERROR, ex.getMessage());
+        final ErrorResponse response = ErrorResponse.of(ErrorCode.IO_ERROR, ex.getMessage());
         return new ResponseEntity<>(response, HTTP_STATUS_OK);
     }
 
@@ -149,12 +163,12 @@ public class GlobalExceptionHandler {
      * com.google.gson 내에 Exception 발생하는 경우
      *
      * @param ex JsonParseException
-     * @return ResponseEntity<ExceptionResponse>
+     * @return ResponseEntity<ErrorResponse>
      */
     @ExceptionHandler(JsonParseException.class)
-    protected ResponseEntity<ExceptionResponse> handleJsonParseExceptionException(JsonParseException ex) {
+    protected ResponseEntity<ErrorResponse> handleJsonParseExceptionException(JsonParseException ex) {
         log.error("handleJsonParseExceptionException", ex);
-        final ExceptionResponse response = ExceptionResponse.of(ExceptionCode.JSON_PARSE_ERROR, ex.getMessage());
+        final ErrorResponse response = ErrorResponse.of(ErrorCode.JSON_PARSE_ERROR, ex.getMessage());
         return new ResponseEntity<>(response, HTTP_STATUS_OK);
     }
 
@@ -162,12 +176,12 @@ public class GlobalExceptionHandler {
      * com.fasterxml.jackson.core 내에 Exception 발생하는 경우
      *
      * @param ex JsonProcessingException
-     * @return ResponseEntity<ExceptionResponse>
+     * @return ResponseEntity<ErrorResponse>
      */
     @ExceptionHandler(JsonProcessingException.class)
-    protected ResponseEntity<ExceptionResponse> handleJsonProcessingException(JsonProcessingException ex) {
+    protected ResponseEntity<ErrorResponse> handleJsonProcessingException(JsonProcessingException ex) {
         log.error("handleJsonProcessingException", ex);
-        final ExceptionResponse response = ExceptionResponse.of(ExceptionCode.REQUEST_BODY_MISSING_ERROR, ex.getMessage());
+        final ErrorResponse response = ErrorResponse.of(ErrorCode.REQUEST_BODY_MISSING_ERROR, ex.getMessage());
         return new ResponseEntity<>(response, HTTP_STATUS_OK);
     }
 
@@ -177,12 +191,12 @@ public class GlobalExceptionHandler {
      * [Exception] 로그인 not found member  Excetpion
      *
      * @param ex NotFoundMemberException
-     * @return ResponseEntity<ExceptionResponse>
+     * @return ResponseEntity<ErrorResponse>
      */
     @ExceptionHandler(NotFoundMemberException.class)
-    protected ResponseEntity<ExceptionResponse> handleNotFoundMemberException(NotFoundMemberException ex) {
+    protected ResponseEntity<ErrorResponse> handleNotFoundMemberException(NotFoundMemberException ex) {
         log.error("handleNotFoundMemberException", ex);
-        final ExceptionResponse response = ExceptionResponse.of(ExceptionCode.NOT_FOUND_MEMBER, ex.getMessage());
+        final ErrorResponse response = ErrorResponse.of(ErrorCode.NOT_FOUND_MEMBER, ex.getMessage());
         return new ResponseEntity<>(response, HTTP_STATUS_OK);
     }
 
@@ -190,12 +204,12 @@ public class GlobalExceptionHandler {
      * [Exception] 로그인 duplicate member  Excetpion
      *
      * @param ex NotFoundMemberException
-     * @return ResponseEntity<ExceptionResponse>
+     * @return ResponseEntity<ErrorResponse>
      */
     @ExceptionHandler(DuplicateMemberException.class)
-    protected ResponseEntity<ExceptionResponse> handleDuplicateMemberException(DuplicateMemberException ex) {
+    protected ResponseEntity<ErrorResponse> handleDuplicateMemberException(DuplicateMemberException ex) {
         log.error("handleDuplicateMemberException", ex);
-        final ExceptionResponse response = ExceptionResponse.of(ExceptionCode.DUPLICATE_MEMBER, ex.getMessage());
+        final ErrorResponse response = ErrorResponse.of(ErrorCode.DUPLICATE_MEMBER, ex.getMessage());
         return new ResponseEntity<>(response, HTTP_STATUS_OK);
     }
 
@@ -205,12 +219,12 @@ public class GlobalExceptionHandler {
      * [Exception] 모든 Exception 경우 발생
      *
      * @param ex Exception
-     * @return ResponseEntity<ExceptionResponse>
+     * @return ResponseEntity<ErrorResponse>
      */
     @ExceptionHandler(Exception.class)
-    protected final ResponseEntity<ExceptionResponse> handleAllExceptions(Exception ex) {
+    protected final ResponseEntity<ErrorResponse> handleAllExceptions(Exception ex) {
         log.error("Exception", ex);
-        final ExceptionResponse response = ExceptionResponse.of(ExceptionCode.INTERNAL_SERVER_ERROR, ex.getMessage());
+        final ErrorResponse response = ErrorResponse.of(ErrorCode.INTERNAL_SERVER_ERROR, ex.getMessage());
         return new ResponseEntity<>(response, HTTP_STATUS_OK);
     }
 }
