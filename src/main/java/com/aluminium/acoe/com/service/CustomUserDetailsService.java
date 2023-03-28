@@ -1,7 +1,7 @@
-package com.aluminium.acoe.service;
+package com.aluminium.acoe.com.service;
 
-import com.aluminium.acoe.entity.User;
-import com.aluminium.acoe.repository.UserRepository;
+import com.aluminium.acoe.com.repository.UserRepository;
+import com.aluminium.acoe.com.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,4 +1,4 @@
-package com.aluminium.acoe.jwt;
+package com.aluminium.acoe.com.jwt;
 
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

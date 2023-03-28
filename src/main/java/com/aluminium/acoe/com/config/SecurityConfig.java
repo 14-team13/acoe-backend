@@ -1,9 +1,9 @@
-package com.aluminium.acoe.config;
+package com.aluminium.acoe.com.config;
 
-import com.aluminium.acoe.jwt.JwtAccessDeniedHandler;
-import com.aluminium.acoe.jwt.JwtAuthenticationEntryPoint;
-import com.aluminium.acoe.jwt.JwtSecurityConfig;
-import com.aluminium.acoe.jwt.TokenProvider;
+import com.aluminium.acoe.com.jwt.JwtAccessDeniedHandler;
+import com.aluminium.acoe.com.jwt.JwtAuthenticationEntryPoint;
+import com.aluminium.acoe.com.jwt.JwtSecurityConfig;
+import com.aluminium.acoe.com.jwt.TokenProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;

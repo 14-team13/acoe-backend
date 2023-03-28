@@ -1,7 +1,7 @@
-package com.aluminium.acoe.controller;
+package com.aluminium.acoe.com.controller;
 
-import com.aluminium.acoe.dto.UserDto;
-import com.aluminium.acoe.service.UserService;
+import com.aluminium.acoe.com.dto.UserDto;
+import com.aluminium.acoe.com.service.UserService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import jakarta.validation.Valid;

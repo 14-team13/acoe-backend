@@ -1,4 +1,4 @@
-package com.aluminium.acoe.jwt;
+package com.aluminium.acoe.com.jwt;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;

@@ -1,6 +1,6 @@
-package com.aluminium.acoe.repository;
+package com.aluminium.acoe.com.repository;
 
-import com.aluminium.acoe.entity.User;
+import com.aluminium.acoe.com.entity.User;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 

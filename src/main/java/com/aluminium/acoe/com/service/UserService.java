@@ -1,12 +1,12 @@
-package com.aluminium.acoe.service;
+package com.aluminium.acoe.com.service;
 
-import com.aluminium.acoe.dto.UserDto;
-import com.aluminium.acoe.entity.Authority;
-import com.aluminium.acoe.entity.User;
-import com.aluminium.acoe.exception.DuplicateMemberException;
-import com.aluminium.acoe.exception.NotFoundMemberException;
-import com.aluminium.acoe.repository.UserRepository;
-import com.aluminium.acoe.util.SecurityUtil;
+import com.aluminium.acoe.com.dto.UserDto;
+import com.aluminium.acoe.com.entity.Authority;
+import com.aluminium.acoe.com.entity.User;
+import com.aluminium.acoe.com.exception.DuplicateMemberException;
+import com.aluminium.acoe.com.exception.NotFoundMemberException;
+import com.aluminium.acoe.com.repository.UserRepository;
+import com.aluminium.acoe.com.util.SecurityUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

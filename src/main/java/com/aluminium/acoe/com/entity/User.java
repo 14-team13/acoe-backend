@@ -1,4 +1,4 @@
-package com.aluminium.acoe.entity;
+package com.aluminium.acoe.com.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

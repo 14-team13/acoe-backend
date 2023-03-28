@@ -1,4 +1,4 @@
-package com.aluminium.acoe.util;
+package com.aluminium.acoe.com.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,6 +1,6 @@
-package com.aluminium.acoe.repository;
+package com.aluminium.acoe.com.repository;
 
-import com.aluminium.acoe.entity.Authority;
+import com.aluminium.acoe.com.entity.Authority;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,4 +1,4 @@
-package com.aluminium.acoe.exception;
+package com.aluminium.acoe.com.exception;
 
 public class NotFoundMemberException extends RuntimeException {
     public NotFoundMemberException() {

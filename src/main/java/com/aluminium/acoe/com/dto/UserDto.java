@@ -1,6 +1,6 @@
-package com.aluminium.acoe.dto;
+package com.aluminium.acoe.com.dto;
 
-import com.aluminium.acoe.entity.User;
+import com.aluminium.acoe.com.entity.User;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import jakarta.validation.constraints.NotNull;

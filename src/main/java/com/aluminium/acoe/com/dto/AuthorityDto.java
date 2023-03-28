@@ -1,4 +1,4 @@
-package com.aluminium.acoe.dto;
+package com.aluminium.acoe.com.dto;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
