@@ -1,6 +1,6 @@
 package com.aluminium.acoe.com.api.response;
 
-import com.aluminium.acoe.com.api.code.ExceptionCode;
+import com.aluminium.acoe.com.api.code.ErrorCode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,7 +16,7 @@ import org.springframework.validation.BindingResult;
  */
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ExceptionResponse {
+public class ErrorResponse {
   private int status;                 // 에러 상태 코드
   private String divisionCode;        // 에러 구분 코드
   private String resultMsg;           // 에러 메시지
@@ -24,12 +24,12 @@ public class ExceptionResponse {
   private String reason;              // 에러 이유
 
   /**
-   * ExceptionResponse 생성자-1
+   * ErrorResponse 생성자-1
    *
    * @param code ErrorCode
    */
   @Builder
-  protected ExceptionResponse(final ExceptionCode code) {
+  protected ErrorResponse(final ErrorCode code) {
     this.resultMsg = code.getMessage();
     this.status = code.getStatus();
     this.divisionCode = code.getDivisionCode();
@@ -37,13 +37,13 @@ public class ExceptionResponse {
   }
 
   /**
-   * ExceptionResponse 생성자-2
+   * ErrorResponse 생성자-2
    *
    * @param code   ErrorCode
    * @param reason String
    */
   @Builder
-  protected ExceptionResponse(final ExceptionCode code, final String reason) {
+  protected ErrorResponse(final ErrorCode code, final String reason) {
     this.resultMsg = code.getMessage();
     this.status = code.getStatus();
     this.divisionCode = code.getDivisionCode();
@@ -51,13 +51,13 @@ public class ExceptionResponse {
   }
 
   /**
-   * ExceptionResponse 생성자-3
+   * ErrorResponse 생성자-3
    *
    * @param code   ErrorCode
    * @param errors List<FieldError>
    */
   @Builder
-  protected ExceptionResponse(final ExceptionCode code, final List<FieldError> errors) {
+  protected ErrorResponse(final ErrorCode code, final List<FieldError> errors) {
     this.resultMsg = code.getMessage();
     this.status = code.getStatus();
     this.errors = errors;
@@ -70,20 +70,20 @@ public class ExceptionResponse {
    *
    * @param code          ErrorCode
    * @param bindingResult BindingResult
-   * @return ExceptionResponse
+   * @return ErrorResponse
    */
-  public static ExceptionResponse of(final ExceptionCode code, final BindingResult bindingResult) {
-    return new ExceptionResponse(code, FieldError.of(bindingResult));
+  public static ErrorResponse of(final ErrorCode code, final BindingResult bindingResult) {
+    return new ErrorResponse(code, FieldError.of(bindingResult));
   }
 
   /**
    * Global Exception 전송 타입-2
    *
    * @param code ErrorCode
-   * @return ExceptionResponse
+   * @return ErrorResponse
    */
-  public static ExceptionResponse of(final ExceptionCode code) {
-    return new ExceptionResponse(code);
+  public static ErrorResponse of(final ErrorCode code) {
+    return new ErrorResponse(code);
   }
 
   /**
@@ -91,10 +91,10 @@ public class ExceptionResponse {
    *
    * @param code   ErrorCode
    * @param reason String
-   * @return ExceptionResponse
+   * @return ErrorResponse
    */
-  public static ExceptionResponse of(final ExceptionCode code, final String reason) {
-    return new ExceptionResponse(code, reason);
+  public static ErrorResponse of(final ErrorCode code, final String reason) {
+    return new ErrorResponse(code, reason);
   }
 
 
