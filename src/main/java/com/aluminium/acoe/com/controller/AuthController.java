@@ -1,11 +1,15 @@
-package com.aluminium.acoe.com.controller;
+package com.aluminium.acoe.controller;
 
-import com.aluminium.acoe.com.dto.LoginDto;
-import com.aluminium.acoe.com.dto.TokenDto;
-import com.aluminium.acoe.com.jwt.JwtFilter;
-import com.aluminium.acoe.com.jwt.TokenProvider;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiOperation;
+import com.aluminium.acoe.dto.LoginDto;
+import com.aluminium.acoe.dto.TokenDto;
+import com.aluminium.acoe.jwt.JwtFilter;
+import com.aluminium.acoe.jwt.TokenProvider;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -33,13 +37,12 @@ public class AuthController {
 
     /**
      * 로그인 API
-     *
-     * @param loginDto
-     * @return
      */
     @PostMapping("/authenticate")
-    @ApiOperation(value = "로그인", notes = "Username, Password 인증 후 토큰 반환")
-    @ApiImplicitParam(name = "loginDto", dataType = "LoginDto", value = "접속 계정 정보 객체")
+    @Operation(summary = "로그인", description  = "Username, Password 인증 후 토큰 반환", responses = {
+            @ApiResponse(responseCode = "200", description = "로그인 성공", content = @Content(schema = @Schema(implementation = TokenDto.class)))
+    })
+    @Parameter(name = "loginDto", description = "접속 계정 정보 객체", in = ParameterIn.DEFAULT)
     public ResponseEntity<TokenDto> authorize(@Valid @RequestBody LoginDto loginDto) {
         // ID, PW를 받아 토큰 생성
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());

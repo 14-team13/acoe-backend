@@ -1,6 +1,6 @@
 package com.aluminium.acoe.com.dto;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -17,20 +17,11 @@ public class LoginDto {
 
     @NotNull
     @Size(min = 3, max = 50)
-    @ApiModelProperty(
-            value = "ID",
-            name = "username",
-            dataType = "String",
-            example = "acoe"
-    )
+    @Schema(description = "사용자명", example = "acoe")
     private String username;
 
     @NotNull
     @Size(min = 3, max = 100)
-    @ApiModelProperty(
-            value = "PW",
-            name = "password",
-            dataType = "String"
-    )
+    @Schema(description = "비밀번호")
     private String password;
 }

@@ -1,6 +1,6 @@
 package com.aluminium.acoe.com.dto;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 /**
@@ -13,10 +13,6 @@ import lombok.*;
 @NoArgsConstructor
 public class TokenDto {
 
-    @ApiModelProperty(
-            value = "JWT 토큰",
-            name = "token",
-            dataType = "String"
-    )
+    @Schema(description = "JWT 토큰")
     private String token;
 }
