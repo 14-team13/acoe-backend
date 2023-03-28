@@ -1,9 +1,11 @@
 package com.aluminium.acoe.com.config;
 
+import com.aluminium.acoe.com.exception.JwtExceptionFilter;
 import com.aluminium.acoe.com.jwt.JwtAccessDeniedHandler;
 import com.aluminium.acoe.com.jwt.JwtAuthenticationEntryPoint;
 import com.aluminium.acoe.com.jwt.JwtSecurityConfig;
 import com.aluminium.acoe.com.jwt.TokenProvider;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -18,22 +20,14 @@ import org.springframework.web.filter.CorsFilter;
 
 @EnableWebSecurity
 @EnableMethodSecurity
+@RequiredArgsConstructor
 @Configuration
 public class SecurityConfig {
     private final TokenProvider tokenProvider;
     private final CorsFilter corsFilter;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
-
-    public SecurityConfig(TokenProvider tokenProvider,
-                          CorsFilter corsFilter,
-                          JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
-                          JwtAccessDeniedHandler jwtAccessDeniedHandler) {
-        this.tokenProvider = tokenProvider;
-        this.corsFilter = corsFilter;
-        this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
-        this.jwtAccessDeniedHandler = jwtAccessDeniedHandler;
-    }
+    private final JwtExceptionFilter jwtExceptionFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -69,7 +63,7 @@ public class SecurityConfig {
                 .anyRequest().authenticated()
 
                 .and()
-                .apply(new JwtSecurityConfig(tokenProvider));
+                .apply(new JwtSecurityConfig(tokenProvider, jwtExceptionFilter));
 
         return httpSecurity.build();
     }
