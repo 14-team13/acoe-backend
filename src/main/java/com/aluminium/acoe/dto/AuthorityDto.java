@@ -1,6 +1,6 @@
 package com.aluminium.acoe.dto;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 @Getter
@@ -10,11 +10,6 @@ import lombok.*;
 @NoArgsConstructor
 public class AuthorityDto {
 
-    @ApiModelProperty(
-            value = "권한명",
-            name = "authorityName",
-            dataType = "String",
-            example = "ROLE_USER, ROLE_ADMIN"
-    )
+    @Schema(description = "권한명", example = "ROLE_USER, ROLE_ADMIN")
     private String authorityName;
 }
