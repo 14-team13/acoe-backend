@@ -1,9 +1,9 @@
-package com.aluminium.acoe.controller;
+package com.aluminium.acoe.com.controller;
 
-import com.aluminium.acoe.dto.LoginDto;
-import com.aluminium.acoe.dto.TokenDto;
-import com.aluminium.acoe.jwt.JwtFilter;
-import com.aluminium.acoe.jwt.TokenProvider;
+import com.aluminium.acoe.com.dto.LoginDto;
+import com.aluminium.acoe.com.dto.TokenDto;
+import com.aluminium.acoe.com.jwt.JwtFilter;
+import com.aluminium.acoe.com.jwt.TokenProvider;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
