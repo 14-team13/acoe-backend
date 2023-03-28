@@ -1,5 +1,6 @@
 package com.aluminium.acoe.com.service;
 
+import com.aluminium.acoe.com.api.code.ExceptionCode;
 import com.aluminium.acoe.com.dto.UserDto;
 import com.aluminium.acoe.com.entity.Authority;
 import com.aluminium.acoe.com.entity.User;
@@ -34,7 +35,7 @@ public class UserService {
     public UserDto signup(UserDto userDto) {
         // username이 DB에 존재하는지 검사
         if (userRepository.findOneWithAuthoritiesByUsername(userDto.getUsername()).orElse(null) != null)
-            throw new DuplicateMemberException("이미 가입되어 있는 유저입니다.");
+            throw new DuplicateMemberException(ExceptionCode.DUPLICATE_MEMBER.getMessage());
 
         // username이 없으면 권한 정보 생성 (ROLE_USER)
         Authority authority = Authority.builder()
@@ -63,7 +64,7 @@ public class UserService {
     public UserDto getMyUserWithAuthorities() {
         return UserDto.from(SecurityUtil.getCurrentUsername()
                 .flatMap(userRepository::findOneWithAuthoritiesByUsername)
-                .orElseThrow(() -> new NotFoundMemberException("Member not found"))
+                .orElseThrow(() -> new NotFoundMemberException(ExceptionCode.NOT_FOUND_MEMBER.getMessage()))
         );
     }
 
