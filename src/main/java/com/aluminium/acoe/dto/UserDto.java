@@ -11,7 +11,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * 회원 가입 정보 DTO
+ * 계정 정보 DTO
  */
 @Getter
 @Setter
@@ -22,18 +22,18 @@ public class UserDto {
 
     @NotNull
     @Size(min = 3, max = 50)
-    @Schema(description = "사용자명")
+    @Schema(description = "사용자명", example = "acoe")
     private String username;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @NotNull
     @Size(min = 3, max = 100)
-    @Schema(description = "비밀번호")
+    @Schema(description = "비밀번호", example = "")
     private String password;
 
     @NotNull
     @Size(min = 3, max = 50)
-    @Schema(description = "닉네임")
+    @Schema(description = "닉네임", example = "ACOE_USER")
     private String nickname;
 
     @Schema(description = "권한")

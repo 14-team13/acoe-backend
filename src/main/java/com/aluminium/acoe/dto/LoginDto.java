@@ -22,6 +22,6 @@ public class LoginDto {
 
     @NotNull
     @Size(min = 3, max = 100)
-    @Schema(description = "비밀번호")
+    @Schema(description = "비밀번호", example = "")
     private String password;
 }
