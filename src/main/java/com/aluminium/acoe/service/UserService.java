@@ -1,5 +1,6 @@
 package com.aluminium.acoe.service;
 
+import com.aluminium.acoe.dto.SignUpDto;
 import com.aluminium.acoe.dto.UserDto;
 import com.aluminium.acoe.entity.Authority;
 import com.aluminium.acoe.entity.User;
@@ -13,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 
-
 @Service
 public class UserService {
     private final UserRepository userRepository;
@@ -26,14 +26,11 @@ public class UserService {
 
     /**
      * 회원 가입 Service
-     *
-     * @param userDto
-     * @return
      */
     @Transactional
-    public UserDto signup(UserDto userDto) {
+    public UserDto signup(SignUpDto signUpDto) {
         // username이 DB에 존재하는지 검사
-        if (userRepository.findOneWithAuthoritiesByUsername(userDto.getUsername()).orElse(null) != null)
+        if (userRepository.findOneWithAuthoritiesByUsername(signUpDto.getUsername()).orElse(null) != null)
             throw new DuplicateMemberException("이미 가입되어 있는 유저입니다.");
 
         // username이 없으면 권한 정보 생성 (ROLE_USER)
@@ -43,9 +40,9 @@ public class UserService {
 
         // 유저 정보 생성
         User user = User.builder()
-                .username(userDto.getUsername())
-                .password(passwordEncoder.encode(userDto.getPassword()))
-                .nickname(userDto.getNickname())
+                .username(signUpDto.getUsername())
+                .password(passwordEncoder.encode(signUpDto.getPassword()))
+                .nickname(signUpDto.getNickname())
                 .authorities(Collections.singleton(authority))
                 .activated(true)
                 .build();
@@ -56,8 +53,6 @@ public class UserService {
 
     /**
      * SecurityContext에 저장된 접속 계정 정보 확인 Service
-     *
-     * @return
      */
     @Transactional(readOnly = true)
     public UserDto getMyUserWithAuthorities() {
