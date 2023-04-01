@@ -32,16 +32,16 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
           filterChain.doFilter(request, response);
       } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
           log.error(ErrorCode.WRONG_JWT_SIGNATURE.getMessage());
-          setErrorResponse(ErrorCode.WRONG_JWT_SIGNATURE,response,e);
+          setErrorResponse(ErrorCode.WRONG_JWT_SIGNATURE, response, e);
       } catch (ExpiredJwtException e) {
           log.error(ErrorCode.EXPIRED_JWT.getMessage());
-          setErrorResponse(ErrorCode.EXPIRED_JWT,response,e);
+          setErrorResponse(ErrorCode.EXPIRED_JWT, response, e);
       } catch (UnsupportedJwtException e) {
           log.error(ErrorCode.UNSUPPORTED_JWT.getMessage());
-          setErrorResponse(ErrorCode.UNSUPPORTED_JWT,response,e);
+          setErrorResponse(ErrorCode.UNSUPPORTED_JWT, response, e);
       } catch (IllegalArgumentException e) {
           log.error(ErrorCode.ILLEGAL_JWT.getMessage());
-          setErrorResponse(ErrorCode.ILLEGAL_JWT,response,e);
+          setErrorResponse(ErrorCode.ILLEGAL_JWT, response, e);
       }
     }
 
@@ -51,10 +51,10 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
 
         ErrorResponse errorResponse = ErrorResponse.of(errorCode, errorCode.getMessage());
 
-        try{
+        try {
             final ObjectMapper mapper = new ObjectMapper();
             mapper.writeValue(response.getOutputStream(), errorResponse);
-        }catch (IOException e){
+        } catch (IOException e){
             e.printStackTrace();
         }
     }
