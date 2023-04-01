@@ -1,13 +1,13 @@
 package com.aluminium.acoe.com.service;
 
-import com.aluminium.acoe.com.api.code.ErrorCode;
-import com.aluminium.acoe.com.dto.UserDto;
-import com.aluminium.acoe.com.entity.Authority;
-import com.aluminium.acoe.com.entity.User;
-import com.aluminium.acoe.com.exception.DuplicateMemberException;
-import com.aluminium.acoe.com.exception.NotFoundMemberException;
-import com.aluminium.acoe.com.repository.UserRepository;
-import com.aluminium.acoe.com.util.SecurityUtil;
+import com.aluminium.acoe.dto.SignUpDto;
+import com.aluminium.acoe.dto.UserDto;
+import com.aluminium.acoe.entity.Authority;
+import com.aluminium.acoe.entity.User;
+import com.aluminium.acoe.exception.DuplicateMemberException;
+import com.aluminium.acoe.exception.NotFoundMemberException;
+import com.aluminium.acoe.repository.UserRepository;
+import com.aluminium.acoe.util.SecurityUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,9 +32,9 @@ public class UserService {
      * @return
      */
     @Transactional
-    public UserDto signup(UserDto userDto) {
+    public UserDto signup(SignUpDto signUpDto) {
         // username이 DB에 존재하는지 검사
-        if (userRepository.findOneWithAuthoritiesByUsername(userDto.getUsername()).orElse(null) != null)
+        if (userRepository.findOneWithAuthoritiesByUsername(signUpDto.getUsername()).orElse(null) != null)
             throw new DuplicateMemberException(ErrorCode.DUPLICATE_MEMBER.getMessage());
 
         // username이 없으면 권한 정보 생성 (ROLE_USER)
@@ -44,9 +44,9 @@ public class UserService {
 
         // 유저 정보 생성
         User user = User.builder()
-                .username(userDto.getUsername())
-                .password(passwordEncoder.encode(userDto.getPassword()))
-                .nickname(userDto.getNickname())
+                .username(signUpDto.getUsername())
+                .password(passwordEncoder.encode(signUpDto.getPassword()))
+                .nickname(signUpDto.getNickname())
                 .authorities(Collections.singleton(authority))
                 .activated(true)
                 .build();
@@ -57,8 +57,6 @@ public class UserService {
 
     /**
      * SecurityContext에 저장된 접속 계정 정보 확인 Service
-     *
-     * @return
      */
     @Transactional(readOnly = true)
     public UserDto getMyUserWithAuthorities() {

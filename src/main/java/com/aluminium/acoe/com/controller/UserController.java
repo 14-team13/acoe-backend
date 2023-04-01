@@ -1,7 +1,8 @@
 package com.aluminium.acoe.com.controller;
 
-import com.aluminium.acoe.com.dto.UserDto;
-import com.aluminium.acoe.com.service.UserService;
+import com.aluminium.acoe.dto.SignUpDto;
+import com.aluminium.acoe.dto.UserDto;
+import com.aluminium.acoe.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -30,8 +31,8 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "회원 가입 성공", content = @Content(schema = @Schema(implementation = UserDto.class)))
     })
     @Parameter(name = "userDto", description = "회원 정보 객체", in = ParameterIn.DEFAULT)
-    public ResponseEntity<UserDto> signup(@Valid @RequestBody UserDto userDto) {
-        return ResponseEntity.ok(userService.signup(userDto));
+    public ResponseEntity<UserDto> signup(@Valid @RequestBody SignUpDto signUpDto) {
+        return ResponseEntity.ok(userService.signup(signUpDto));
     }
 
     /**

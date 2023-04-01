@@ -10,6 +10,6 @@ import lombok.*;
 @NoArgsConstructor
 public class AuthorityDto {
 
-    @Schema(description = "권한명", example = "ROLE_USER, ROLE_ADMIN")
+    @Schema(description = "권한명", example = "ROLE_USER")
     private String authorityName;
 }

@@ -59,7 +59,11 @@ public class SecurityConfig {
                 // 로그인, 회원가입 등 토큰 필요 없이 접근 가능하도록 허용
                 .and()
                 .authorizeHttpRequests()
-                .requestMatchers("/api/authenticate", "/api/signup", "/v3/api-docs", "/swagger*/**").permitAll()
+                .requestMatchers(
+                        "/api/authenticate",
+                        "/api/signup",
+                        "/v3/api-docs/**",
+                        "/swagger*/**").permitAll()
                 .anyRequest().authenticated()
 
                 .and()
