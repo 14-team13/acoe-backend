@@ -1,8 +1,8 @@
 package com.aluminium.acoe.com.controller;
 
-import com.aluminium.acoe.dto.SignUpDto;
-import com.aluminium.acoe.dto.UserDto;
-import com.aluminium.acoe.service.UserService;
+import com.aluminium.acoe.com.dto.SignUpDto;
+import com.aluminium.acoe.com.dto.UserDto;
+import com.aluminium.acoe.com.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
