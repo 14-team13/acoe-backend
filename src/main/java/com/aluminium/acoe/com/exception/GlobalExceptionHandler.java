@@ -2,9 +2,6 @@ package com.aluminium.acoe.com.exception;
 
 import com.aluminium.acoe.com.api.code.ErrorCode;
 import com.aluminium.acoe.com.api.response.ErrorResponse;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,7 +43,7 @@ public class GlobalExceptionHandler {
             stringBuilder.append(", ");
         }
         final ErrorResponse response = ErrorResponse.of(ErrorCode.NOT_VALID_ERROR, String.valueOf(stringBuilder));
-        return new ResponseEntity<>(response, HTTP_STATUS_OK);
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
     /**
@@ -59,7 +56,7 @@ public class GlobalExceptionHandler {
     protected ResponseEntity<ErrorResponse> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException ex) {
         log.error("handleHttpRequestMethodNotSupportedException", ex);
         final ErrorResponse response = ErrorResponse.of(ErrorCode.NOT_ALLOWED_METHOD, ex.getMessage());
-        return new ResponseEntity<>(response, HTTP_STATUS_OK);
+        return new ResponseEntity<>(response, HttpStatus.METHOD_NOT_ALLOWED);
     }
 
     /**
@@ -71,8 +68,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MissingRequestHeaderException.class)
     protected ResponseEntity<ErrorResponse> handleMissingRequestHeaderException(MissingRequestHeaderException ex) {
         log.error("handleMissingRequestHeaderException", ex);
-        final ErrorResponse response = ErrorResponse.of(ErrorCode.REQUEST_BODY_MISSING_ERROR, ex.getMessage());
-        return new ResponseEntity<>(response, HTTP_STATUS_OK);
+        final ErrorResponse response = ErrorResponse.of(ErrorCode.REQUEST_HEADER_MISSING_ERROR, ex.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
     /**
@@ -114,7 +111,7 @@ public class GlobalExceptionHandler {
     protected ResponseEntity<ErrorResponse> handleBadRequestException(HttpClientErrorException e) {
         log.error("HttpClientErrorException.BadRequest", e);
         final ErrorResponse response = ErrorResponse.of(ErrorCode.BAD_REQUEST_ERROR, e.getMessage());
-        return new ResponseEntity<>(response, HTTP_STATUS_OK);
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
 
@@ -128,64 +125,18 @@ public class GlobalExceptionHandler {
     protected ResponseEntity<ErrorResponse> handleNoHandlerFoundExceptionException(NoHandlerFoundException e) {
         log.error("handleNoHandlerFoundExceptionException", e);
         final ErrorResponse response = ErrorResponse.of(ErrorCode.NOT_FOUND_ERROR, e.getMessage());
-        return new ResponseEntity<>(response, HTTP_STATUS_OK);
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
-
-    /**
-     * [Exception] NULL 값이 발생한 경우
-     *
-     * @param e NullPointerException
-     * @return ResponseEntity<ErrorResponse>
-     */
-    @ExceptionHandler(NullPointerException.class)
-    protected ResponseEntity<ErrorResponse> handleNullPointerException(NullPointerException e) {
-        log.error("handleNullPointerException", e);
-        final ErrorResponse response = ErrorResponse.of(ErrorCode.NULL_POINT_ERROR, e.getMessage());
-        return new ResponseEntity<>(response, HTTP_STATUS_OK);
-    }
-
-    /**
-     * Input / Output 내에서 발생한 경우
-     *
-     * @param ex IOException
-     * @return ResponseEntity<ErrorResponse>
-     */
-    @ExceptionHandler(IOException.class)
-    protected ResponseEntity<ErrorResponse> handleIOException(IOException ex) {
-        log.error("handleIOException", ex);
-        final ErrorResponse response = ErrorResponse.of(ErrorCode.IO_ERROR, ex.getMessage());
-        return new ResponseEntity<>(response, HTTP_STATUS_OK);
-    }
-
-
-    /**
-     * com.google.gson 내에 Exception 발생하는 경우
-     *
-     * @param ex JsonParseException
-     * @return ResponseEntity<ErrorResponse>
-     */
-    @ExceptionHandler(JsonParseException.class)
-    protected ResponseEntity<ErrorResponse> handleJsonParseExceptionException(JsonParseException ex) {
-        log.error("handleJsonParseExceptionException", ex);
-        final ErrorResponse response = ErrorResponse.of(ErrorCode.JSON_PARSE_ERROR, ex.getMessage());
-        return new ResponseEntity<>(response, HTTP_STATUS_OK);
-    }
-
-    /**
-     * com.fasterxml.jackson.core 내에 Exception 발생하는 경우
-     *
-     * @param ex JsonProcessingException
-     * @return ResponseEntity<ErrorResponse>
-     */
-    @ExceptionHandler(JsonProcessingException.class)
-    protected ResponseEntity<ErrorResponse> handleJsonProcessingException(JsonProcessingException ex) {
-        log.error("handleJsonProcessingException", ex);
-        final ErrorResponse response = ErrorResponse.of(ErrorCode.REQUEST_BODY_MISSING_ERROR, ex.getMessage());
-        return new ResponseEntity<>(response, HTTP_STATUS_OK);
-    }
 
     // =========  Business Exception ===============
+
+    @ExceptionHandler({BusinessInvalidValueException.class})
+    protected ResponseEntity<ErrorCode> handleBusinessInvalidValueException(BusinessInvalidValueException e) {
+        log.error("handleBusinessInvalidValueException", e);
+        ErrorResponse response = ErrorResponse.of(ErrorCode.BUISINESS_INVALID_VALUE, e.getMessage());
+        return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
+    }
 
     /**
      * [Exception] 로그인 not found member  Excetpion

@@ -23,7 +23,10 @@ public enum ErrorCode {
    * *********************************************************************************************
    */
   // 잘못된 서버 요청
-  BAD_REQUEST_ERROR(400, "G001", "Bad Request Exception"),
+  BAD_REQUEST_ERROR(400, "G000", "Bad Request Exception"),
+
+  // @RequestBody 데이터 미 존재
+  REQUEST_HEADER_MISSING_ERROR(400, "G001", "Required request header is missing"),
 
   // @RequestBody 데이터 미 존재
   REQUEST_BODY_MISSING_ERROR(400, "G002", "Required request body is missing"),
@@ -53,7 +56,7 @@ public enum ErrorCode {
   NULL_POINT_ERROR(404, "G010", "Null Point Exception"),
 
   // @RequestBody 및 @RequestParam, @PathVariable 값이 유효하지 않음
-  NOT_VALID_ERROR(404, "G011", "Invalid Input Value"),
+  NOT_VALID_ERROR(400, "G011", "Invalid Input Value"),
 
   //지원하지 않은 HTTP method 호츌
   NOT_ALLOWED_METHOD(405, "G012", "Wrong Http Method"),
@@ -81,6 +84,8 @@ public enum ErrorCode {
   EXPIRED_JWT(400, "B007", "만료된 JWT 토큰입니다."),
   UNSUPPORTED_JWT(400, "B008", "지원되지 않는 JWT 토큰입니다."),
   ILLEGAL_JWT(400, "B009", "JWT 토큰이 잘못되었습니다."),
+
+  BUISINESS_INVALID_VALUE(400, "B0010", "유효하지 않은 값.")
 
 
 
