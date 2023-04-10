@@ -3,6 +3,7 @@ package com.aluminium.acoe.app.cafe.dto;
 import com.aluminium.acoe.app.cafe.entity.Cafe;
 import com.aluminium.acoe.common.dto.BaseDto;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 
@@ -12,6 +13,7 @@ import java.io.Serializable;
  * A DTO for the {@link Cafe} entity
  */
 @Data
+@Builder
 public class CafeDto extends BaseDto {
     @Schema(description = "카페ID")
     private Long cafeId;
