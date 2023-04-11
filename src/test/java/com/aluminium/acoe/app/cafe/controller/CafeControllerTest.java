@@ -1,9 +1,12 @@
 package com.aluminium.acoe.app.cafe.controller;
 
 import com.aluminium.acoe.app.cafe.dto.CafeDto;
+import com.aluminium.acoe.app.cafe.dto.MenuDto;
 import com.aluminium.acoe.app.cafe.service.CafeService;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -48,10 +51,11 @@ class CafeControllerTest {
             MediaType.APPLICATION_JSON.getSubtype(), StandardCharsets.UTF_8);
 
     private static final String CAFE_NM = "mockCafe";
+    private static final String MENU_NM = "아메리카노";
 
     @Test
     @WithMockUser
-    void testSearchCafeList() throws Exception{
+    void searchCafeListTest() throws Exception{
         CafeDto cafeDto = CafeDto.builder()
             .cafeId(11111L)
             .cafeNm(CAFE_NM)
@@ -67,6 +71,37 @@ class CafeControllerTest {
         mockMvc.perform(get("/cafe/cafes/{areaCd}", 3120000).param("areaCd", String.valueOf(3120000)).contentType(mediaType))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.[0].cafeNm", is(CAFE_NM)));
+    }
+
+    @Test
+    @WithMockUser
+    void getCafeTest() throws Exception{
+        MenuDto menuDto = MenuDto.builder()
+                .menuId(1111L)
+                .price(4300L)
+                .menuNm(MENU_NM)
+                .menuId(11111L)
+                .build();
+        List<MenuDto> menuDtos = Arrays.asList(menuDto);
+
+        CafeDto cafeDto = CafeDto.builder()
+                .cafeId(11111L)
+                .cafeNm(CAFE_NM)
+                .x(123L)
+                .y(456L)
+                .areaCd(3120000L)
+                .trdStateCd(1L)
+                .menuList(menuDtos)
+                .build();
+
+        // given
+        given(cafeService.getCafe(any())).willReturn(cafeDto);
+
+        // when then
+        mockMvc.perform(get("/cafe/cafe/{cafeId}", 11111).param("cafeId", String.valueOf(11111)).contentType(mediaType))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.cafeNm", is(CAFE_NM)))
+                .andExpect(jsonPath("$.menuList.[0].menuNm", is(MENU_NM)));
     }
 
 }

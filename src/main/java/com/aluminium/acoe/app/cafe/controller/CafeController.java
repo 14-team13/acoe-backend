@@ -38,4 +38,16 @@ public class CafeController {
     public List<CafeDto> searchList(@PathVariable("areaCd") Long areaCd){
         return cafeService.searchList(areaCd);
     }
+
+    /**
+     * 메인 카페 상세 조회 API
+     */
+    @GetMapping("/cafe/{cafeId}")
+    @Operation(summary = "메인 카페 정보 상세 조회", description  = "메인화면에서 카페 상세 정보를 조회한다.", responses = {
+            @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = CafeDto.class)))
+    })
+    @Parameter(name = "cafeId", description = "카페ID", in = ParameterIn.PATH)
+    public CafeDto getCafe(@PathVariable("cafeId") Long cafeId){
+        return cafeService.getCafe(cafeId);
+    }
 }

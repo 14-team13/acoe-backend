@@ -11,4 +11,10 @@ public interface CafeService {
      * @return
      */
     List<CafeDto> searchList(Long areaCd);
+
+    /**
+     * @param cafeId
+     * @return
+     */
+    CafeDto getCafe(Long cafeId);
 }

@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.Getter;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * A DTO for the {@link Cafe} entity
@@ -47,4 +48,8 @@ public class CafeDto extends BaseDto {
 
     @Schema(description = "원참조번호(관리번호)")
     private String refNo;
+
+    @Schema(description = "메뉴목록")
+    private List<MenuDto> menuList;
+
 }
