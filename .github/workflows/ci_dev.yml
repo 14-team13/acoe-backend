@@ -14,6 +14,7 @@ on:
     
 permissions:
   contents: read
+  pull-requests: write
 
 jobs:
   build:
@@ -66,4 +67,13 @@ jobs:
     # 테스트
     - name: Test with Gradle
       run: SPRING_PROFILES_ACTIVE=[test] ./gradlew copyGitSubmodule test
+      
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: anc95/ChatGPT-CodeReview@main
+        env:
+          GITHUB_TOKEN: ${{ secrets.HYESOO_GITHUB_TOKEN }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          LANGUAGE: Korean
 
