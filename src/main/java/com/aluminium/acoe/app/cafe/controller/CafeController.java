@@ -1,8 +1,6 @@
 package com.aluminium.acoe.app.cafe.controller;
 
 import com.aluminium.acoe.app.cafe.service.CafeService;
-import com.aluminium.acoe.sys.dto.TokenDto;
-import com.aluminium.acoe.sys.jwt.TokenProvider;
 import com.aluminium.acoe.app.cafe.dto.CafeDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -10,7 +8,6 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -36,7 +33,7 @@ public class CafeController {
     })
     @Parameter(name = "areaCd", description = "지역코드(서대문구: 3120000)", in = ParameterIn.PATH)
     public List<CafeDto> searchList(@PathVariable("areaCd") Long areaCd){
-        return cafeService.searchList(areaCd);
+        return cafeService.searchList(areaCd, 1L);
     }
 
     /**

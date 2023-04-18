@@ -6,11 +6,12 @@ import java.util.List;
 
 public interface CafeService {
     /**
-     * 카페 목록 조회
+     * 영업 상태에 따른 카페 목록 조회
      * @param areaCd
+     * @param trdStateCd - null이면 상태 관계없이 모든 카페 조회 
      * @return
      */
-    List<CafeDto> searchList(Long areaCd);
+    List<CafeDto> searchList(Long areaCd, Long trdStateCd);
 
     /**
      * @param cafeId

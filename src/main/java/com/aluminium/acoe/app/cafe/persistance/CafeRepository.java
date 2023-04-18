@@ -16,12 +16,14 @@ public interface CafeRepository extends JpaRepository<Cafe, Long> {
     List<Cafe> findByAreaCd(Long areaCd);
 
     /**
-     * 영업중인 카페만 조회
+     * 영업 상태별 카페 조회
      * @param areaCd
      * @param trdStateCd
      * @return
      */
     List<Cafe> findByAreaCdAndTrdStateCd(Long areaCd, Long trdStateCd);
+
+
 
 
 

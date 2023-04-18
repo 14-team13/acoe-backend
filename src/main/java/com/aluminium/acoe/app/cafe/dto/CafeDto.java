@@ -3,18 +3,14 @@ package com.aluminium.acoe.app.cafe.dto;
 import com.aluminium.acoe.app.cafe.entity.Cafe;
 import com.aluminium.acoe.common.dto.BaseDto;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Builder;
+import java.math.BigDecimal;
 import lombok.Data;
-import lombok.Getter;
-
-import java.io.Serializable;
 import java.util.List;
 
 /**
  * A DTO for the {@link Cafe} entity
  */
 @Data
-@Builder
 public class CafeDto extends BaseDto {
     @Schema(description = "카페ID")
     private Long cafeId;
@@ -41,10 +37,10 @@ public class CafeDto extends BaseDto {
     private String roadPostNo;
 
     @Schema(description = "x좌표")
-    private Long x;
+    private BigDecimal x;
 
     @Schema(description = "y좌표")
-    private Long y;
+    private BigDecimal y;
 
     @Schema(description = "원참조번호(관리번호)")
     private String refNo;

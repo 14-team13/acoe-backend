@@ -3,6 +3,7 @@ package com.aluminium.acoe.app.cafe.controller;
 import com.aluminium.acoe.app.cafe.dto.CafeDto;
 import com.aluminium.acoe.app.cafe.dto.MenuDto;
 import com.aluminium.acoe.app.cafe.service.CafeService;
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
@@ -56,16 +57,15 @@ class CafeControllerTest {
     @Test
     @WithMockUser
     void searchCafeListTest() throws Exception{
-        CafeDto cafeDto = CafeDto.builder()
-            .cafeId(11111L)
-            .cafeNm(CAFE_NM)
-            .x(123L)
-            .y(456L)
-            .areaCd(3120000L)
-            .trdStateCd(1L)
-            .build();
+        CafeDto cafeDto = new CafeDto();
+        cafeDto.setCafeId(11111L);
+        cafeDto.setCafeNm(CAFE_NM);
+        cafeDto.setX(BigDecimal.valueOf(123L));
+        cafeDto.setY(BigDecimal.valueOf(456L));
+        cafeDto.setAreaCd(3120000L);
+        cafeDto.setTrdStateCd(1L);
         // given
-        given(cafeService.searchList(any()))
+        given(cafeService.searchList(any(), any()))
             .willReturn(Arrays.asList(cafeDto));
         // when then
         mockMvc.perform(get("/cafe/cafes/{areaCd}", 3120000).param("areaCd", String.valueOf(3120000)).contentType(mediaType))
@@ -76,23 +76,20 @@ class CafeControllerTest {
     @Test
     @WithMockUser
     void getCafeTest() throws Exception{
-        MenuDto menuDto = MenuDto.builder()
-                .menuId(1111L)
-                .price(4300L)
-                .menuNm(MENU_NM)
-                .menuId(11111L)
-                .build();
+        MenuDto menuDto = new MenuDto();
+        menuDto.setMenuId(1111L);
+        menuDto.setPrice(4300L);
+        menuDto.setMenuNm(MENU_NM);
         List<MenuDto> menuDtos = Arrays.asList(menuDto);
 
-        CafeDto cafeDto = CafeDto.builder()
-                .cafeId(11111L)
-                .cafeNm(CAFE_NM)
-                .x(123L)
-                .y(456L)
-                .areaCd(3120000L)
-                .trdStateCd(1L)
-                .menuList(menuDtos)
-                .build();
+        CafeDto cafeDto = new CafeDto();
+        cafeDto.setCafeId(11111L);
+        cafeDto.setCafeNm(CAFE_NM);
+        cafeDto.setX(BigDecimal.valueOf(123L));
+        cafeDto.setY(BigDecimal.valueOf(456L));
+        cafeDto.setAreaCd(3120000L);
+        cafeDto.setTrdStateCd(1L);
+        cafeDto.setMenuList(menuDtos);
 
         // given
         given(cafeService.getCafe(any())).willReturn(cafeDto);
