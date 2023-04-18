@@ -23,6 +23,8 @@ public interface CafeRepository extends JpaRepository<Cafe, Long> {
      */
     List<Cafe> findByAreaCdAndTrdStateCd(Long areaCd, Long trdStateCd);
 
+    List<Cafe> findByCafeNmContains(String keyword);
+
 
 
 }

@@ -35,6 +35,13 @@ public class CafeServiceImpl implements CafeService {
     }
 
     @Override
+    public List<CafeDto> searchListByKeyword(String keyword) {
+        return cafeRepository.findByCafeNmContains(keyword).stream()
+            .filter(e -> e.getTrdStateCd() == 1L)
+            .map(e -> commonConverter.convertToGeneric(e, CafeDto.class)).collect(Collectors.toList());
+    }
+
+    @Override
     public CafeDto getCafe(Long cafeId) {
         // 카페 조회
         CafeDto cafeDto = commonConverter.convertToGeneric(
