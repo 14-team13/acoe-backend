@@ -63,8 +63,7 @@ public class SecurityConfig {
                         "/api/authenticate",
                         "/api/signup",
                         "/v3/api-docs/**",
-                        "/swagger*/**",
-                "/franchise/**").permitAll()
+                        "/swagger*/**").permitAll()
                 .anyRequest().authenticated()
 
                 .and()
