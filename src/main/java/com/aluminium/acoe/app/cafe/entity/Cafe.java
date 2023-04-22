@@ -48,7 +48,21 @@ public class Cafe {
     @Column(name = "ref_no", length = 50)
     private String refNo;   // 공공데이터 참조 번호(관리 번호)
 
-    public static Cafe toEntity(CafeDto dto){
+    @Column(name = "discountAmt")
+    private Long discountAmt;
+
+    @Column(name = "appOrderYn")
+    private Boolean appOrderYn;
+
+    @Column(name = "kioskYn")
+    private Boolean kioskYn;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "franchise_id", updatable = false)
+    private Franchise franchise;
+
+
+    public static Cafe toEntity(CafeDto dto, Franchise franchise){
         return Cafe.builder()
             .cafeId(dto.getCafeId())
             .cafeNm(dto.getCafeNm())
@@ -61,6 +75,10 @@ public class Cafe {
             .x(dto.getX())
             .y(dto.getY())
             .refNo(dto.getRefNo())
+            .appOrderYn(dto.getAppOrderYn())
+            .kioskYn(dto.getKioskYn())
+            .discountAmt(dto.getDiscountAmt())
+            .franchise(franchise)
             .build();
     }
 
