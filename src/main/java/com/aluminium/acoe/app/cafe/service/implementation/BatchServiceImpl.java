@@ -1,6 +1,7 @@
 package com.aluminium.acoe.app.cafe.service.implementation;
 
 import static com.aluminium.acoe.common.api.ApiHelper.callApi;
+import static com.aluminium.acoe.common.util.CoordinateUtil.transformWGS84;
 
 import com.aluminium.acoe.app.cafe.dto.CafeDto;
 import com.aluminium.acoe.app.cafe.entity.Cafe;
@@ -13,6 +14,7 @@ import com.aluminium.acoe.common.dto.ApiDto;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.osgeo.proj4j.ProjCoordinate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -87,16 +90,22 @@ public class BatchServiceImpl implements BatchService {
                 cafeDto.setRoadAddr(Objects.toString(row.get("RDNWHLADDR"),""));
                 cafeDto.setRoadPostNo(Objects.toString(row.get("RDNPOSTNO"),""));
 
-                String x = Objects.toString(row.get("X"),"0");
-                if(StringUtils.isNotBlank(x)) cafeDto.setX(new BigDecimal(Double.parseDouble(x)));
-                String y = Objects.toString(row.get("Y"),"0");
-                if(StringUtils.isNotBlank(y)) cafeDto.setY(new BigDecimal(Double.parseDouble(y)));
+                // 좌표계 변환
+                String strX = Objects.toString(row.get("X"),"0.0");
+                String strY = Objects.toString(row.get("Y"),"0.0");
+                Double x = StringUtils.isBlank(strX) ? 0.0 : Double.parseDouble(strX);
+                Double y = StringUtils.isBlank(strY) ? 0.0 : Double.parseDouble(strY);
+                ProjCoordinate projCoordinate = transformWGS84(x, y, "EPSG:2097");
+                if (projCoordinate != null) {
+                    cafeDto.setX(new BigDecimal(projCoordinate.x).setScale(6, RoundingMode.HALF_UP));
+                    cafeDto.setY(new BigDecimal(projCoordinate.y).setScale(6, RoundingMode.HALF_UP));
+                }
 
                 // franchise setting
                 String cafeNm = cafeDto.getCafeNm();
                 Franchise matched = franchises.stream()
                         .filter(fran -> cafeNm.contains(fran.getFranchiseNm()))
-                        .findFirst().orElseGet(null);
+                        .findFirst().orElseGet(() -> null);
                 // 프랜차이즈인 경우 프랜차이즈 할인가격 세팅
                 if(matched != null) cafeDto.setDiscountAmt(matched.getDiscountAmt());
 
