@@ -95,7 +95,7 @@ class CafeControllerTest {
         given(cafeService.getCafe(any())).willReturn(cafeDto);
 
         // when then
-        mockMvc.perform(get("/cafe/cafe/{cafeId}", 11111).param("cafeId", String.valueOf(11111)).contentType(mediaType))
+        mockMvc.perform(get("/cafe/{cafeId}", 11111).param("cafeId", String.valueOf(11111)).contentType(mediaType))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.cafeNm", is(CAFE_NM)))
                 .andExpect(jsonPath("$.menuList.[0].menuNm", is(MENU_NM)));
