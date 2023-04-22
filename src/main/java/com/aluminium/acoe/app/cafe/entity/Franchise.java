@@ -25,8 +25,8 @@ public class Franchise {
     @Column(name = "discountAmt")
     private Long discountAmt;
 
-    @Column(name = "logo_img", length = 100)
-    private byte[] logoImg;
+    @Column(name = "logo_img")
+    private String logoImg;
 
     @Column(name = "useYn")
     private Boolean useYn;

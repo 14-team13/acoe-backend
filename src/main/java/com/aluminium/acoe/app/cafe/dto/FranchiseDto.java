@@ -21,7 +21,7 @@ public class FranchiseDto extends BaseDto {
     private Long discountAmt;
 
     @Schema(description = "로고이미지")
-    private byte[] logoImg;
+    private String logoImg;
 
     @Schema(description = "사용여부")
     private Boolean useYn;
