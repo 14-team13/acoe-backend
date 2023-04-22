@@ -23,7 +23,13 @@ plugins {
 group = 'com.aluminium'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
-    
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
 // gradle이 필요한 라이브러리를 자동으로 다운로드 하기위해 사용하는 저장소
 repositories {
     mavenCentral() //maven 중앙 저장소
@@ -54,6 +60,10 @@ dependencies {
     annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
     annotationProcessor "jakarta.annotation:jakarta.annotation-api"
     annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+    
+    
+    // json
+    implementation group: 'org.json', name: 'json', version: '20210307'
 
     // ConfigurationProperties
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'

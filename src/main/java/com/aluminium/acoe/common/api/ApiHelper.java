@@ -7,16 +7,15 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Objects;
+import org.json.JSONObject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.configurationprocessor.json.JSONException;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 
 
 @Slf4j
 @RequiredArgsConstructor
 public class ApiHelper {
-    public static JSONObject callApi(ApiDto apiDto) throws IOException, JSONException {
+    public static JSONObject callApi(ApiDto apiDto) throws IOException {
         Objects.requireNonNull(apiDto.getUrl(), "url은 필수입니다.");
         Objects.requireNonNull(apiDto.getMethod(), "method는 필수입니다.");
         Objects.requireNonNull(apiDto.getContentType(), "contentType은 필수입니다.");
