@@ -4,7 +4,9 @@ import static com.aluminium.acoe.common.api.ApiHelper.callApi;
 
 import com.aluminium.acoe.app.cafe.dto.CafeDto;
 import com.aluminium.acoe.app.cafe.entity.Cafe;
+import com.aluminium.acoe.app.cafe.entity.Franchise;
 import com.aluminium.acoe.app.cafe.persistance.CafeRepository;
+import com.aluminium.acoe.app.cafe.persistance.FranchiseRepository;
 import com.aluminium.acoe.app.cafe.service.BatchService;
 import com.aluminium.acoe.app.cafe.service.CafeService;
 import com.aluminium.acoe.common.dto.ApiDto;
@@ -35,11 +37,13 @@ public class BatchServiceImpl implements BatchService {
     public static final long AREA_CD = 3120000;
     public static final String URL = "http://openapi.seoul.go.kr:8088";
 
+    public static final String TITLE = "LOCALDATA_072405_SM";
     @Value("${data_seoul.token}")
     private String token;
 
     private final CafeService cafeService;
     private final CafeRepository cafeRepository;
+    private final FranchiseRepository franchiseRepository;
 
     @Override
     @Transactional
@@ -49,6 +53,8 @@ public class BatchServiceImpl implements BatchService {
             .stream().collect(Collectors.toMap(CafeDto::getRefNo, i->i));
         // 최종 디비에 저장할 카페 데이터 보관용
         List<Cafe> saveList = new ArrayList<>();
+        // 프랜차이즈 목록 조회
+        List<Franchise> franchises = franchiseRepository.findAllByUseYn(true);
         
         int start = 1;
         int end = 1000;
@@ -56,7 +62,7 @@ public class BatchServiceImpl implements BatchService {
         JSONArray arr = new JSONArray();
         try {
             while(totalCnt > end){
-                JSONObject localData = callApi(buildApiDto(start, end)).getJSONObject("LOCALDATA_072405_SM");
+                JSONObject localData = callApi(buildApiDto(start, end)).getJSONObject(TITLE);
                 totalCnt = (int) localData.get("list_total_count");
 
                 start+= 1000;
@@ -87,7 +93,15 @@ public class BatchServiceImpl implements BatchService {
                 String y = Objects.toString(row.get("Y"),"0");
                 if(StringUtils.isNotBlank(y)) cafeDto.setY(new BigDecimal(Double.parseDouble(y)));
 
-                saveList.add(Cafe.toEntity(cafeDto));
+                // franchise setting
+                String cafeNm = cafeDto.getCafeNm();
+                Franchise matched = franchises.stream()
+                        .filter(fran -> cafeNm.contains(fran.getFranchiseNm()))
+                        .findFirst().orElseGet(null);
+                // 프랜차이즈인 경우 프랜차이즈 할인가격 세팅
+                if(matched != null) cafeDto.setDiscountAmt(matched.getDiscountAmt());
+
+                saveList.add(Cafe.toEntity(cafeDto, matched));
             }
         } catch (JSONException | IOException e){
             throw new RuntimeException(e);
@@ -102,7 +116,7 @@ public class BatchServiceImpl implements BatchService {
         try {
             urlBuilder.append("/").append(URLEncoder.encode( token, "UTF-8")); /*인증키 (sample사용시에는 호출시 제한됩니다.)*/
             urlBuilder.append("/").append(URLEncoder.encode("json", "UTF-8")); /*요청파일타입 (xml,xmlf,xls,json) */
-            urlBuilder.append("/").append(URLEncoder.encode("LOCALDATA_072405_SM", "UTF-8")); /*서비스명 (대소문자 구분 필수입니다.)*/
+            urlBuilder.append("/").append(URLEncoder.encode(TITLE, "UTF-8")); /*서비스명 (대소문자 구분 필수입니다.)*/
             urlBuilder.append("/").append(URLEncoder.encode(Objects.toString(startIdx), "UTF-8")); /*요청시작위치 (sample인증키 사용시 5이내 숫자)*/
             urlBuilder.append("/").append(URLEncoder.encode(Objects.toString(endIdx), "UTF-8")); /*요청종료위치(sample인증키 사용시 5이상 숫자 선택 안 됨)*/
         } catch (UnsupportedEncodingException e) {
