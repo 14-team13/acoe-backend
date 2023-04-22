@@ -11,6 +11,7 @@ import com.aluminium.acoe.app.cafe.persistance.CafeRepository;
 import com.aluminium.acoe.app.cafe.persistance.MenuRepository;
 import com.aluminium.acoe.app.cafe.service.implementation.CafeServiceImpl;
 import com.aluminium.acoe.common.converter.CommonConverter;
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -49,26 +50,25 @@ class CafeServiceTest {
         Cafe cafe = com.aluminium.acoe.app.cafe.entity.Cafe.builder()
             .cafeId(11111L)
             .cafeNm(CAFE_NM)
-            .x(123L)
-            .y(456L)
+            .x(BigDecimal.valueOf(123L))
+            .y(BigDecimal.valueOf(456L))
             .areaCd(AREA_CD)
             .trdStateCd(1L)
             .build();
 
-        CafeDto cafeDto = CafeDto.builder()
-            .cafeId(11111L)
-            .cafeNm(CAFE_NM)
-            .x(123L)
-            .y(456L)
-            .areaCd(AREA_CD)
-            .trdStateCd(1L)
-            .build();
+        CafeDto cafeDto = new CafeDto();
+        cafeDto.setCafeId(11111L);
+        cafeDto.setCafeNm(CAFE_NM);
+        cafeDto.setX(BigDecimal.valueOf(123L));
+        cafeDto.setY(BigDecimal.valueOf(456L));
+        cafeDto.setAreaCd(AREA_CD);
+        cafeDto.setTrdStateCd(1L);
 
         given(cafeRepository.findByAreaCdAndTrdStateCd(any(), any())).willReturn(Arrays.asList(cafe));
         given(commonConverter.convertToGeneric(any(), any())).willReturn(cafeDto);
 
         // when
-        List<CafeDto> cafeDtos = cafeService.searchList(AREA_CD);
+        List<CafeDto> cafeDtos = cafeService.searchList(AREA_CD, 1L);
 
         // then
         cafeDtos.forEach(dto -> {
@@ -83,8 +83,8 @@ class CafeServiceTest {
         Cafe cafe = Cafe.builder()
                 .cafeId(11111L)
                 .cafeNm(CAFE_NM)
-                .x(123L)
-                .y(456L)
+                .x(BigDecimal.valueOf(123L))
+                .y(BigDecimal.valueOf(456L))
                 .areaCd(AREA_CD)
                 .trdStateCd(1L)
                 .build();
@@ -96,21 +96,19 @@ class CafeServiceTest {
                 .price(4300L)
                 .build();
 
-        MenuDto menuDto = MenuDto.builder()
-                .menuId(11111L)
-                .menuNm(MENU_NM)
-                .price(4300L)
-                .build();
+        MenuDto menuDto = new MenuDto();
+        menuDto.setMenuId(1111L);
+        menuDto.setPrice(4300L);
+        menuDto.setMenuNm(MENU_NM);
 
-        CafeDto cafeDto = CafeDto.builder()
-                .cafeId(11111L)
-                .cafeNm(CAFE_NM)
-                .x(123L)
-                .y(456L)
-                .areaCd(AREA_CD)
-                .trdStateCd(1L)
-                .menuList(Arrays.asList(menuDto))
-                .build();
+        CafeDto cafeDto = new CafeDto();
+        cafeDto.setCafeId(11111L);
+        cafeDto.setCafeNm(CAFE_NM);
+        cafeDto.setX(BigDecimal.valueOf(123L));
+        cafeDto.setY(BigDecimal.valueOf(456L));
+        cafeDto.setAreaCd(AREA_CD);
+        cafeDto.setTrdStateCd(1L);
+        cafeDto.setMenuList(Arrays.asList(menuDto));
 
         given(cafeRepository.findById(any())).willReturn(Optional.of(cafe));
         given(commonConverter.convertToGeneric(any(), eq(CafeDto.class))).willReturn(cafeDto);

@@ -33,7 +33,7 @@ public class CafeController {
     })
     @Parameter(name = "areaCd", description = "지역코드(서대문구: 3120000)", in = ParameterIn.PATH)
     public List<CafeDto> searchList(@PathVariable("areaCd") Long areaCd){
-        return cafeService.searchList(areaCd);
+        return cafeService.searchList(areaCd, 1L);
     }
 
     /**

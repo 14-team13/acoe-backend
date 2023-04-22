@@ -28,8 +28,14 @@ public class CafeServiceImpl implements CafeService {
     private final CommonConverter commonConverter;
 
     @Override
-    public List<CafeDto> searchList(Long areaCd) {
-        List<Cafe> result = cafeRepository.findByAreaCdAndTrdStateCd(areaCd, 1L);
+    public List<CafeDto> searchList(Long areaCd, Long trdStateCd) {
+        List<Cafe> result;
+
+        if(trdStateCd == null){
+            result = cafeRepository.findByAreaCd(areaCd);
+        } else {
+            result = cafeRepository.findByAreaCdAndTrdStateCd(areaCd, trdStateCd);
+        }
 
         return result.stream().map(e -> commonConverter.convertToGeneric(e, CafeDto.class)).collect(Collectors.toList());
     }
