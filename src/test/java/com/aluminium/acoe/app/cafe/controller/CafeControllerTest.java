@@ -76,29 +76,29 @@ class CafeControllerTest {
     @Test
     @WithMockUser
     void getCafeTest() throws Exception{
-//        MenuDto menuDto = new MenuDto();
-//        menuDto.setMenuId(1111L);
-//        menuDto.setPrice(4300L);
-//        menuDto.setMenuNm(MENU_NM);
-//        List<MenuDto> menuDtos = Arrays.asList(menuDto);
-//
-//        CafeDto cafeDto = new CafeDto();
-//        cafeDto.setCafeId(11111L);
-//        cafeDto.setCafeNm(CAFE_NM);
-//        cafeDto.setX(BigDecimal.valueOf(123L));
-//        cafeDto.setY(BigDecimal.valueOf(456L));
-//        cafeDto.setAreaCd(3120000L);
-//        cafeDto.setTrdStateCd(1L);
-//        cafeDto.setMenuList(menuDtos);
-//
-//        // given
-//        given(cafeService.getCafe(any())).willReturn(cafeDto);
-//
-//        // when then
-//        mockMvc.perform(get("/cafe/cafe/{cafeId}", 11111).param("cafeId", String.valueOf(11111)).contentType(mediaType))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.cafeNm", is(CAFE_NM)))
-//                .andExpect(jsonPath("$.menuList.[0].menuNm", is(MENU_NM)));
+        MenuDto menuDto = new MenuDto();
+        menuDto.setMenuId(1111L);
+        menuDto.setPrice(4300L);
+        menuDto.setMenuNm(MENU_NM);
+        List<MenuDto> menuDtos = Arrays.asList(menuDto);
+
+        CafeDto cafeDto = new CafeDto();
+        cafeDto.setCafeId(11111L);
+        cafeDto.setCafeNm(CAFE_NM);
+        cafeDto.setX(BigDecimal.valueOf(123L));
+        cafeDto.setY(BigDecimal.valueOf(456L));
+        cafeDto.setAreaCd(3120000L);
+        cafeDto.setTrdStateCd(1L);
+        cafeDto.setMenuList(menuDtos);
+
+        // given
+        given(cafeService.getCafe(any())).willReturn(cafeDto);
+
+        // when then
+        mockMvc.perform(get("/cafe/cafe/{cafeId}", 11111).param("cafeId", String.valueOf(11111)).contentType(mediaType))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.cafeNm", is(CAFE_NM)))
+                .andExpect(jsonPath("$.menuList.[0].menuNm", is(MENU_NM)));
     }
 
 }
