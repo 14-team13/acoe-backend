@@ -20,7 +20,7 @@ public class FranchiseDto extends BaseDto {
     @Schema(description = "할인금액")
     private Long discountAmt;
 
-    @Schema(description = "로고이미지")
+    @Schema(description = "로고이미지(Base64)")
     private String logoImg;
 
     @Schema(description = "사용여부")
