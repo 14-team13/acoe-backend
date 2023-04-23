@@ -29,7 +29,7 @@ public class FranchiseController {
      */
     @GetMapping("/franchises")
     @Operation(summary = "프랜차이즈 목록 조회", description  = "메인화면에서 프랜차이즈 목록을 조회한다.", responses = {
-            @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = CafeDto.class)))
+            @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = FranchiseDto.class)))
     })
     public List<FranchiseDto> searchList(){
         return franchiseService.searchList(true);
