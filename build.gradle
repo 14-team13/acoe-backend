@@ -65,6 +65,9 @@ dependencies {
     // json
     implementation group: 'org.json', name: 'json', version: '20210307'
 
+    // coordinate
+    implementation group: 'org.osgeo', name: 'proj4j', version: '0.1.0'
+
     // ConfigurationProperties
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 

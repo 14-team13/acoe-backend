@@ -1,17 +1,20 @@
 package com.aluminium.acoe.app.cafe.entity;
 
 import com.aluminium.acoe.app.cafe.dto.CafeDto;
+import com.aluminium.acoe.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
+
+import jakarta.validation.constraints.Digits;
 import lombok.*;
 
 @Entity
 @Table(name = "cafe")
 @Getter
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
-public class Cafe {
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Cafe extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,9 +43,11 @@ public class Cafe {
     private String roadPostNo;
 
     @Column(name = "x")
+    @Digits(integer = 3, fraction = 6)
     private BigDecimal x;
 
     @Column(name = "y")
+    @Digits(integer = 3, fraction = 6)
     private BigDecimal y;
 
     @Column(name = "ref_no", length = 50)
