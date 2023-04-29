@@ -2,8 +2,8 @@ package com.aluminium.acoe.sys.oauth.service;
 
 import com.aluminium.acoe.sys.api.entity.user.User;
 import com.aluminium.acoe.sys.api.repository.user.UserRepository;
-import com.aluminium.acoe.sys.oauth.entity.ProviderType;
-import com.aluminium.acoe.sys.oauth.entity.RoleType;
+import com.aluminium.acoe.sys.oauth.type.ProviderType;
+import com.aluminium.acoe.sys.oauth.type.RoleType;
 import com.aluminium.acoe.sys.oauth.entity.UserPrincipal;
 import com.aluminium.acoe.sys.oauth.exception.OAuthProviderMissMatchException;
 import com.aluminium.acoe.sys.oauth.info.OAuth2UserInfo;

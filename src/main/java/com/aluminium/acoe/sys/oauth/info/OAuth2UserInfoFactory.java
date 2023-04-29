@@ -1,6 +1,6 @@
 package com.aluminium.acoe.sys.oauth.info;
 
-import com.aluminium.acoe.sys.oauth.entity.ProviderType;
+import com.aluminium.acoe.sys.oauth.type.ProviderType;
 import com.aluminium.acoe.sys.oauth.info.impl.GoogleOAuth2UserInfo;
 import com.aluminium.acoe.sys.oauth.info.impl.KakaoOAuth2UserInfo;
 

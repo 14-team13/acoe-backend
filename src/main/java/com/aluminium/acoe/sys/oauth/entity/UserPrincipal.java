@@ -1,6 +1,8 @@
 package com.aluminium.acoe.sys.oauth.entity;
 
 import com.aluminium.acoe.sys.api.entity.user.User;
+import com.aluminium.acoe.sys.oauth.type.ProviderType;
+import com.aluminium.acoe.sys.oauth.type.RoleType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

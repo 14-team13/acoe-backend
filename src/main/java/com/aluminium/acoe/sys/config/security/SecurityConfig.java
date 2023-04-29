@@ -3,7 +3,7 @@ package com.aluminium.acoe.sys.config.security;
 import com.aluminium.acoe.sys.api.repository.user.UserRefreshTokenRepository;
 import com.aluminium.acoe.sys.config.properties.AppProperties;
 import com.aluminium.acoe.sys.config.properties.CorsProperties;
-import com.aluminium.acoe.sys.oauth.entity.RoleType;
+import com.aluminium.acoe.sys.oauth.type.RoleType;
 import com.aluminium.acoe.sys.oauth.exception.RestAuthenticationEntryPoint;
 import com.aluminium.acoe.sys.oauth.filter.TokenAuthenticationFilter;
 import com.aluminium.acoe.sys.oauth.handler.OAuth2AuthenticationFailureHandler;

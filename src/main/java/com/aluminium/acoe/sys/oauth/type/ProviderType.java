@@ -1,4 +1,4 @@
-package com.aluminium.acoe.sys.oauth.entity;
+package com.aluminium.acoe.sys.oauth.type;
 
 import lombok.Getter;
 
