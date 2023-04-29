@@ -2,7 +2,7 @@ package com.aluminium.acoe.app.admin.service;
 
 import com.aluminium.acoe.app.admin.dto.AdminCafeSearchDto;
 import com.aluminium.acoe.app.main.dto.CafeDto;
-import com.aluminium.acoe.app.main.dto.FranchiseDto;
+
 import java.util.List;
 
 public interface AdminCafeService {
@@ -11,13 +11,13 @@ public interface AdminCafeService {
      * @param searchDto
      * @return
      */
-    List<CafeDto> searchAdminCafeList(AdminCafeSearchDto searchDto);
+    List<CafeDto> searchAdminCafeDtoList(AdminCafeSearchDto searchDto);
 
     /**
      * @param cafeId
      * @return
      */
-    CafeDto getCafe(Long cafeId);
+    CafeDto getCafeDto(Long cafeId);
 
     /**
      * @param dto

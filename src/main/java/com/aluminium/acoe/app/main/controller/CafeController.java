@@ -33,7 +33,7 @@ public class CafeController {
     })
     @Parameter(name = "areaCd", description = "지역코드(서대문구: 3120000)", in = ParameterIn.PATH)
     public List<CafeDto> searchList(@PathVariable("areaCd") Long areaCd){
-        return cafeService.searchList(areaCd, 1L);
+        return cafeService.searchDtoList(areaCd, 1L);
     }
 
     /**
@@ -45,7 +45,7 @@ public class CafeController {
     })
     @Parameter(name = "keyWord", description = "검색 키워드", in = ParameterIn.PATH)
     public List<CafeDto> searchListByKeyword(@PathVariable("keyword") String keyword){
-        return cafeService.searchListByKeyword(keyword);
+        return cafeService.searchDtoListByKeyword(keyword);
     }
 
     /**
@@ -57,6 +57,6 @@ public class CafeController {
     })
     @Parameter(name = "cafeId", description = "카페ID", in = ParameterIn.PATH)
     public CafeDto getCafe(@PathVariable("cafeId") Long cafeId){
-        return cafeService.getCafe(cafeId);
+        return cafeService.getCafeDto(cafeId);
     }
 }

@@ -29,24 +29,24 @@ public class AdminCafeController {
      * 카페 목록 조회(ADMIN)
      */
     @GetMapping("/cafes")
-    @Operation(summary = "관리자 화면에서 카페목록 조회", description  = "검색조건으로 카페 목록을 조회한다.", responses = {
-        @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = CafeDto.class)))
-    })
+    @Operation(summary = "관리자 화면에서 카페목록 조회", description  = "검색조건으로 카페 목록을 조회한다.",
+            responses = { @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = CafeDto.class)))}
+    )
     @Parameter(name = "AdminCafeSearchDto", description = "카페 검색 객체", in = ParameterIn.DEFAULT)
     public List<CafeDto> searchAdminCafeList(@Valid AdminCafeSearchDto searchDto){
-        return adminCafeService.searchAdminCafeList(searchDto);
+        return adminCafeService.searchAdminCafeDtoList(searchDto);
     }
 
     /**
      * 관리자 카페 상세 조회(ADMIN)
      */
     @GetMapping("/cafe/{cafeId}")
-    @Operation(summary = "관리자 카페 정보 상세 조회", description  = "관리자 화면에서 카페 상세 정보를 조회한다.(권한필요)", responses = {
-            @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = CafeDto.class)))
-    })
+    @Operation(summary = "관리자 카페 정보 상세 조회", description  = "관리자 화면에서 카페 상세 정보를 조회한다.(권한필요)",
+            responses = { @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = CafeDto.class)))}
+    )
     @Parameter(name = "cafeId", description = "카페ID", in = ParameterIn.PATH)
     public CafeDto getCafe(@PathVariable("cafeId") Long cafeId){
-        return adminCafeService.getCafe(cafeId);
+        return adminCafeService.getCafeDto(cafeId);
     }
 
     /**
@@ -54,7 +54,7 @@ public class AdminCafeController {
      */
     @PutMapping("/cafe")
     @Operation(summary = "관리자 카페 정보 상세 수정", description  = "관리자 화면에서 카페 상세 정보를 수정한다.(권한필요)",
-        responses = {@ApiResponse(responseCode = "200", description = "수정 성공")}
+            responses = {@ApiResponse(responseCode = "200", description = "수정 성공", content = @Content(schema = @Schema(type = "number", description = "카페 ID")))}
     )
     public Long updateCafe(@RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody CafeDto dto){
         return adminCafeService.updateCafe(dto);

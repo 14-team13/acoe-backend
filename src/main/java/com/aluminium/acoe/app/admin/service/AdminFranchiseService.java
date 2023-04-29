@@ -1,8 +1,7 @@
 package com.aluminium.acoe.app.admin.service;
 
-import com.aluminium.acoe.app.admin.dto.AdminCafeSearchDto;
-import com.aluminium.acoe.app.main.dto.CafeDto;
 import com.aluminium.acoe.app.main.dto.FranchiseDto;
+import com.aluminium.acoe.app.main.entity.Franchise;
 
 import java.util.List;
 
@@ -11,14 +10,19 @@ public interface AdminFranchiseService {
     /**
      * @return
      */
-    List<FranchiseDto> getAllFranchiseList();
-
+    List<FranchiseDto> getAllFranchiseDtoList();
 
     /**
      * @param franchiseId
      * @return
      */
-    FranchiseDto getFranchise(Long franchiseId);
+    FranchiseDto getFranchiseDto(Long franchiseId);
+
+    /**
+     * @param franchiseId
+     * @return
+     */
+    Franchise getFranchise(Long franchiseId);
 
     /**
      * @param dto

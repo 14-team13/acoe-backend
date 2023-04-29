@@ -26,14 +26,14 @@ public class FranchiseServiceImpl implements FranchiseService {
     private final CommonConverter commonConverter;
 
     @Override
-    public List<FranchiseDto> searchList(Boolean useYn) {
+    public List<FranchiseDto> searchDtoList(Boolean useYn) {
         return franchiseRepository.findAllByUseYn(useYn).stream()
                 .map(entity -> commonConverter.convertToGeneric(entity, FranchiseDto.class))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public FranchiseDto getFranchise(Long franchiseId) {
+    public FranchiseDto getFranchiseDto(Long franchiseId) {
         Objects.requireNonNull(franchiseId, "조회/수정/삭제시 Id는 필수입니다.");
 
         // 프랜차이즈 정보 조회

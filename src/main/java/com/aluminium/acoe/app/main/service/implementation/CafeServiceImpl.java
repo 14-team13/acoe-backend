@@ -29,7 +29,7 @@ public class CafeServiceImpl implements CafeService {
     private final CafeConverter converter;
 
     @Override
-    public List<CafeDto> searchList(Long areaCd, Long trdStateCd) {
+    public List<CafeDto> searchDtoList(Long areaCd, Long trdStateCd) {
         List<Cafe> result;
 
         if(trdStateCd == null){
@@ -42,14 +42,14 @@ public class CafeServiceImpl implements CafeService {
     }
 
     @Override
-    public List<CafeDto> searchListByKeyword(String keyword) {
+    public List<CafeDto> searchDtoListByKeyword(String keyword) {
         return cafeRepository.findByCafeNmContains(keyword).stream()
             .filter(e -> e.getTrdStateCd() == 1L)
             .map(e -> converter.convertToGeneric(e, CafeDto.class)).collect(Collectors.toList());
     }
 
     @Override
-    public CafeDto getCafe(Long cafeId) {
+    public CafeDto getCafeDto(Long cafeId) {
         Objects.requireNonNull(cafeId, "조회/수정/삭제시 ID는 필수입니다.");
 
         // 카페 조회

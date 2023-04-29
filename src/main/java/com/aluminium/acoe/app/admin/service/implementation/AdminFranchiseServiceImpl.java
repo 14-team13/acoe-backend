@@ -1,12 +1,11 @@
 package com.aluminium.acoe.app.admin.service.implementation;
 
+import com.aluminium.acoe.app.admin.enums.MasterType;
 import com.aluminium.acoe.app.admin.service.AdminFranchiseService;
+import com.aluminium.acoe.app.admin.service.AdminMenuService;
 import com.aluminium.acoe.app.main.dto.FranchiseDto;
-import com.aluminium.acoe.app.main.dto.MenuDto;
 import com.aluminium.acoe.app.main.entity.Franchise;
-import com.aluminium.acoe.app.main.entity.Menu;
 import com.aluminium.acoe.app.main.persistance.FranchiseRepository;
-import com.aluminium.acoe.app.main.persistance.MenuRepository;
 import com.aluminium.acoe.app.main.service.FranchiseService;
 import com.aluminium.acoe.common.exception.BusinessInvalidValueException;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -24,17 +22,23 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AdminFranchiseServiceImpl implements AdminFranchiseService {
     private final FranchiseService franchiseService;
+    private final AdminMenuService adminMenuService;
     private final FranchiseRepository franchiseRepository;
-    private final MenuRepository menuRepository;
 
     @Override
-    public List<FranchiseDto> getAllFranchiseList() {
-        return franchiseService.searchList(null);
+    public List<FranchiseDto> getAllFranchiseDtoList() {
+        return franchiseService.searchDtoList(null);
     }
 
     @Override
-    public FranchiseDto getFranchise(Long franchiseId) {
-        return franchiseService.getFranchise(franchiseId);
+    public FranchiseDto getFranchiseDto(Long franchiseId) {
+        return franchiseService.getFranchiseDto(franchiseId);
+    }
+
+    @Override
+    public Franchise getFranchise(Long franchiseId) {
+        return franchiseRepository.findById(franchiseId)
+                .orElseThrow(() -> new BusinessInvalidValueException("해당 ID에 대한 프랜차이즈 정보가 없습니다."));
     }
 
     @Override
@@ -43,10 +47,7 @@ public class AdminFranchiseServiceImpl implements AdminFranchiseService {
         Franchise franchise = franchiseRepository.save(Franchise.toEntity(dto));
 
         if(dto.getMenuList() != null){
-            List<Menu> menuList = dto.getMenuList().stream()
-                    .map(menuDto -> Menu.toEntity(menuDto, null, franchise))
-                    .collect(Collectors.toList());
-            menuRepository.saveAll(menuList);
+            adminMenuService.createMenus(dto.getMenuList(), franchise);
         }
 
         return franchise.getFranchiseId();
@@ -64,28 +65,18 @@ public class AdminFranchiseServiceImpl implements AdminFranchiseService {
         franchiseRepository.save(franchise);
 
         // 메뉴 등록/수정
-        // Update
-        List<Menu> updatedMenus = menuRepository.findByFranchise_FranchiseId(masterDto.getFranchiseId());
-        updatedMenus.forEach(menu ->
-                masterDto.getMenuList().stream().filter(updateDto -> menu.getMenuId().equals(updateDto.getMenuId()))
-                        .findFirst().ifPresent(matched -> menu.update(matched))
-        );
-        // Create
-        List
-        masterDto.getMenuList().stream().filter(menuDto -> menuDto.getMenuId() == null)
-                        .
+        adminMenuService.saveMenus(masterDto, franchise);
 
-        menuRepository.saveAll(updatedMenus);
-
+        return franchise.getFranchiseId();
     }
 
     @Override
     @Transactional
     public void deleteFranchise(Long franchiseId) {
         Objects.requireNonNull(franchiseId, "조회/수정/삭제시 Id는 필수입니다.");
+
         // 메뉴삭제
-        menuRepository.deleteAllByFranchise_FranchiseId(franchiseId);
-        menuRepository.deleteAll();
+        adminMenuService.deleteMenus(MasterType.FRANCHISE, franchiseId);
 
         // 프랜차이즈삭제
         franchiseRepository.deleteById(franchiseId);

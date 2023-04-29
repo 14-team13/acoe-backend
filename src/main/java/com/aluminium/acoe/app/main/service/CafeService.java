@@ -11,18 +11,18 @@ public interface CafeService {
      * @param trdStateCd - null이면 상태 관계없이 모든 카페 조회
      * @return
      */
-    List<CafeDto> searchList(Long areaCd, Long trdStateCd);
+    List<CafeDto> searchDtoList(Long areaCd, Long trdStateCd);
 
     /**
      * 메인 카페 목록 조회(목록용)
      * @param keyword
      * @return
      */
-    List<CafeDto> searchListByKeyword(String keyword);
+    List<CafeDto> searchDtoListByKeyword(String keyword);
 
     /**
      * @param cafeId
      * @return
      */
-    CafeDto getCafe(Long cafeId);
+    CafeDto getCafeDto(Long cafeId);
 }

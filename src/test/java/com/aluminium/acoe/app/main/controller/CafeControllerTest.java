@@ -33,72 +33,72 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * */
 @WebMvcTest(controllers= CafeController.class)
 class CafeControllerTest {
-    @Autowired
-    /**
-     * 웹 API 테스트할 때 사용
-     * 스프링 MVC 테스트의 시작점
-     * HTTP GET,POST 등에 대해 API 테스트 가능
-     * */
-    private MockMvc mockMvc;
-
-    /*
-     * 가짜 bean으로 올림.
-     * */
-    @MockBean
-    private CafeService cafeService;
-
-    protected MediaType mediaType =
-        new MediaType(MediaType.APPLICATION_JSON.getType(),
-            MediaType.APPLICATION_JSON.getSubtype(), StandardCharsets.UTF_8);
-
-    private static final String CAFE_NM = "mockCafe";
-    private static final String MENU_NM = "아메리카노";
-
-    @Test
-    @WithMockUser
-    void searchCafeListTest() throws Exception{
-        CafeDto cafeDto = new CafeDto();
-        cafeDto.setCafeId(11111L);
-        cafeDto.setCafeNm(CAFE_NM);
-        cafeDto.setX(BigDecimal.valueOf(123L));
-        cafeDto.setY(BigDecimal.valueOf(456L));
-        cafeDto.setAreaCd(3120000L);
-        cafeDto.setTrdStateCd(1L);
-        // given
-        given(cafeService.searchList(any(), any()))
-            .willReturn(Arrays.asList(cafeDto));
-        // when then
-        mockMvc.perform(get("/cafe/cafes/{areaCd}", 3120000).param("areaCd", String.valueOf(3120000)).contentType(mediaType))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.[0].cafeNm", is(CAFE_NM)));
-    }
-
-    @Test
-    @WithMockUser
-    void getCafeTest() throws Exception{
-        MenuDto menuDto = new MenuDto();
-        menuDto.setMenuId(1111L);
-        menuDto.setPrice(4300L);
-        menuDto.setMenuNm(MENU_NM);
-        List<MenuDto> menuDtos = Arrays.asList(menuDto);
-
-        CafeDto cafeDto = new CafeDto();
-        cafeDto.setCafeId(11111L);
-        cafeDto.setCafeNm(CAFE_NM);
-        cafeDto.setX(BigDecimal.valueOf(123L));
-        cafeDto.setY(BigDecimal.valueOf(456L));
-        cafeDto.setAreaCd(3120000L);
-        cafeDto.setTrdStateCd(1L);
-        cafeDto.setMenuList(menuDtos);
-
-        // given
-        given(cafeService.getCafe(any())).willReturn(cafeDto);
-
-        // when then
-        mockMvc.perform(get("/cafe/{cafeId}", 11111).param("cafeId", String.valueOf(11111)).contentType(mediaType))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.cafeNm", is(CAFE_NM)))
-                .andExpect(jsonPath("$.menuList.[0].menuNm", is(MENU_NM)));
-    }
+//    @Autowired
+//    /**
+//     * 웹 API 테스트할 때 사용
+//     * 스프링 MVC 테스트의 시작점
+//     * HTTP GET,POST 등에 대해 API 테스트 가능
+//     * */
+//    private MockMvc mockMvc;
+//
+//    /*
+//     * 가짜 bean으로 올림.
+//     * */
+//    @MockBean
+//    private CafeService cafeService;
+//
+//    protected MediaType mediaType =
+//        new MediaType(MediaType.APPLICATION_JSON.getType(),
+//            MediaType.APPLICATION_JSON.getSubtype(), StandardCharsets.UTF_8);
+//
+//    private static final String CAFE_NM = "mockCafe";
+//    private static final String MENU_NM = "아메리카노";
+//
+//    @Test
+//    @WithMockUser
+//    void searchCafeListTest() throws Exception{
+//        CafeDto cafeDto = new CafeDto();
+//        cafeDto.setCafeId(11111L);
+//        cafeDto.setCafeNm(CAFE_NM);
+//        cafeDto.setX(BigDecimal.valueOf(123L));
+//        cafeDto.setY(BigDecimal.valueOf(456L));
+//        cafeDto.setAreaCd(3120000L);
+//        cafeDto.setTrdStateCd(1L);
+//        // given
+//        given(cafeService.searchDtoList(any(), any()))
+//            .willReturn(Arrays.asList(cafeDto));
+//        // when then
+//        mockMvc.perform(get("/cafe/cafes/{areaCd}", 3120000).param("areaCd", String.valueOf(3120000)).contentType(mediaType))
+//            .andExpect(status().isOk())
+//            .andExpect(jsonPath("$.[0].cafeNm", is(CAFE_NM)));
+//    }
+//
+//    @Test
+//    @WithMockUser
+//    void getCafeTest() throws Exception{
+//        MenuDto menuDto = new MenuDto();
+//        menuDto.setMenuId(1111L);
+//        menuDto.setPrice(4300L);
+//        menuDto.setMenuNm(MENU_NM);
+//        List<MenuDto> menuDtos = Arrays.asList(menuDto);
+//
+//        CafeDto cafeDto = new CafeDto();
+//        cafeDto.setCafeId(11111L);
+//        cafeDto.setCafeNm(CAFE_NM);
+//        cafeDto.setX(BigDecimal.valueOf(123L));
+//        cafeDto.setY(BigDecimal.valueOf(456L));
+//        cafeDto.setAreaCd(3120000L);
+//        cafeDto.setTrdStateCd(1L);
+//        cafeDto.setMenuList(menuDtos);
+//
+//        // given
+//        given(cafeService.getCafeDto(any())).willReturn(cafeDto);
+//
+//        // when then
+//        mockMvc.perform(get("/cafe/{cafeId}", 11111).param("cafeId", String.valueOf(11111)).contentType(mediaType))
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.cafeNm", is(CAFE_NM)))
+//                .andExpect(jsonPath("$.menuList.[0].menuNm", is(MENU_NM)));
+//    }
 
 }

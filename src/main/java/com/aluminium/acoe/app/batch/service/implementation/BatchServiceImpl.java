@@ -51,7 +51,7 @@ public class BatchServiceImpl implements BatchService {
     @Transactional
     public void executeCafeBatch() {
         // 카페 정보 조회
-        Map<String, CafeDto> cafeMapByRefNo = cafeService.searchList(AREA_CD, null)
+        Map<String, CafeDto> cafeMapByRefNo = cafeService.searchDtoList(AREA_CD, null)
             .stream().collect(Collectors.toMap(CafeDto::getRefNo, i->i));
         // 최종 디비에 저장할 카페 데이터 보관용
         List<Cafe> saveList = new ArrayList<>();

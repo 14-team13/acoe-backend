@@ -31,7 +31,7 @@ public class FranchiseController {
             @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = FranchiseDto.class)))
     })
     public List<FranchiseDto> searchList(){
-        return franchiseService.searchList(true);
+        return franchiseService.searchDtoList(true);
     }
 
 
