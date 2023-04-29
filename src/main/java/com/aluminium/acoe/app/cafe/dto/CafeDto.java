@@ -1,6 +1,7 @@
 package com.aluminium.acoe.app.cafe.dto;
 
 import com.aluminium.acoe.app.cafe.entity.Cafe;
+import com.aluminium.acoe.app.cafe.entity.Franchise;
 import com.aluminium.acoe.common.dto.BaseDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
@@ -57,6 +58,8 @@ public class CafeDto extends BaseDto {
     @Schema(description = "사용여부")
     private Boolean useYn;
 
+    @Schema(description = "프랜차이즈")
+    private FranchiseDto franchiseDto;
 
     @Schema(description = "메뉴목록")
     private List<MenuDto> menuList;

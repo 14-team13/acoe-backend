@@ -91,4 +91,13 @@ public class Cafe extends BaseEntity {
             .build();
     }
 
+    public void update(CafeDto dto, Franchise franchise){
+        this.cafeNm = dto.getCafeNm();
+        this.roadAddr = dto.getRoadAddr();
+        this.discountAmt = dto.getDiscountAmt();
+        this.appOrderYn = dto.getAppOrderYn();
+        this.kioskYn = dto.getKioskYn();
+        this.useYn = dto.getUseYn();
+        this.franchise = franchise;
+    }
 }

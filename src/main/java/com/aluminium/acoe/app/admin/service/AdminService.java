@@ -30,5 +30,11 @@ public interface AdminService {
      */
     FranchiseDto getFranchise(Long franchiseId);
 
+    /**
+     * @param dto
+     * @return
+     */
+    Long updateCafe(CafeDto dto);
+
 
 }

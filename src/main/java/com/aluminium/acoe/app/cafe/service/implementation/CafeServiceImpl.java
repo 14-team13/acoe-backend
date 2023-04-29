@@ -1,5 +1,6 @@
 package com.aluminium.acoe.app.cafe.service.implementation;
 
+import com.aluminium.acoe.app.cafe.Converter.CafeConverter;
 import com.aluminium.acoe.app.cafe.dto.CafeDto;
 import com.aluminium.acoe.app.cafe.dto.MenuDto;
 import com.aluminium.acoe.app.cafe.entity.Cafe;
@@ -25,7 +26,7 @@ public class CafeServiceImpl implements CafeService {
 
     private final CafeRepository cafeRepository;
 
-    private final CommonConverter commonConverter;
+    private final CafeConverter converter;
 
     @Override
     public List<CafeDto> searchList(Long areaCd, Long trdStateCd) {
@@ -37,27 +38,33 @@ public class CafeServiceImpl implements CafeService {
             result = cafeRepository.findByAreaCdAndTrdStateCd(areaCd, trdStateCd);
         }
 
-        return result.stream().map(e -> commonConverter.convertToGeneric(e, CafeDto.class)).collect(Collectors.toList());
+        return result.stream().map(e -> converter.convertToGeneric(e, CafeDto.class)).collect(Collectors.toList());
     }
 
     @Override
     public List<CafeDto> searchListByKeyword(String keyword) {
         return cafeRepository.findByCafeNmContains(keyword).stream()
             .filter(e -> e.getTrdStateCd() == 1L)
-            .map(e -> commonConverter.convertToGeneric(e, CafeDto.class)).collect(Collectors.toList());
+            .map(e -> converter.convertToGeneric(e, CafeDto.class)).collect(Collectors.toList());
     }
 
     @Override
     public CafeDto getCafe(Long cafeId) {
         // 카페 조회
-        CafeDto cafeDto = commonConverter.convertToGeneric(
-                cafeRepository.findById(cafeId).orElseThrow(() -> new BusinessInvalidValueException("유효하지 않은 cafeId : " + cafeId))
-                , CafeDto.class);
+        CafeDto cafeDto = converter.convertEntityToDto(
+                cafeRepository.findById(cafeId).orElseThrow(() -> new BusinessInvalidValueException("유효하지 않은 cafeId : " + cafeId)));
 
-        // 메뉴 조회
-        List<MenuDto> menuDtos = menuRepository.findByCafe_CafeId(cafeId)
-                .stream().map(menu -> commonConverter.convertToGeneric(menu, MenuDto.class))
+        // 메뉴조회
+        List<MenuDto> menuDtos;
+        if(cafeDto.getFranchiseDto() == null){
+            menuDtos = menuRepository.findByCafe_CafeId(cafeId)
+                .stream().map(menu -> converter.convertToGeneric(menu, MenuDto.class))
                 .collect(Collectors.toList());
+        } else {
+            menuDtos = menuRepository.findByFranchise_FranchiseId(cafeDto.getFranchiseDto().getFranchiseId())
+                .stream().map(menu -> converter.convertToGeneric(menu, MenuDto.class))
+                .collect(Collectors.toList());
+        }
 
         cafeDto.setMenuList(menuDtos);
         return cafeDto;

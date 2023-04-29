@@ -9,6 +9,7 @@ import com.aluminium.acoe.app.cafe.service.CafeService;
 import com.aluminium.acoe.app.cafe.service.FranchiseService;
 import com.aluminium.acoe.common.converter.CommonConverter;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -45,5 +46,16 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public FranchiseDto getFranchise(Long franchiseId) {
         return franchiseService.getFranchise(franchiseId);
+    }
+
+    @Override
+    public Long updateCafe(CafeDto dto) {
+        Objects.requireNonNull(dto.getCafeId(), "조회/수정/삭제시 Id는 필수입니다.");
+        CafeDto cafeDto = cafeService.getCafe(dto.getCafeId());
+
+        // 메뉴 수정
+        if(cafeDto.getFranchiseDto() != null){
+
+        }
     }
 }
