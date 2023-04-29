@@ -12,10 +12,10 @@ import com.aluminium.acoe.app.cafe.service.BatchService;
 import com.aluminium.acoe.app.cafe.service.CafeService;
 import com.aluminium.acoe.common.dto.ApiDto;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -93,8 +93,8 @@ public class BatchServiceImpl implements BatchService {
                 // 좌표계 변환
                 String strX = Objects.toString(row.get("X"),"0.0");
                 String strY = Objects.toString(row.get("Y"),"0.0");
-                Double x = StringUtils.isBlank(strX) ? 0.0 : Double.parseDouble(strX);
-                Double y = StringUtils.isBlank(strY) ? 0.0 : Double.parseDouble(strY);
+                double x = StringUtils.isBlank(strX) ? 0.0 : Double.parseDouble(strX);
+                double y = StringUtils.isBlank(strY) ? 0.0 : Double.parseDouble(strY);
                 ProjCoordinate projCoordinate = transformWGS84(x, y, "EPSG:2097");
                 if (projCoordinate != null) {
                     cafeDto.setX(new BigDecimal(projCoordinate.x).setScale(6, RoundingMode.HALF_UP));
@@ -121,15 +121,11 @@ public class BatchServiceImpl implements BatchService {
     private ApiDto buildApiDto(int startIdx, int endIdx){
         // 서대문구 only
         StringBuilder urlBuilder = new StringBuilder(URL); /*URL*/
-        try {
-            urlBuilder.append("/").append(URLEncoder.encode( token, "UTF-8")); /*인증키 (sample사용시에는 호출시 제한됩니다.)*/
-            urlBuilder.append("/").append(URLEncoder.encode("json", "UTF-8")); /*요청파일타입 (xml,xmlf,xls,json) */
-            urlBuilder.append("/").append(URLEncoder.encode(TITLE, "UTF-8")); /*서비스명 (대소문자 구분 필수입니다.)*/
-            urlBuilder.append("/").append(URLEncoder.encode(Objects.toString(startIdx), "UTF-8")); /*요청시작위치 (sample인증키 사용시 5이내 숫자)*/
-            urlBuilder.append("/").append(URLEncoder.encode(Objects.toString(endIdx), "UTF-8")); /*요청종료위치(sample인증키 사용시 5이상 숫자 선택 안 됨)*/
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
+        urlBuilder.append("/").append(URLEncoder.encode( token, StandardCharsets.UTF_8)); /*인증키 (sample사용시에는 호출시 제한됩니다.)*/
+        urlBuilder.append("/").append(URLEncoder.encode("json", StandardCharsets.UTF_8)); /*요청파일타입 (xml,xmlf,xls,json) */
+        urlBuilder.append("/").append(URLEncoder.encode(TITLE, StandardCharsets.UTF_8)); /*서비스명 (대소문자 구분 필수입니다.)*/
+        urlBuilder.append("/").append(URLEncoder.encode(Objects.toString(startIdx), StandardCharsets.UTF_8)); /*요청시작위치 (sample인증키 사용시 5이내 숫자)*/
+        urlBuilder.append("/").append(URLEncoder.encode(Objects.toString(endIdx), StandardCharsets.UTF_8)); /*요청종료위치(sample인증키 사용시 5이상 숫자 선택 안 됨)*/
 
         ApiDto apiDto = new ApiDto();
         apiDto.setUrl(Objects.toString(urlBuilder));
