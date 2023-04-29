@@ -42,8 +42,17 @@ public class CafeDto extends BaseDto {
     @Schema(description = "y좌표")
     private BigDecimal y;
 
+    @Schema(description = "텀블러할인금액")
+    private Long discountAmt;
+
     @Schema(description = "원참조번호(관리번호)")
     private String refNo;
+
+    @Schema(description = "앱주문할인가능여부")
+    private Boolean appOrderYn;
+
+    @Schema(description = "키오스크할인가능여부")
+    private Boolean kioskYn;
 
     @Schema(description = "메뉴목록")
     private List<MenuDto> menuList;

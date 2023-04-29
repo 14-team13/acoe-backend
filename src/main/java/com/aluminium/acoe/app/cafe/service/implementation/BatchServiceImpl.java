@@ -1,17 +1,21 @@
 package com.aluminium.acoe.app.cafe.service.implementation;
 
 import static com.aluminium.acoe.common.api.ApiHelper.callApi;
+import static com.aluminium.acoe.common.util.CoordinateUtil.transformWGS84;
 
 import com.aluminium.acoe.app.cafe.dto.CafeDto;
 import com.aluminium.acoe.app.cafe.entity.Cafe;
+import com.aluminium.acoe.app.cafe.entity.Franchise;
 import com.aluminium.acoe.app.cafe.persistance.CafeRepository;
+import com.aluminium.acoe.app.cafe.persistance.FranchiseRepository;
 import com.aluminium.acoe.app.cafe.service.BatchService;
 import com.aluminium.acoe.app.cafe.service.CafeService;
 import com.aluminium.acoe.common.dto.ApiDto;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -20,10 +24,10 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.osgeo.proj4j.ProjCoordinate;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.configurationprocessor.json.JSONArray;
-import org.springframework.boot.configurationprocessor.json.JSONException;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,11 +39,13 @@ public class BatchServiceImpl implements BatchService {
     public static final long AREA_CD = 3120000;
     public static final String URL = "http://openapi.seoul.go.kr:8088";
 
+    public static final String TITLE = "LOCALDATA_072405_SM";
     @Value("${data_seoul.token}")
     private String token;
 
     private final CafeService cafeService;
     private final CafeRepository cafeRepository;
+    private final FranchiseRepository franchiseRepository;
 
     @Override
     @Transactional
@@ -49,6 +55,8 @@ public class BatchServiceImpl implements BatchService {
             .stream().collect(Collectors.toMap(CafeDto::getRefNo, i->i));
         // 최종 디비에 저장할 카페 데이터 보관용
         List<Cafe> saveList = new ArrayList<>();
+        // 프랜차이즈 목록 조회
+        List<Franchise> franchises = franchiseRepository.findAllByUseYn(true);
         
         int start = 1;
         int end = 1000;
@@ -56,7 +64,7 @@ public class BatchServiceImpl implements BatchService {
         JSONArray arr = new JSONArray();
         try {
             while(totalCnt > end){
-                JSONObject localData = callApi(buildApiDto(start, end)).getJSONObject("LOCALDATA_072405_SM");
+                JSONObject localData = callApi(buildApiDto(start, end)).getJSONObject(TITLE);
                 totalCnt = (int) localData.get("list_total_count");
 
                 start+= 1000;
@@ -82,14 +90,28 @@ public class BatchServiceImpl implements BatchService {
                 cafeDto.setRoadAddr(Objects.toString(row.get("RDNWHLADDR"),""));
                 cafeDto.setRoadPostNo(Objects.toString(row.get("RDNPOSTNO"),""));
 
-                String x = Objects.toString(row.get("X"),"0");
-                if(StringUtils.isNotBlank(x)) cafeDto.setX(new BigDecimal(Double.parseDouble(x)));
-                String y = Objects.toString(row.get("Y"),"0");
-                if(StringUtils.isNotBlank(y)) cafeDto.setY(new BigDecimal(Double.parseDouble(y)));
+                // 좌표계 변환
+                String strX = Objects.toString(row.get("X"),"0.0");
+                String strY = Objects.toString(row.get("Y"),"0.0");
+                double x = StringUtils.isBlank(strX) ? 0.0 : Double.parseDouble(strX);
+                double y = StringUtils.isBlank(strY) ? 0.0 : Double.parseDouble(strY);
+                ProjCoordinate projCoordinate = transformWGS84(x, y, "EPSG:2097");
+                if (projCoordinate != null) {
+                    cafeDto.setX(new BigDecimal(projCoordinate.x).setScale(6, RoundingMode.HALF_UP));
+                    cafeDto.setY(new BigDecimal(projCoordinate.y).setScale(6, RoundingMode.HALF_UP));
+                }
 
-                saveList.add(Cafe.toEntity(cafeDto));
+                // franchise setting
+                String cafeNm = cafeDto.getCafeNm();
+                Franchise matched = franchises.stream()
+                        .filter(fran -> cafeNm.contains(fran.getFranchiseNm()))
+                        .findFirst().orElseGet(() -> null);
+                // 프랜차이즈인 경우 프랜차이즈 할인가격 세팅
+                if(matched != null) cafeDto.setDiscountAmt(matched.getDiscountAmt());
+
+                saveList.add(Cafe.toEntity(cafeDto, matched));
             }
-        } catch (JSONException | IOException e){
+        } catch (IOException e){
             throw new RuntimeException(e);
         }
 
@@ -99,15 +121,11 @@ public class BatchServiceImpl implements BatchService {
     private ApiDto buildApiDto(int startIdx, int endIdx){
         // 서대문구 only
         StringBuilder urlBuilder = new StringBuilder(URL); /*URL*/
-        try {
-            urlBuilder.append("/").append(URLEncoder.encode( token, "UTF-8")); /*인증키 (sample사용시에는 호출시 제한됩니다.)*/
-            urlBuilder.append("/").append(URLEncoder.encode("json", "UTF-8")); /*요청파일타입 (xml,xmlf,xls,json) */
-            urlBuilder.append("/").append(URLEncoder.encode("LOCALDATA_072405_SM", "UTF-8")); /*서비스명 (대소문자 구분 필수입니다.)*/
-            urlBuilder.append("/").append(URLEncoder.encode(Objects.toString(startIdx), "UTF-8")); /*요청시작위치 (sample인증키 사용시 5이내 숫자)*/
-            urlBuilder.append("/").append(URLEncoder.encode(Objects.toString(endIdx), "UTF-8")); /*요청종료위치(sample인증키 사용시 5이상 숫자 선택 안 됨)*/
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
+        urlBuilder.append("/").append(URLEncoder.encode( token, StandardCharsets.UTF_8)); /*인증키 (sample사용시에는 호출시 제한됩니다.)*/
+        urlBuilder.append("/").append(URLEncoder.encode("json", StandardCharsets.UTF_8)); /*요청파일타입 (xml,xmlf,xls,json) */
+        urlBuilder.append("/").append(URLEncoder.encode(TITLE, StandardCharsets.UTF_8)); /*서비스명 (대소문자 구분 필수입니다.)*/
+        urlBuilder.append("/").append(URLEncoder.encode(Objects.toString(startIdx), StandardCharsets.UTF_8)); /*요청시작위치 (sample인증키 사용시 5이내 숫자)*/
+        urlBuilder.append("/").append(URLEncoder.encode(Objects.toString(endIdx), StandardCharsets.UTF_8)); /*요청종료위치(sample인증키 사용시 5이상 숫자 선택 안 됨)*/
 
         ApiDto apiDto = new ApiDto();
         apiDto.setUrl(Objects.toString(urlBuilder));
