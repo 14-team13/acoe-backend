@@ -54,6 +54,10 @@ public class CafeDto extends BaseDto {
     @Schema(description = "키오스크할인가능여부")
     private Boolean kioskYn;
 
+    @Schema(description = "사용여부")
+    private Boolean useYn;
+
+
     @Schema(description = "메뉴목록")
     private List<MenuDto> menuList;
 

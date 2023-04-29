@@ -62,6 +62,9 @@ public class Cafe extends BaseEntity {
     @Column(name = "kioskYn")
     private Boolean kioskYn;
 
+    @Column(name = "useYn")
+    private Boolean useYn;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "franchise_id", updatable = false)
     private Franchise franchise;
@@ -82,6 +85,7 @@ public class Cafe extends BaseEntity {
             .refNo(dto.getRefNo())
             .appOrderYn(dto.getAppOrderYn())
             .kioskYn(dto.getKioskYn())
+            .useYn(dto.getUseYn())
             .discountAmt(dto.getDiscountAmt())
             .franchise(franchise)
             .build();

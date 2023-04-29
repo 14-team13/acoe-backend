@@ -14,4 +14,5 @@ public interface FranchiseRepository extends JpaRepository<Franchise, Long> {
      * @return
      */
     List<Franchise> findAllByUseYn(Boolean useYn);
+
 }

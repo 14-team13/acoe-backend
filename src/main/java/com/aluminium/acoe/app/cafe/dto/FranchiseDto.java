@@ -3,6 +3,7 @@ package com.aluminium.acoe.app.cafe.dto;
 import com.aluminium.acoe.app.cafe.entity.Cafe;
 import com.aluminium.acoe.common.dto.BaseDto;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
 import lombok.Data;
 
 
@@ -25,5 +26,8 @@ public class FranchiseDto extends BaseDto {
 
     @Schema(description = "사용여부")
     private Boolean useYn;
+
+    @Schema(description = "메뉴목록")
+    private List<MenuDto> menuList;
 
 }

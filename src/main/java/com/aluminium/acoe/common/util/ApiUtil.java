@@ -1,4 +1,4 @@
-package com.aluminium.acoe.common.api;
+package com.aluminium.acoe.common.util;
 
 import com.aluminium.acoe.common.dto.ApiDto;
 import java.io.BufferedReader;
@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
-public class ApiHelper {
+public class ApiUtil {
     public static JSONObject callApi(ApiDto apiDto) throws IOException {
         Objects.requireNonNull(apiDto.getUrl(), "url은 필수입니다.");
         Objects.requireNonNull(apiDto.getMethod(), "method는 필수입니다.");

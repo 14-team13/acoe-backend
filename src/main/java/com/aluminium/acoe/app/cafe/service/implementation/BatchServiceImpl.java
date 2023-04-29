@@ -1,6 +1,6 @@
 package com.aluminium.acoe.app.cafe.service.implementation;
 
-import static com.aluminium.acoe.common.api.ApiHelper.callApi;
+import static com.aluminium.acoe.common.util.ApiUtil.callApi;
 import static com.aluminium.acoe.common.util.CoordinateUtil.transformWGS84;
 
 import com.aluminium.acoe.app.cafe.dto.CafeDto;

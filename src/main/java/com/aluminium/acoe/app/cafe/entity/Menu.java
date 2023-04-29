@@ -25,4 +25,8 @@ public class Menu extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cafe_id", updatable = false)
     private Cafe cafe;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "franchise_id", updatable = false)
+    private Franchise franchise;
 }
