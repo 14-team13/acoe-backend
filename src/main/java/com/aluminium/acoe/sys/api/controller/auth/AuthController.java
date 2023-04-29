@@ -5,13 +5,16 @@ import com.aluminium.acoe.sys.api.entity.user.UserRefreshToken;
 import com.aluminium.acoe.sys.api.repository.user.UserRefreshTokenRepository;
 import com.aluminium.acoe.sys.common.ApiResponse;
 import com.aluminium.acoe.sys.config.properties.AppProperties;
-import com.aluminium.acoe.sys.oauth.entity.RoleType;
+import com.aluminium.acoe.sys.oauth.type.RoleType;
 import com.aluminium.acoe.sys.oauth.entity.UserPrincipal;
 import com.aluminium.acoe.sys.oauth.token.AuthToken;
 import com.aluminium.acoe.sys.oauth.token.AuthTokenProvider;
 import com.aluminium.acoe.sys.utils.CookieUtil;
 import com.aluminium.acoe.sys.utils.HeaderUtil;
 import io.jsonwebtoken.Claims;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -39,7 +42,11 @@ public class AuthController {
     private final static long THREE_DAYS_MSEC = 259200000;
     private final static String REFRESH_TOKEN = "refresh_token";
 
-    @PostMapping("/login")
+    @PostMapping("/login")    
+    @Operation(summary = "소셜 로그인", description  = "소셜 로그인 후 토큰을 반환한다.", responses = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "로그인 성공", content = @Content(schema = @Schema(implementation = AuthToken.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = AuthToken.class)))
+    })
     public ApiResponse login(
             HttpServletRequest request,
             HttpServletResponse response,
@@ -90,6 +97,10 @@ public class AuthController {
     }
 
     @GetMapping("/refresh")
+    @Operation(summary = "리프레시 토큰 발급", description  = "리프레시 토큰을 발급한다.", responses = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "리프레시 토큰 발급 성공", content = @Content(schema = @Schema(implementation = AuthToken.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = AuthToken.class)))
+    })
     public ApiResponse refreshToken(HttpServletRequest request, HttpServletResponse response) {
 
         // access token 확인
