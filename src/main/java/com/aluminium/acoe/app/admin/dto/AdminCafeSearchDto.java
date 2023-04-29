@@ -1,6 +1,6 @@
 package com.aluminium.acoe.app.admin.dto;
 
-import com.aluminium.acoe.app.cafe.entity.Cafe;
+import com.aluminium.acoe.app.main.entity.Cafe;
 import com.aluminium.acoe.common.dto.BaseDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

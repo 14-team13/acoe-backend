@@ -1,11 +1,11 @@
 package com.aluminium.acoe.app.admin.persistance.implementation;
 
-import static com.aluminium.acoe.app.cafe.entity.QCafe.cafe;
+import static com.aluminium.acoe.app.main.entity.QCafe.cafe;
 import static com.querydsl.jpa.JPAExpressions.selectFrom;
 
 import com.aluminium.acoe.app.admin.dto.AdminCafeSearchDto;
 import com.aluminium.acoe.app.admin.persistance.AdminCafeRepositoryCustom;
-import com.aluminium.acoe.app.cafe.entity.Cafe;
+import com.aluminium.acoe.app.main.entity.Cafe;
 import com.querydsl.core.BooleanBuilder;
 import java.util.List;
 import org.springframework.stereotype.Repository;
