@@ -40,7 +40,7 @@ public class AdminCafeController {
     /**
      * 관리자 카페 상세 조회(ADMIN)
      */
-    @GetMapping("/cafe/{cafeId}")
+    @GetMapping("/{cafeId}")
     @Operation(summary = "관리자 카페 정보 상세 조회", description  = "관리자 화면에서 카페 상세 정보를 조회한다.(권한필요)",
             responses = { @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = CafeDto.class)))}
     )
@@ -52,7 +52,7 @@ public class AdminCafeController {
     /**
      * 관리자 카페 상세 수정(ADMIN)
      */
-    @PutMapping("/cafe")
+    @PutMapping("")
     @Operation(summary = "관리자 카페 정보 상세 수정", description  = "관리자 화면에서 카페 상세 정보를 수정한다.(권한필요)",
             responses = {@ApiResponse(responseCode = "200", description = "수정 성공", content = @Content(schema = @Schema(type = "number", description = "카페 ID")))}
     )

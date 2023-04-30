@@ -51,7 +51,7 @@ public class CafeController {
     /**
      * 메인 카페 상세 조회 API
      */
-    @GetMapping("/cafe/{cafeId}")
+    @GetMapping("/{cafeId}")
     @Operation(summary = "메인 카페 정보 상세 조회", description  = "메인화면에서 카페 상세 정보를 조회한다.", responses = {
             @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = CafeDto.class)))
     })

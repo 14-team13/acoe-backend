@@ -38,7 +38,7 @@ public class AdminFranchiseController {
     /**
      * 관리자 프랜차이즈 상세 조회(ADMIN)
      */
-    @GetMapping("frnachise/{franchiseId}")
+    @GetMapping("/{franchiseId}")
     @Operation(summary = "관리자 프랜차이즈 정보 상세 조회", description  = "관리자 화면에서 프랜차이즈 상세 정보를 조회한다.(권한필요)",
             responses = {@ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = FranchiseDto.class)))}
     )
@@ -50,7 +50,7 @@ public class AdminFranchiseController {
     /**
      * 관리자 프랜차이즈 상세 등록(ADMIN)
      */
-    @PostMapping("frnachise")
+    @PostMapping("")
     @Operation(summary = "관리자 프랜차이즈 정보 상세 수정", description  = "관리자 화면에서 프랜차이즈 상세 정보를 수정한다.(권한필요)",
             responses = {@ApiResponse(responseCode = "200", description = "등록 성공", content = @Content(schema = @Schema(type = "number", description = "프랜차이즈 ID")))}
     )
@@ -61,7 +61,7 @@ public class AdminFranchiseController {
     /**
      * 관리자 프랜차이즈 상세 수정(ADMIN)
      */
-    @PutMapping("frnachise")
+    @PutMapping("")
     @Operation(summary = "관리자 프랜차이즈 정보 상세 수정", description  = "관리자 화면에서 프랜차이즈 상세 정보를 수정한다.(권한필요)",
             responses = {@ApiResponse(responseCode = "200", description = "수정 성공", content = @Content(schema = @Schema(type = "number", description = "프랜차이즈 ID")))}
     )
@@ -72,7 +72,7 @@ public class AdminFranchiseController {
     /**
      * 관리자 프랜차이즈 상세 삭제(ADMIN)
      */
-    @DeleteMapping("frnachise")
+    @DeleteMapping("")
     @Operation(summary = "관리자 프랜차이즈 정보 상세 삭제", description  = "관리자 화면에서 프랜차이즈 정보를 삭제한다.(권한필요)",
             responses = {@ApiResponse(responseCode = "200", description = "삭제 성공")}
     )
