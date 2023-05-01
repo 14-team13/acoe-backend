@@ -43,7 +43,7 @@ public class AdminFranchiseController {
             responses = {@ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = FranchiseDto.class)))}
     )
     @Parameter(name = "franchiseId", description = "프랜차이즈ID", in = ParameterIn.PATH)
-    public FranchiseDto getFranchise(@PathVariable("franchise") Long franchiseId){
+    public FranchiseDto getFranchise(@PathVariable("franchiseId") Long franchiseId){
         return adminFranchiseService.getFranchiseDto(franchiseId);
     }
 
@@ -51,7 +51,7 @@ public class AdminFranchiseController {
      * 관리자 프랜차이즈 상세 등록(ADMIN)
      */
     @PostMapping("")
-    @Operation(summary = "관리자 프랜차이즈 정보 상세 수정", description  = "관리자 화면에서 프랜차이즈 상세 정보를 수정한다.(권한필요)",
+    @Operation(summary = "관리자 프랜차이즈 정보 상세 등록", description  = "관리자 화면에서 프랜차이즈 상세 정보를 등록한다.(권한필요)",
             responses = {@ApiResponse(responseCode = "200", description = "등록 성공", content = @Content(schema = @Schema(type = "number", description = "프랜차이즈 ID")))}
     )
     public Long createFranchise(@RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody FranchiseDto dto){
@@ -61,23 +61,25 @@ public class AdminFranchiseController {
     /**
      * 관리자 프랜차이즈 상세 수정(ADMIN)
      */
-    @PutMapping("")
+    @PutMapping("/{franchiseId}")
     @Operation(summary = "관리자 프랜차이즈 정보 상세 수정", description  = "관리자 화면에서 프랜차이즈 상세 정보를 수정한다.(권한필요)",
             responses = {@ApiResponse(responseCode = "200", description = "수정 성공", content = @Content(schema = @Schema(type = "number", description = "프랜차이즈 ID")))}
     )
-    public Long updateFranchise(@RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody FranchiseDto dto){
+    public Long updateFranchise(@PathVariable("franchiseId") Long franchiseId,
+            @RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody FranchiseDto dto)
+    {
         return adminFranchiseService.updateFranchise(dto);
     }
 
     /**
      * 관리자 프랜차이즈 상세 삭제(ADMIN)
      */
-    @DeleteMapping("")
+    @DeleteMapping("/{franchiseId}")
     @Operation(summary = "관리자 프랜차이즈 정보 상세 삭제", description  = "관리자 화면에서 프랜차이즈 정보를 삭제한다.(권한필요)",
             responses = {@ApiResponse(responseCode = "200", description = "삭제 성공")}
     )
     @Parameter(name = "franchiseId", description = "프랜차이즈ID", in = ParameterIn.PATH)
-    public void deleteFranchise(@PathVariable("franchise") Long franchiseId){
+    public void deleteFranchise(@PathVariable("franchiseId") Long franchiseId){
         adminFranchiseService.deleteFranchise(franchiseId);
     }
 }

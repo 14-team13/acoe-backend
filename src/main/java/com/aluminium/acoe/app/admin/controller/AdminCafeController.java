@@ -3,6 +3,7 @@ package com.aluminium.acoe.app.admin.controller;
 import com.aluminium.acoe.app.admin.dto.AdminCafeSearchDto;
 import com.aluminium.acoe.app.admin.service.AdminCafeService;
 import com.aluminium.acoe.app.main.dto.CafeDto;
+import com.aluminium.acoe.app.main.dto.FranchiseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -52,11 +53,37 @@ public class AdminCafeController {
     /**
      * 관리자 카페 상세 수정(ADMIN)
      */
-    @PutMapping("")
+    @PutMapping("/{cafeId}")
     @Operation(summary = "관리자 카페 정보 상세 수정", description  = "관리자 화면에서 카페 상세 정보를 수정한다.(권한필요)",
             responses = {@ApiResponse(responseCode = "200", description = "수정 성공", content = @Content(schema = @Schema(type = "number", description = "카페 ID")))}
     )
-    public Long updateCafe(@RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody CafeDto dto){
+    public Long updateCafe(@PathVariable("cafeId") Long cafeId,
+            @RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody CafeDto dto)
+    {
         return adminCafeService.updateCafe(dto);
+    }
+
+
+    /**
+     * 관리자 카페 상세 등록(ADMIN)
+     */
+    @PostMapping("")
+    @Operation(summary = "관리자 카페 정보 상세 등록", description  = "관리자 화면에서 카페 상세 정보를 등록한다.(권한필요)",
+            responses = {@ApiResponse(responseCode = "200", description = "등록 성공", content = @Content(schema = @Schema(type = "number", description = "카페 ID")))}
+    )
+    public Long createCafe(@RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody CafeDto dto){
+        return adminCafeService.createCafe(dto);
+    }
+
+    /**
+     * 관리자 카페 상세 삭제(ADMIN)
+     */
+    @DeleteMapping("/{cafeId}")
+    @Operation(summary = "관리자 카페 정보 상세 삭제", description  = "관리자 화면에서 카페 정보를 삭제한다.(권한필요)",
+            responses = {@ApiResponse(responseCode = "200", description = "삭제 성공")}
+    )
+    @Parameter(name = "cafeId", description = "카페ID", in = ParameterIn.PATH)
+    public void deleteCafe(@PathVariable("cafe") Long cafeId){
+        adminCafeService.deleteCafe(cafeId);
     }
 }

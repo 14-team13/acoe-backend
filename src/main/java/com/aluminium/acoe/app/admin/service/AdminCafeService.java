@@ -25,5 +25,16 @@ public interface AdminCafeService {
      */
     Long updateCafe(CafeDto dto);
 
+    /**
+     * @param dto
+     * @return
+     */
+    Long createCafe(CafeDto dto);
+
+    /**
+     * @param cafeId
+     */
+    void deleteCafe(Long cafeId);
+
 
 }

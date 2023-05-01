@@ -1,6 +1,7 @@
 package com.aluminium.acoe.app.admin.service.implementation;
 
 import com.aluminium.acoe.app.admin.dto.AdminCafeSearchDto;
+import com.aluminium.acoe.app.admin.enums.MasterType;
 import com.aluminium.acoe.app.admin.service.AdminCafeService;
 import com.aluminium.acoe.app.admin.service.AdminFranchiseService;
 import com.aluminium.acoe.app.admin.service.AdminMenuService;
@@ -65,5 +66,29 @@ public class AdminCafeServiceImpl implements AdminCafeService {
         cafeRepository.save(cafe);
 
         return cafe.getCafeId();
+    }
+
+    @Override
+    @Transactional
+    public Long createCafe(CafeDto dto) {
+        Cafe cafe = cafeRepository.save(Cafe.toEntity(dto, Franchise.toEntity(dto.getFranchiseDto())));
+
+        if(dto.getMenuList() != null && dto.getFranchiseDto() != null) {
+            adminMenuService.createMenus(dto.getMenuList(), cafe);
+        }
+
+        return cafe.getCafeId();
+    }
+
+    @Override
+    @Transactional
+    public void deleteCafe(Long cafeId) {
+        Objects.requireNonNull(cafeId, "조회/수정/삭제시 Id는 필수입니다.");
+
+        // 메뉴삭제
+        adminMenuService.deleteMenus(MasterType.CAFE, cafeId);
+
+        // 카페삭제
+        cafeRepository.deleteById(cafeId);
     }
 }
