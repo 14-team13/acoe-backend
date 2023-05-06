@@ -1,11 +1,9 @@
 package com.aluminium.acoe.app.main.controller;
 
-import com.aluminium.acoe.app.main.converter.FranchiseConverter;
+import com.aluminium.acoe.app.main.converter.CafeConverter;
 import com.aluminium.acoe.app.main.resource.CafeResource;
-import com.aluminium.acoe.app.main.resource.MenuResource;
 import com.aluminium.acoe.app.main.service.CafeService;
 import com.aluminium.acoe.app.main.dto.CafeDto;
-import com.aluminium.acoe.common.converter.CommonConverter;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -29,9 +27,8 @@ public class CafeController {
 
     private final CafeService cafeService;
 
-    private final CommonConverter commonConverter;
+    private final CafeConverter cafeConverter;
 
-    private final FranchiseConverter franchiseConverter;
 
     /**
      * 메인 영업중 카페 목록 조회 API(마커용)
@@ -45,14 +42,8 @@ public class CafeController {
         List<CafeDto> cafeDtos = cafeService.searchDtoList(areaCd, 1L);
 
         // convert to resource
-        return cafeDtos.stream().map(cafeDto -> {
-            CafeResource cafeResource = commonConverter.convertToGeneric(cafeDto, CafeResource.class);
-            cafeResource.setMenuList(cafeDto.getMenuList().stream()
-                    .map(menuDto -> commonConverter.convertToGeneric(menuDto, MenuResource.class))
-                    .collect(Collectors.toList()));
-            cafeResource.setFranchise(franchiseConverter.convertToResource(cafeDto.getFranchiseDto()));
-            return cafeResource;
-        }).collect(Collectors.toList());
+        return cafeDtos.stream().map(cafeConverter::convertDtoToResource)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -67,14 +58,8 @@ public class CafeController {
         List<CafeDto> cafeDtos = cafeService.searchDtoListByKeyword(keyword);
 
         // convert to resource
-        return cafeDtos.stream().map(cafeDto -> {
-            CafeResource cafeResource = commonConverter.convertToGeneric(cafeDto, CafeResource.class);
-            cafeResource.setMenuList(cafeDto.getMenuList().stream()
-                    .map(menuDto -> commonConverter.convertToGeneric(menuDto, MenuResource.class))
-                    .collect(Collectors.toList()));
-            cafeResource.setFranchise(franchiseConverter.convertToResource(cafeDto.getFranchiseDto()));
-            return cafeResource;
-        }).collect(Collectors.toList());
+        return cafeDtos.stream().map(cafeConverter::convertDtoToResource)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -86,13 +71,6 @@ public class CafeController {
     })
     @Parameter(name = "cafeId", description = "카페ID", in = ParameterIn.PATH)
     public CafeResource getCafe(@PathVariable("cafeId") Long cafeId){
-        CafeDto cafeDto = cafeService.getCafeDto(cafeId);
-        CafeResource cafeResource = commonConverter.convertToGeneric(cafeDto, CafeResource.class);
-        cafeResource.setMenuList(cafeDto.getMenuList().stream()
-                .map(menuDto -> commonConverter.convertToGeneric(menuDto, MenuResource.class))
-                .collect(Collectors.toList()));
-        cafeResource.setFranchise(franchiseConverter.convertToResource(cafeDto.getFranchiseDto()));
-
-        return cafeResource;
+        return cafeConverter.convertDtoToResource(cafeService.getCafeDto(cafeId));
     }
 }

@@ -2,11 +2,9 @@ package com.aluminium.acoe.app.admin.controller;
 
 import com.aluminium.acoe.app.admin.dto.AdminCafeSearchDto;
 import com.aluminium.acoe.app.admin.service.AdminCafeService;
-import com.aluminium.acoe.app.main.converter.FranchiseConverter;
+import com.aluminium.acoe.app.main.converter.CafeConverter;
 import com.aluminium.acoe.app.main.dto.CafeDto;
 import com.aluminium.acoe.app.main.resource.CafeResource;
-import com.aluminium.acoe.app.main.resource.MenuResource;
-import com.aluminium.acoe.common.converter.CommonConverter;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -30,8 +28,7 @@ import org.springframework.validation.annotation.Validated;
 public class AdminCafeController {
 
     private final AdminCafeService adminCafeService;
-    private final CommonConverter commonConverter;
-    private final FranchiseConverter franchiseConverter;
+    private final CafeConverter cafeConverter;
 
     /**
      * 카페 목록 조회(ADMIN)
@@ -45,14 +42,8 @@ public class AdminCafeController {
         List<CafeDto> cafeDtos = adminCafeService.searchAdminCafeDtoList(searchDto);
 
         // convert to resource
-        return cafeDtos.stream().map(cafeDto -> {
-            CafeResource cafeResource = commonConverter.convertToGeneric(cafeDto, CafeResource.class);
-            cafeResource.setMenuList(cafeDto.getMenuList().stream()
-                    .map(menuDto -> commonConverter.convertToGeneric(menuDto, MenuResource.class))
-                    .collect(Collectors.toList()));
-            cafeResource.setFranchise(franchiseConverter.convertToResource(cafeDto.getFranchiseDto()));
-            return cafeResource;
-        }).collect(Collectors.toList());
+        return cafeDtos.stream().map(cafeConverter::convertDtoToResource)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -64,14 +55,7 @@ public class AdminCafeController {
     )
     @Parameter(name = "cafeId", description = "카페ID", in = ParameterIn.PATH)
     public CafeResource getCafe(@PathVariable("cafeId") Long cafeId){
-        CafeDto cafeDto = adminCafeService.getCafeDto(cafeId);
-        CafeResource cafeResource = commonConverter.convertToGeneric(cafeDto, CafeResource.class);
-        cafeResource.setMenuList(cafeDto.getMenuList().stream()
-                .map(menuDto -> commonConverter.convertToGeneric(menuDto, MenuResource.class))
-                .collect(Collectors.toList()));
-        cafeResource.setFranchise(franchiseConverter.convertToResource(cafeDto.getFranchiseDto()));
-
-        return cafeResource;
+        return cafeConverter.convertDtoToResource(adminCafeService.getCafeDto(cafeId));
     }
 
     /**
@@ -107,7 +91,7 @@ public class AdminCafeController {
             responses = {@ApiResponse(responseCode = "200", description = "삭제 성공")}
     )
     @Parameter(name = "cafeId", description = "카페ID", in = ParameterIn.PATH)
-    public void deleteCafe(@PathVariable("cafe") Long cafeId){
+    public void deleteCafe(@PathVariable("cafeId") Long cafeId){
         adminCafeService.deleteCafe(cafeId);
     }
 }
