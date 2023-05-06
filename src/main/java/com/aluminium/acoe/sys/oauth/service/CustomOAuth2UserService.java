@@ -49,7 +49,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             if (providerType != savedUser.getProviderType()) {
                 throw new OAuthProviderMissMatchException(
                         "Looks like you're signed up with " + providerType + " account. " +
-                        "Please use your " + savedUser.getProviderType() + " account to login."
+                                "Please use your " + savedUser.getProviderType() + " account to login."
                 );
             }
             updateUser(savedUser, userInfo);
@@ -63,7 +63,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         LocalDateTime now = LocalDateTime.now();
         User user = new User(
                 userInfo.getId(),
-                userInfo.getName(),
+                createRandomUsername(),
+//                userInfo.getName(),
                 userInfo.getEmail(),
                 "Y",
                 userInfo.getImageUrl(),
@@ -84,5 +85,15 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             user.setProfileImageUrl(userInfo.getImageUrl());
 
         return user;
+    }
+
+    private String createRandomUsername() {
+        String[] prefix = {"행복한", "기분좋은", "뿌듯한", "귀여운", "즐거운", "사랑스러운", "감동받은", "자랑스러운", "신난", "희망찬"};
+        String[] suffix = {"아아메", "따아메", "아카라", "따카라", "아바라", "따바라", "아포가토", "콜드브루", "에스프레소", "프라푸치노"};
+
+        int preIdx = (int)(Math.random() * 9);
+        int sufIdx = (int)(Math.random() * 9);
+
+        return prefix[preIdx] + suffix[sufIdx];
     }
 }
