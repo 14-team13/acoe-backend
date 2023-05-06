@@ -12,14 +12,14 @@ public class FranchiseConverter extends CommonConverter {
 
     public FranchiseResource convertToResource(FranchiseDto franchiseDto){
         FranchiseResource franchiseResource = convertToGeneric(franchiseDto, FranchiseResource.class);
-        franchiseResource.setLogoImg(Base64.getEncoder().encodeToString(franchiseDto.getLogoImg()));
+        if(franchiseDto.getLogoImg() != null) franchiseResource.setLogoImg(Base64.getEncoder().encodeToString(franchiseDto.getLogoImg()));
 
         return franchiseResource;
     }
 
     public FranchiseDto convertToDto(FranchiseResource franchiseResource){
         FranchiseDto franchiseDto = convertToGeneric(franchiseResource, FranchiseDto.class);
-        franchiseDto.setLogoImg(Base64.getDecoder().decode(franchiseResource.getLogoImg()));
+        if(franchiseResource != null) franchiseDto.setLogoImg(Base64.getDecoder().decode(franchiseResource.getLogoImg()));
 
         return franchiseDto;
     }
