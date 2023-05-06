@@ -1,14 +1,14 @@
-package com.aluminium.acoe.app.admin.dto;
+package com.aluminium.acoe.app.admin.resource;
 
-import com.aluminium.acoe.common.dto.BaseDto;
+import com.aluminium.acoe.common.resource.PageResource;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
- * A DTO for the Cafe entity
+ * Search Paging Resource
  */
 @Data
-public class AdminCafeSearchDto extends BaseDto {
+public class AdminCafeSearchResource extends PageResource {
     @Schema(description = "카페명")
     private String cafeNm;
 
@@ -20,5 +20,4 @@ public class AdminCafeSearchDto extends BaseDto {
 
     @Schema(description = "메뉴등록여부")
     private Boolean menuYn;
-
 }

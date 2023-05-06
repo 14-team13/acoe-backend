@@ -11,13 +11,14 @@ import com.aluminium.acoe.app.main.entity.Franchise;
 import com.aluminium.acoe.app.main.persistance.CafeRepository;
 import com.aluminium.acoe.app.main.service.CafeService;
 import com.aluminium.acoe.common.converter.CommonConverter;
-import java.util.List;
+
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import com.aluminium.acoe.common.exception.BusinessInvalidValueException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,10 +34,8 @@ public class AdminCafeServiceImpl implements AdminCafeService {
     private final CommonConverter commonConverter;
 
     @Override
-    public List<CafeDto> searchAdminCafeDtoList(AdminCafeSearchDto searchDto) {
-        return cafeRepository.searchListByDynamicCond(searchDto)
-            .stream().map(e -> commonConverter.convertToGeneric(e, CafeDto.class))
-            .collect(Collectors.toList());
+    public Page<CafeDto> searchAdminCafeDtoPage(AdminCafeSearchDto searchDto, Pageable pageable) {
+        return cafeRepository.searchListByDynamicCond(searchDto, pageable).map(e -> commonConverter.convertToGeneric(e, CafeDto.class));
     }
 
     @Override

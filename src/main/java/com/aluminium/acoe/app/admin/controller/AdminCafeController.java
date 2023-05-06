@@ -1,6 +1,7 @@
 package com.aluminium.acoe.app.admin.controller;
 
 import com.aluminium.acoe.app.admin.dto.AdminCafeSearchDto;
+import com.aluminium.acoe.app.admin.resource.AdminCafeSearchResource;
 import com.aluminium.acoe.app.admin.service.AdminCafeService;
 import com.aluminium.acoe.app.main.converter.CafeConverter;
 import com.aluminium.acoe.app.main.dto.CafeDto;
@@ -10,11 +11,10 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,13 +37,12 @@ public class AdminCafeController {
     @Operation(summary = "관리자 화면에서 카페목록 조회", description  = "검색조건으로 카페 목록을 조회한다.",
             responses = { @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = CafeResource.class)))}
     )
-    @Parameter(name = "AdminCafeSearchDto", description = "카페 검색 객체", in = ParameterIn.DEFAULT)
-    public List<CafeResource> searchAdminCafeList(@Valid AdminCafeSearchDto searchDto){
-        List<CafeDto> cafeDtos = adminCafeService.searchAdminCafeDtoList(searchDto);
+    @Parameter(name = "AdminCafeSearchResource", description = "카페 검색 객체", in = ParameterIn.DEFAULT)
+    public Page<CafeResource> searchAdminCafeList(@Valid AdminCafeSearchResource searchResource){
+        Page<CafeDto> cafeDtos = adminCafeService.searchAdminCafeDtoPage(cafeConverter.convertToGeneric(searchResource, AdminCafeSearchDto.class), searchResource.getPageInfo());
 
         // convert to resource
-        return cafeDtos.stream().map(cafeConverter::convertDtoToResource)
-                .collect(Collectors.toList());
+        return cafeDtos.map(cafeConverter::convertDtoToResource);
     }
 
     /**
