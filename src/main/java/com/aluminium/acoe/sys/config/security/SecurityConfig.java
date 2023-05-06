@@ -74,9 +74,9 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests()
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                .requestMatchers("/v3/api-docs/**", "/swagger*/**", "/main/**", "api/v1/auth/login").permitAll()
+                .requestMatchers("/v3/api-docs/**", "/admin/**", "/swagger*/**", "/main/**", "api/v1/auth/login").permitAll()
                 .requestMatchers("/api/**").hasAnyAuthority(RoleType.USER.getCode())
-                .requestMatchers("/admin/**").hasAnyAuthority(RoleType.ADMIN.getCode())
+
                 .anyRequest().authenticated()
                 .and()
                 .oauth2Login()
