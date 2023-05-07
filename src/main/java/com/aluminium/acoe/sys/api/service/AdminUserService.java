@@ -3,18 +3,19 @@ package com.aluminium.acoe.sys.api.service;
 import com.aluminium.acoe.sys.api.entity.user.User;
 import com.aluminium.acoe.sys.api.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class AdminUserService {
     private final UserRepository userRepository;
 
-    public List<User> getUserList() {
-        return userRepository.findAll();
+    public Page<User> getUserList() {
+        PageRequest pageRequest = PageRequest.of(0, 10);
+        return userRepository.findAll(pageRequest);
     }
 
     @Transactional

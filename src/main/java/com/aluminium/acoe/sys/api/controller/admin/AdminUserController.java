@@ -8,10 +8,9 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -30,7 +29,7 @@ public class AdminUserController {
             responses = {@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "조회 성공")})
     @Parameter(name = "User", description = "카페 검색 객체", in = ParameterIn.DEFAULT)
     public ApiResponse getUserList() {
-        List<User> userList = adminUserService.getUserList();
+        Page<User> userList = adminUserService.getUserList();
         return ApiResponse.success("user", userList);
     }
 
