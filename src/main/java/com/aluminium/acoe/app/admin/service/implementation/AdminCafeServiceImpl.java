@@ -57,7 +57,7 @@ public class AdminCafeServiceImpl implements AdminCafeService {
             franchise = adminFranchiseService.getFranchise(masterDto.getFranchiseDto().getFranchiseId());
         } else {
             // 메뉴 수정/등록
-            adminMenuService.saveMenus(masterDto, cafe);
+            if(masterDto.getMenuList() != null) adminMenuService.saveMenus(masterDto, cafe);
         }
 
         // 카페 업데이트

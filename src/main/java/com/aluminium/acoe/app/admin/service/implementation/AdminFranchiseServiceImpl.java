@@ -65,7 +65,7 @@ public class AdminFranchiseServiceImpl implements AdminFranchiseService {
         franchiseRepository.save(franchise);
 
         // 메뉴 등록/수정
-        adminMenuService.saveMenus(masterDto, franchise);
+        if(masterDto.getMenuList() != null) adminMenuService.saveMenus(masterDto, franchise);
 
         return franchise.getFranchiseId();
     }
