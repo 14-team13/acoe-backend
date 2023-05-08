@@ -4,6 +4,7 @@ import com.aluminium.acoe.app.main.converter.FranchiseConverter;
 import com.aluminium.acoe.app.main.resource.FranchiseResource;
 import com.aluminium.acoe.app.main.service.FranchiseService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -31,11 +32,10 @@ public class FranchiseController {
      */
     @GetMapping("/franchises")
     @Operation(summary = "프랜차이즈 목록 조회", description  = "메인화면에서 프랜차이즈 목록을 조회한다.", responses = {
-            @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = FranchiseResource.class)))
+            @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(array = @ArraySchema(schema = @Schema(implementation = FranchiseResource.class))))
     })
     public List<FranchiseResource> searchList(){
-        return franchiseService.searchDtoList(true).stream().map(franchiseDto ->
-                franchiseConverter.convertToResource(franchiseDto))
+        return franchiseService.searchDtoList(true).stream().map(franchiseConverter::convertToResource)
                 .collect(Collectors.toList());
 
     }

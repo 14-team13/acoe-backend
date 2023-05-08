@@ -7,6 +7,7 @@ import com.aluminium.acoe.app.main.dto.CafeDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -35,7 +36,7 @@ public class CafeController {
      */
     @GetMapping("/cafes/{areaCd}")
     @Operation(summary = "메인 영업중 카페목록 조회", description  = "메인화면에서 영업중인 카페 목록을 조회한다.", responses = {
-            @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = CafeResource.class)))
+            @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(array = @ArraySchema(schema = @Schema(implementation = CafeResource.class))))
     })
     @Parameter(name = "areaCd", description = "지역코드(서대문구: 3120000)", in = ParameterIn.PATH)
     public List<CafeResource> searchList(@PathVariable("areaCd") Long areaCd){
