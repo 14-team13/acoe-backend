@@ -1,4 +1,5 @@
 package com.aluminium.acoe.app.main.resource;
+import com.aluminium.acoe.app.main.dto.MenuDto;
 import com.aluminium.acoe.common.dto.BaseDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -27,6 +28,6 @@ public class FranchiseResource extends BaseDto {
     private Boolean useYn;
 
     @Schema(description = "메뉴목록")
-    private List<MenuResource> menuList;
+    private List<MenuDto> menuList;
 
 }

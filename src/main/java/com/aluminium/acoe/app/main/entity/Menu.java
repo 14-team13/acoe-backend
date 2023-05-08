@@ -5,7 +5,6 @@ import com.aluminium.acoe.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Optional;
 
 @Entity
 @Table(name = "menu")
@@ -38,8 +37,8 @@ public class Menu extends BaseEntity {
                 .menuId(dto.getMenuId())
                 .menuNm(dto.getMenuNm())
                 .price(dto.getPrice())
-                .cafe(Optional.ofNullable(cafe).orElse(new Cafe()))
-                .franchise(Optional.ofNullable(franchise).orElse(new Franchise()))
+                .cafe(cafe)
+                .franchise(franchise)
                 .build();
     }
 
