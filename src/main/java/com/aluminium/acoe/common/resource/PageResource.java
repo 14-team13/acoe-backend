@@ -20,8 +20,8 @@ public class PageResource {
     @Hidden // Hide this operation from Swagger UI
     public PageRequest getPageInfo() {
         if (this.getPage() == null && this.getSizePerPage() == null) {
-            this.setPage(1);
-            this.setSizePerPage(1);
+            this.setPage(0);
+            this.setSizePerPage(10);
         }
 
         return PageRequest.of(this.getPage(), this.getSizePerPage());
