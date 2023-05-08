@@ -93,6 +93,8 @@ public class AdminMenuServiceImpl implements AdminMenuService {
     public void deleteMenus(Enum masterType, Long masterId) {
         if(masterType == MasterType.FRANCHISE){
             menuRepository.deleteAllByFranchise_FranchiseId(masterId);
+        } else {
+            menuRepository.deleteAllByCafe_CafeId(masterId);
         }
     }
 }

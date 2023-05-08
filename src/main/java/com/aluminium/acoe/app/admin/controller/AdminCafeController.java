@@ -2,6 +2,7 @@ package com.aluminium.acoe.app.admin.controller;
 
 import com.aluminium.acoe.app.admin.dto.AdminCafeSearchDto;
 import com.aluminium.acoe.app.admin.resource.AdminCafeSearchResource;
+import com.aluminium.acoe.app.admin.resource.AdminCafeUpdateResource;
 import com.aluminium.acoe.app.admin.service.AdminCafeService;
 import com.aluminium.acoe.app.main.converter.CafeConverter;
 import com.aluminium.acoe.app.main.dto.CafeDto;
@@ -65,9 +66,9 @@ public class AdminCafeController {
             responses = {@ApiResponse(responseCode = "200", description = "수정 성공", content = @Content(schema = @Schema(type = "number", description = "카페 ID")))}
     )
     public Long updateCafe(@PathVariable("cafeId") Long cafeId,
-            @RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody CafeDto dto)
+            @RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody AdminCafeUpdateResource updateResource)
     {
-        return adminCafeService.updateCafe(dto);
+        return adminCafeService.updateCafe(cafeConverter.convertToGeneric(updateResource, CafeDto.class));
     }
 
 
@@ -78,8 +79,9 @@ public class AdminCafeController {
     @Operation(summary = "관리자 카페 정보 상세 등록", description  = "관리자 화면에서 카페 상세 정보를 등록한다.(권한필요)",
             responses = {@ApiResponse(responseCode = "200", description = "등록 성공", content = @Content(schema = @Schema(type = "number", description = "카페 ID")))}
     )
-    public Long createCafe(@RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody CafeDto dto){
-        return adminCafeService.createCafe(dto);
+    public Long createCafe(@RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody AdminCafeUpdateResource updateResource){
+
+        return adminCafeService.createCafe(cafeConverter.convertToGeneric(updateResource, CafeDto.class));
     }
 
     /**

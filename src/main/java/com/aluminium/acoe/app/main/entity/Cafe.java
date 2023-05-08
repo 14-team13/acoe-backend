@@ -99,5 +99,7 @@ public class Cafe extends BaseEntity {
         this.kioskYn = dto.getKioskYn();
         this.useYn = dto.getUseYn();
         this.franchise = franchise;
+        this.x = dto.getX();
+        this.y = dto.getY();
     }
 }

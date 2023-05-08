@@ -21,4 +21,6 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
 
     void deleteAllByFranchise_FranchiseId(Long franchiseId);
 
+    void deleteAllByCafe_CafeId(Long cafeId);
+
 }

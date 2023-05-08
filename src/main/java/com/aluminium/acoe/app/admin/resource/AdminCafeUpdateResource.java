@@ -1,18 +1,17 @@
-package com.aluminium.acoe.app.main.dto;
-
-import com.aluminium.acoe.app.main.entity.Cafe;
+package com.aluminium.acoe.app.admin.resource;
+import com.aluminium.acoe.app.main.dto.MenuDto;
 import com.aluminium.acoe.common.dto.BaseDto;
-import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.math.BigDecimal;
 import lombok.Data;
+
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
- * A DTO for the {@link Cafe} entity
+ * A Resource for the  Cafe entity
  */
 @Data
-public class CafeDto extends BaseDto {
+public class AdminCafeUpdateResource extends BaseDto {
     @Schema(description = "카페ID")
     private Long cafeId;
 
@@ -46,9 +45,6 @@ public class CafeDto extends BaseDto {
     @Schema(description = "텀블러할인금액")
     private Long discountAmt;
 
-    @Schema(description = "원참조번호(관리번호)")
-    private String refNo;
-
     @Schema(description = "앱주문할인가능여부")
     private Boolean appOrderYn;
 
@@ -58,10 +54,7 @@ public class CafeDto extends BaseDto {
     @Schema(description = "사용여부")
     private Boolean useYn;
 
-    @Schema(description = "프랜차이즈")
-    private FranchiseDto franchiseDto;
-
-    @Hidden
+    @Schema(description = "프랜차이즈id")
     private Long franchiseId;
 
     @Schema(description = "메뉴목록")
