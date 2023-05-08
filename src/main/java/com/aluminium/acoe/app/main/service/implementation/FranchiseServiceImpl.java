@@ -2,6 +2,7 @@ package com.aluminium.acoe.app.main.service.implementation;
 
 import com.aluminium.acoe.app.main.dto.FranchiseDto;
 import com.aluminium.acoe.app.main.dto.MenuDto;
+import com.aluminium.acoe.app.main.entity.Franchise;
 import com.aluminium.acoe.app.main.persistance.FranchiseRepository;
 import com.aluminium.acoe.app.main.persistance.MenuRepository;
 import com.aluminium.acoe.app.main.service.FranchiseService;
@@ -27,8 +28,12 @@ public class FranchiseServiceImpl implements FranchiseService {
 
     @Override
     public List<FranchiseDto> searchDtoList(Boolean useYn) {
-        return franchiseRepository.findAllByUseYn(useYn).stream()
-                .map(entity -> commonConverter.convertToGeneric(entity, FranchiseDto.class))
+        List<Franchise> results;
+
+        if(useYn == null) results = franchiseRepository.findAll();
+        else results = franchiseRepository.findAllByUseYn(useYn);
+
+        return results.stream().map(entity -> commonConverter.convertToGeneric(entity, FranchiseDto.class))
                 .collect(Collectors.toList());
     }
 
