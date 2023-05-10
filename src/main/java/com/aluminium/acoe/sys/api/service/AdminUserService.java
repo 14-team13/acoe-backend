@@ -1,10 +1,11 @@
 package com.aluminium.acoe.sys.api.service;
 
+import com.aluminium.acoe.sys.api.dto.UserSearchDto;
 import com.aluminium.acoe.sys.api.entity.user.User;
 import com.aluminium.acoe.sys.api.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,9 +14,18 @@ import org.springframework.transaction.annotation.Transactional;
 public class AdminUserService {
     private final UserRepository userRepository;
 
-    public Page<User> getUserList() {
-        PageRequest pageRequest = PageRequest.of(0, 10);
-        return userRepository.findAll(pageRequest);
+    public Page<User> getUserList(UserSearchDto userSearchDto, Pageable pageable) {
+
+        Page<User> resultList = null;
+
+        if (userSearchDto.getUserId() != null)
+            resultList = userRepository.findByUserIdContaining(userSearchDto.getUserId(), pageable);
+        else if (userSearchDto.getUsername() != null)
+            resultList = userRepository.findByUsernameContaining(userSearchDto.getUsername(), pageable);
+        else if (userSearchDto.getEmail() != null)
+            resultList = userRepository.findByEmailContaining(userSearchDto.getEmail(), pageable);
+
+        return resultList;
     }
 
     @Transactional
