@@ -2,6 +2,7 @@ package com.aluminium.acoe.app.admin.controller;
 
 import com.aluminium.acoe.app.admin.dto.AdminCafeSearchDto;
 import com.aluminium.acoe.app.admin.resource.AdminCafeSearchResource;
+import com.aluminium.acoe.app.admin.resource.AdminCafeUpdateResource;
 import com.aluminium.acoe.app.admin.service.AdminCafeService;
 import com.aluminium.acoe.app.main.converter.CafeConverter;
 import com.aluminium.acoe.app.main.dto.CafeDto;
@@ -9,6 +10,7 @@ import com.aluminium.acoe.app.main.resource.CafeResource;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.data.domain.Page;
@@ -35,10 +37,9 @@ public class AdminCafeController {
      */
     @GetMapping("/cafes")
     @Operation(summary = "관리자 화면에서 카페목록 조회", description  = "검색조건으로 카페 목록을 조회한다.",
-            responses = { @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = CafeResource.class)))}
+            responses = { @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(array = @ArraySchema(schema = @Schema(implementation = CafeResource.class))))}
     )
-    @Parameter(name = "AdminCafeSearchResource", description = "카페 검색 객체", in = ParameterIn.DEFAULT)
-    public Page<CafeResource> searchAdminCafeList(@Valid AdminCafeSearchResource searchResource){
+    public Page<CafeResource> searchAdminCafeList(@Valid @io.swagger.v3.oas.annotations.parameters.RequestBody AdminCafeSearchResource searchResource){
         Page<CafeDto> cafeDtos = adminCafeService.searchAdminCafeDtoPage(cafeConverter.convertToGeneric(searchResource, AdminCafeSearchDto.class), searchResource.getPageInfo());
 
         // convert to resource
@@ -65,9 +66,9 @@ public class AdminCafeController {
             responses = {@ApiResponse(responseCode = "200", description = "수정 성공", content = @Content(schema = @Schema(type = "number", description = "카페 ID")))}
     )
     public Long updateCafe(@PathVariable("cafeId") Long cafeId,
-            @RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody CafeDto dto)
+            @RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody AdminCafeUpdateResource updateResource)
     {
-        return adminCafeService.updateCafe(dto);
+        return adminCafeService.updateCafe(cafeConverter.convertToGeneric(updateResource, CafeDto.class));
     }
 
 
@@ -78,8 +79,9 @@ public class AdminCafeController {
     @Operation(summary = "관리자 카페 정보 상세 등록", description  = "관리자 화면에서 카페 상세 정보를 등록한다.(권한필요)",
             responses = {@ApiResponse(responseCode = "200", description = "등록 성공", content = @Content(schema = @Schema(type = "number", description = "카페 ID")))}
     )
-    public Long createCafe(@RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody CafeDto dto){
-        return adminCafeService.createCafe(dto);
+    public Long createCafe(@RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody AdminCafeUpdateResource updateResource){
+
+        return adminCafeService.createCafe(cafeConverter.convertToGeneric(updateResource, CafeDto.class));
     }
 
     /**

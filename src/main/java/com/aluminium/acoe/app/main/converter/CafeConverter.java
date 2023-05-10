@@ -4,12 +4,9 @@ import com.aluminium.acoe.app.main.dto.CafeDto;
 import com.aluminium.acoe.app.main.dto.FranchiseDto;
 import com.aluminium.acoe.app.main.entity.Cafe;
 import com.aluminium.acoe.app.main.resource.CafeResource;
-import com.aluminium.acoe.app.main.resource.MenuResource;
 import com.aluminium.acoe.common.converter.CommonConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -22,9 +19,7 @@ public class CafeConverter extends CommonConverter {
 
         CafeResource cafeResource = convertToGeneric(cafeDto, CafeResource.class);
         if(cafeDto.getMenuList() != null){
-            cafeResource.setMenuList(cafeDto.getMenuList().stream()
-                    .map(menuDto -> convertToGeneric(menuDto, MenuResource.class))
-                    .collect(Collectors.toList()));
+            cafeResource.setMenuList(cafeDto.getMenuList());
         }
         if(cafeDto.getFranchiseDto() != null){
             cafeResource.setFranchise(franchiseConverter.convertToResource(cafeDto.getFranchiseDto()));

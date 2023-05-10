@@ -36,11 +36,11 @@ public class AdminMenuServiceImpl implements AdminMenuService {
         List<Menu> updatedMenus = menuRepository.findByCafe_CafeId(cafeDto.getCafeId());
         updatedMenus.forEach(menu ->
                 cafeDto.getMenuList().stream().filter(updateDto -> menu.getMenuId().equals(updateDto.getMenuId()))
-                        .findFirst().ifPresent(matched -> menu.update(matched))
+                        .findFirst().ifPresent(menu::update)
         );
         // Create
         List<Menu> createdMenus = cafeDto.getMenuList().stream()
-                .filter(dto -> dto.getMenuId() != null)
+                .filter(dto -> dto.getMenuId() == null)
                 .map(dto -> Menu.toEntity(dto, cafe, null))
                 .collect(Collectors.toList());
 
@@ -58,11 +58,11 @@ public class AdminMenuServiceImpl implements AdminMenuService {
         List<Menu> updatedMenus = menuRepository.findByFranchise_FranchiseId(franchiseDto.getFranchiseId());
         updatedMenus.forEach(menu ->
                 franchiseDto.getMenuList().stream().filter(updateDto -> menu.getMenuId().equals(updateDto.getMenuId()))
-                        .findFirst().ifPresent(matched -> menu.update(matched))
+                        .findFirst().ifPresent(menu::update)
         );
         // Create
         List<Menu> createdMenus = franchiseDto.getMenuList().stream()
-                .filter(dto -> dto.getMenuId() != null)
+                .filter(dto -> dto.getMenuId() == null)
                 .map(dto -> Menu.toEntity(dto, null, franchise))
                 .collect(Collectors.toList());
 
@@ -93,6 +93,8 @@ public class AdminMenuServiceImpl implements AdminMenuService {
     public void deleteMenus(Enum masterType, Long masterId) {
         if(masterType == MasterType.FRANCHISE){
             menuRepository.deleteAllByFranchise_FranchiseId(masterId);
+        } else {
+            menuRepository.deleteAllByCafe_CafeId(masterId);
         }
     }
 }

@@ -66,6 +66,7 @@ public class CafeServiceImpl implements CafeService {
             menuDtos = menuRepository.findByFranchise_FranchiseId(cafeDto.getFranchiseDto().getFranchiseId())
                 .stream().map(menu -> converter.convertToGeneric(menu, MenuDto.class))
                 .collect(Collectors.toList());
+            cafeDto.getFranchiseDto().setMenuList(menuDtos);
         }
 
         cafeDto.setMenuList(menuDtos);

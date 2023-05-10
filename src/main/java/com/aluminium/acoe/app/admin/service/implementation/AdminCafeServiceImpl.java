@@ -9,6 +9,7 @@ import com.aluminium.acoe.app.main.dto.CafeDto;
 import com.aluminium.acoe.app.main.entity.Cafe;
 import com.aluminium.acoe.app.main.entity.Franchise;
 import com.aluminium.acoe.app.main.persistance.CafeRepository;
+import com.aluminium.acoe.app.main.persistance.FranchiseRepository;
 import com.aluminium.acoe.app.main.service.CafeService;
 import com.aluminium.acoe.common.converter.CommonConverter;
 
@@ -27,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class AdminCafeServiceImpl implements AdminCafeService {
+    private final FranchiseRepository franchiseRepository;
     private final CafeService cafeService;
     private final CafeRepository cafeRepository;
     private final AdminFranchiseService adminFranchiseService;
@@ -53,11 +55,11 @@ public class AdminCafeServiceImpl implements AdminCafeService {
 
         // 프랜차이즈 카페는 메뉴정보 수정 불가
         Franchise franchise = null;
-        if(masterDto.getFranchiseDto() != null){
-            franchise = adminFranchiseService.getFranchise(masterDto.getFranchiseDto().getFranchiseId());
+        if(masterDto.getFranchiseId() != null){
+            franchise = adminFranchiseService.getFranchise(masterDto.getFranchiseId());
         } else {
             // 메뉴 수정/등록
-            adminMenuService.saveMenus(masterDto, cafe);
+            if(masterDto.getMenuList() != null) adminMenuService.saveMenus(masterDto, cafe);
         }
 
         // 카페 업데이트
@@ -70,9 +72,14 @@ public class AdminCafeServiceImpl implements AdminCafeService {
     @Override
     @Transactional
     public Long createCafe(CafeDto dto) {
-        Cafe cafe = cafeRepository.save(Cafe.toEntity(dto, Franchise.toEntity(dto.getFranchiseDto())));
+        Franchise franchise = null;
+        if(dto.getFranchiseId() != null){
+            franchise = franchiseRepository.findById(dto.getFranchiseId())
+                    .orElseThrow(() -> new BusinessInvalidValueException("유효하지 않은 franchiseId"));
+        }
+        Cafe cafe = cafeRepository.save(Cafe.toEntity(dto, franchise));
 
-        if(dto.getMenuList() != null && dto.getFranchiseDto() != null) {
+        if(dto.getMenuList() != null && dto.getFranchiseId() == null) {
             adminMenuService.createMenus(dto.getMenuList(), cafe);
         }
 
