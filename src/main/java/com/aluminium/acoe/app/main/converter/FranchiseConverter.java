@@ -19,7 +19,7 @@ public class FranchiseConverter extends CommonConverter {
 
     public FranchiseDto convertToDto(FranchiseResource franchiseResource){
         FranchiseDto franchiseDto = convertToGeneric(franchiseResource, FranchiseDto.class);
-        if(franchiseResource != null) franchiseDto.setLogoImg(Base64.getDecoder().decode(franchiseResource.getLogoImg()));
+        if(franchiseResource.getLogoImg() != null) franchiseDto.setLogoImg(Base64.getDecoder().decode(franchiseResource.getLogoImg()));
 
         return franchiseDto;
     }
