@@ -27,8 +27,10 @@ public class ApiUtil {
         conn.setRequestMethod(apiDto.getMethod());
         conn.setRequestProperty("Content-type", apiDto.getContentType());
 
-        for(Map.Entry<String, String> header :apiDto.getRequestHeaders().entrySet()) {
-            conn.setRequestProperty(header.getKey(), header.getValue());
+        if(apiDto.getRequestHeaders() != null) {
+            for(Map.Entry<String, String> header :apiDto.getRequestHeaders().entrySet()) {
+                conn.setRequestProperty(header.getKey(), header.getValue());
+            }
         }
 
         log.info("Response status : " + conn.getResponseCode());
