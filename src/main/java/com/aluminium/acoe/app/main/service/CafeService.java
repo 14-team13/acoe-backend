@@ -1,7 +1,9 @@
 package com.aluminium.acoe.app.main.service;
 
+import com.aluminium.acoe.app.main.dto.BlogDto;
 import com.aluminium.acoe.app.main.dto.CafeDto;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface CafeService {
@@ -25,4 +27,9 @@ public interface CafeService {
      * @return
      */
     CafeDto getCafeDto(Long cafeId);
+
+
+    List<BlogDto> searchBlogList(String keyword) throws IOException;
+
+
 }
