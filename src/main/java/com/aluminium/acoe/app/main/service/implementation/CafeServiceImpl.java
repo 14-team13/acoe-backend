@@ -124,7 +124,7 @@ public class CafeServiceImpl implements CafeService {
         requestHeaders.put("X-Naver-Client-Secret", clientSecret);
 
         ApiDto apiDto = new ApiDto();
-        apiDto.setUrl("https://openapi.naver.com/v1/search/blog.json?display=10&query=" + keyword);
+        apiDto.setUrl("https://openapi.naver.com/v1/search/blog.json?display=5&query=" + keyword);
         apiDto.setMethod("GET");
         apiDto.setContentType("application/json");
         apiDto.setRequestHeaders(requestHeaders);
