@@ -1,6 +1,7 @@
 package com.aluminium.acoe.app.main.controller;
 
 import com.aluminium.acoe.app.main.converter.CafeConverter;
+import com.aluminium.acoe.app.main.dto.BlogDto;
 import com.aluminium.acoe.app.main.resource.CafeResource;
 import com.aluminium.acoe.app.main.service.CafeService;
 import com.aluminium.acoe.app.main.dto.CafeDto;
@@ -16,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -73,5 +75,18 @@ public class CafeController {
     @Parameter(name = "cafeId", description = "카페ID", in = ParameterIn.PATH)
     public CafeResource getCafe(@PathVariable("cafeId") Long cafeId){
         return cafeConverter.convertDtoToResource(cafeService.getCafeDto(cafeId));
+    }
+
+
+    /**
+     * 메인 카페 상세 조회 API
+     */
+    @GetMapping("/blogs/{cafeNm}")
+    @Operation(summary = "메인 카페 블로그 조회", description  = "메인화면에서 카페명으로 카페 블로그 검색 결과를 조회한다.", responses = {
+            @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = BlogDto.class)))
+    })
+    @Parameter(name = "cafeNm", description = "카페명", in = ParameterIn.PATH)
+    public List<BlogDto> searchBlogList(@PathVariable("cafeNm") String cafeNm) throws IOException {
+        return cafeService.searchBlogList(cafeNm);
     }
 }

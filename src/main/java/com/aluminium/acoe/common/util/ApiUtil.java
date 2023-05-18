@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Map;
 import java.util.Objects;
 import org.json.JSONObject;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,11 @@ public class ApiUtil {
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod(apiDto.getMethod());
         conn.setRequestProperty("Content-type", apiDto.getContentType());
+
+        for(Map.Entry<String, String> header :apiDto.getRequestHeaders().entrySet()) {
+            conn.setRequestProperty(header.getKey(), header.getValue());
+        }
+
         log.info("Response status : " + conn.getResponseCode());
 
         BufferedReader rd;

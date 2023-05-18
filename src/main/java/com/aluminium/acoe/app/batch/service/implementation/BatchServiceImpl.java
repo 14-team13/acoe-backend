@@ -40,7 +40,7 @@ public class BatchServiceImpl implements BatchService {
     public static final String URL = "http://openapi.seoul.go.kr:8088";
 
     public static final String TITLE = "LOCALDATA_072405_SM";
-    @Value("${data_seoul.token}")
+    @Value("${token.data_seoul}")
     private String token;
 
     private final CafeService cafeService;
