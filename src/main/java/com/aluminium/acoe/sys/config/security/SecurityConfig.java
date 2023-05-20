@@ -54,7 +54,7 @@ public class SecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/login", "/logout");
+        return (web) -> web.ignoring().requestMatchers("/resources/**", "/dist/**", "/css/**", "/fonts/**", "/favicon.ico", "/img/**", "/js/**, ...");
     }
 
     @Bean
