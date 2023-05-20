@@ -74,7 +74,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests()
                 .requestMatchers(request -> CorsUtils.isPreFlightRequest(request)).permitAll()
-                .requestMatchers("/v3/api-docs/**", "/admin/**", "/swagger*/**", "/main/**", "/api/**", "/oauth2/**").permitAll()
+                .requestMatchers("/v3/api-docs/**", "/admin/**", "/swagger*/**", "/main/**", "/api/**", "/**/oauth2/**").permitAll()
 //                .requestMatchers("/api/**").hasAnyAuthority(RoleType.USER.getCode())
                 .anyRequest().authenticated()
                 .and()
