@@ -158,7 +158,7 @@ public class SecurityConfig {
 
         // 요청헤더 허용
         corsConfig.setAllowedHeaders(
-                Arrays.asList("http.cors.allow-headers", "Cache-Control, Pragma, Origin, Authorization, Content-Type, X-Requested-With, If-Match")
+                Arrays.asList("Access-Control-Allow-Origin", "http.cors.allow-headers", "Cache-Control, Pragma, Origin, Authorization, Content-Type, X-Requested-With, If-Match")
         );
         // 응답 헤더 허용
         corsConfig.setExposedHeaders(
