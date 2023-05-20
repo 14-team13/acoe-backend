@@ -150,13 +150,11 @@ public class SecurityConfig {
         UrlBasedCorsConfigurationSource corsConfigSource = new UrlBasedCorsConfigurationSource();
 
         CorsConfiguration corsConfig = new CorsConfiguration();
-//        corsConfig.setAllowedHeaders(Arrays.asList(corsProperties.getAllowedHeaders().split(",")));
         corsConfig.setAllowedMethods(Arrays.asList(corsProperties.getAllowedMethods().split(",")));
         corsConfig.setAllowedOrigins(Arrays.asList(corsProperties.getAllowedOrigins().split(",")));
         corsConfig.setAllowCredentials(true);
         corsConfig.setMaxAge(corsConfig.getMaxAge());
-
-        // 요청헤더 허용
+        // 요청 헤더 허용
         corsConfig.setAllowedHeaders(
                 Arrays.asList("Access-Control-Allow-Origin", "http.cors.allow-headers", "Cache-Control, Pragma, Origin, Authorization, Content-Type, X-Requested-With, If-Match")
         );
@@ -165,7 +163,9 @@ public class SecurityConfig {
                 Arrays.asList("http.cors.exposed-headers", "Access-Control-Allow-Origin", "Access-Control-Allow-Methods", "Access-Control-Allow-Headers", "Access-Control-Max-Age", "Access-Control-Request-Headers", "Access-Control-Request-Method")
         );
 
-        corsConfigSource.registerCorsConfiguration("/**", corsConfig);
+        corsConfigSource.registerCorsConfiguration("/api/**", corsConfig);
+        corsConfigSource.registerCorsConfiguration("/admin/**", corsConfig);
+        corsConfigSource.registerCorsConfiguration("/main/**", corsConfig);
         return corsConfigSource;
     }
 }
