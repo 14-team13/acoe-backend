@@ -54,7 +54,7 @@ public class SecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/resources/**", "/dist/**", "/css/**", "/fonts/**", "/favicon.ico", "/img/**", "/js/**, ...");
+        return (web) -> web.ignoring().requestMatchers("/main/**", "/resources/**", "/dist/**", "/css/**", "/fonts/**", "/favicon.ico", "/img/**", "/js/**, ...");
     }
 
     @Bean
@@ -158,11 +158,11 @@ public class SecurityConfig {
 
         // 요청헤더 허용
         corsConfig.setAllowedHeaders(
-                Arrays.asList("Authorization")
+                Arrays.asList("http.cors.allow-headers", "Cache-Control, Pragma, Origin, Authorization, Content-Type, X-Requested-With, If-Match")
         );
         // 응답 헤더 허용
         corsConfig.setExposedHeaders(
-                Arrays.asList("Content-Type")
+                Arrays.asList("Access-Control-Allow-Origin", "Access-Control-Allow-Methods", "Access-Control-Allow-Headers", "Access-Control-Max-Age", "Access-Control-Request-Headers", "Access-Control-Request-Method")
         );
 
         corsConfigSource.registerCorsConfiguration("/**", corsConfig);
