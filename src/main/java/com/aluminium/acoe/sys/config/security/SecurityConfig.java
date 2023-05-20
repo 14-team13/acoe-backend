@@ -162,7 +162,7 @@ public class SecurityConfig {
         );
         // 응답 헤더 허용
         corsConfig.setExposedHeaders(
-                Arrays.asList("Access-Control-Allow-Origin", "Access-Control-Allow-Methods", "Access-Control-Allow-Headers", "Access-Control-Max-Age", "Access-Control-Request-Headers", "Access-Control-Request-Method")
+                Arrays.asList("http.cors.exposed-headers", "Access-Control-Allow-Origin", "Access-Control-Allow-Methods", "Access-Control-Allow-Headers", "Access-Control-Max-Age", "Access-Control-Request-Headers", "Access-Control-Request-Method")
         );
 
         corsConfigSource.registerCorsConfiguration("/**", corsConfig);
