@@ -54,7 +54,7 @@ public class SecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/main/**", "/resources/**", "/dist/**", "/css/**", "/fonts/**", "/favicon.ico", "/img/**", "/js/**, ...");
+        return (web) -> web.ignoring().requestMatchers("/main/*", "/resources/*", "/dist/*", "/css/*", "/fonts/*", "/favicon.ico", "/img/*", "/js/*, ...");
     }
 
     @Bean
@@ -73,9 +73,9 @@ public class SecurityConfig {
                 .accessDeniedHandler(tokenAccessDeniedHandler)
                 .and()
                 .authorizeRequests()
-                .requestMatchers(request -> CorsUtils.isPreFlightRequest(request)).permitAll()
-                .requestMatchers("/v3/api-docs/**", "/admin/**", "/swagger*/**", "/main/**", "/api/**", "/**/oauth2/**").permitAll()
-//                .requestMatchers("/api/**").hasAnyAuthority(RoleType.USER.getCode())
+                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+                .requestMatchers("/v3/api-docs/*", "/admin/*", "/swagger*/*", "/main/*", "/api/*", "/*/oauth2/*").permitAll()
+                .requestMatchers("/api/*").hasAnyAuthority(RoleType.USER.getCode())
                 .anyRequest().authenticated()
                 .and()
                 .oauth2Login()
@@ -163,9 +163,9 @@ public class SecurityConfig {
                 Arrays.asList("http.cors.exposed-headers", "Access-Control-Allow-Origin", "Access-Control-Allow-Methods", "Access-Control-Allow-Headers", "Access-Control-Max-Age", "Access-Control-Request-Headers", "Access-Control-Request-Method")
         );
 
-        corsConfigSource.registerCorsConfiguration("/api/**", corsConfig);
-        corsConfigSource.registerCorsConfiguration("/admin/**", corsConfig);
-        corsConfigSource.registerCorsConfiguration("/main/**", corsConfig);
+        corsConfigSource.registerCorsConfiguration("/api/*", corsConfig);
+        corsConfigSource.registerCorsConfiguration("/admin/*", corsConfig);
+        corsConfigSource.registerCorsConfiguration("/main/*", corsConfig);
         return corsConfigSource;
     }
 }
