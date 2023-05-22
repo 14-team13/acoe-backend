@@ -15,6 +15,7 @@ import com.aluminium.acoe.sys.oauth.token.AuthTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -73,6 +74,7 @@ public class SecurityConfig {
                 .accessDeniedHandler(tokenAccessDeniedHandler)
                 .and()
                 .authorizeRequests()
+                .requestMatchers(HttpMethod.OPTIONS, "/main/*").permitAll()
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 .requestMatchers("/v3/api-docs/*", "/admin/*", "/swagger*/*", "/main/*", "/api/*", "/*/oauth2/*").permitAll()
                 .requestMatchers("/api/*").hasAnyAuthority(RoleType.USER.getCode())
