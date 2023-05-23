@@ -1,0 +1,19 @@
+name: Daily Batch Job
+
+on:
+  schedule:
+    - cron: '0 8 * * *'  # 매일 오전 8시에 실행
+
+jobs:
+  run_batch_job:
+    name: Run Batch Job
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: API call
+        env:
+          JWT_TOKEN: ${{ secrets.JWT_TOKEN }}
+        run: |
+          curl -X GET \
+            -H 'Authorization: Bearer $JWT_TOKEN' \
+            http://acoe.co.kr:9090/batch/execute-cafe
