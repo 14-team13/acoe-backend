@@ -153,7 +153,7 @@ public class SecurityConfig {
 
         CorsConfiguration corsConfig = new CorsConfiguration();
         corsConfig.setAllowedMethods(Arrays.asList(corsProperties.getAllowedMethods().split(",")));
-        corsConfig.setAllowedOrigins(Arrays.asList("https://acoe.vercel.app"));
+        corsConfig.setAllowedOrigins(Arrays.asList(corsProperties.getAllowedOrigins().split(",")));
         corsConfig.setAllowCredentials(true);
         corsConfig.setMaxAge(corsConfig.getMaxAge());
         // 요청 헤더 허용
@@ -164,6 +164,8 @@ public class SecurityConfig {
         corsConfig.setExposedHeaders(
                 Arrays.asList("http.cors.exposed-headers", "Access-Control-Allow-Origin", "Access-Control-Allow-Methods", "Access-Control-Allow-Headers", "Access-Control-Max-Age", "Access-Control-Request-Headers", "Access-Control-Request-Method")
         );
+
+        corsConfig.addAllowedOrigin("https://acoe.vercel.app"); // 허용할 특정 도메인 추가
 
         corsConfigSource.registerCorsConfiguration("/api/*", corsConfig);
         corsConfigSource.registerCorsConfiguration("/admin/*", corsConfig);
