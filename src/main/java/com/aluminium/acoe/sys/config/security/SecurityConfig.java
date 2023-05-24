@@ -55,7 +55,7 @@ public class SecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/main/*", "/resources/*", "/dist/*", "/css/*", "/fonts/*", "/favicon.ico", "/img/*", "/js/*, ...");
+        return (web) -> web.ignoring().requestMatchers("/main/**", "/login/**", "logout/**");
     }
 
     @Bean
@@ -74,7 +74,7 @@ public class SecurityConfig {
                 .accessDeniedHandler(tokenAccessDeniedHandler)
                 .and()
                 .authorizeRequests()
-                .requestMatchers(HttpMethod.OPTIONS, "/main/*").permitAll()
+                .requestMatchers(HttpMethod.OPTIONS, "/main/**").permitAll()
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 .requestMatchers("/v3/api-docs/**", "/admin/**", "/swagger*/**", "/main/**", "/api/**", "/**/oauth2/**").permitAll()
                 .requestMatchers("/api/*").hasAnyAuthority(RoleType.USER.getCode())
