@@ -61,13 +61,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .cors()
-                .configurationSource(this.corsConfigurationSource())
-                .and()
+                .csrf().disable()
+                .cors().configurationSource(corsConfigurationSource()).and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .csrf().disable()
                 .formLogin().disable()
                 .httpBasic().disable()
                 .exceptionHandling()
