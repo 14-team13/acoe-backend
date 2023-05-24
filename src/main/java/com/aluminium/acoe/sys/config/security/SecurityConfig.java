@@ -153,7 +153,7 @@ public class SecurityConfig {
 
         CorsConfiguration corsConfig = new CorsConfiguration();
         corsConfig.setAllowedMethods(Arrays.asList(corsProperties.getAllowedMethods().split(",")));
-        corsConfig.setAllowedOrigins(Arrays.asList(corsProperties.getAllowedOrigins().split(",")));
+        corsConfig.setAllowedOrigins(Arrays.asList("https://acoe.vercel.app"));
         corsConfig.setAllowCredentials(true);
         corsConfig.setMaxAge(corsConfig.getMaxAge());
         // 요청 헤더 허용
