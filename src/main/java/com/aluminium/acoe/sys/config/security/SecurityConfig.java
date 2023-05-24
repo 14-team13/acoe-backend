@@ -55,14 +55,15 @@ public class SecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers( "/resources/*", "/dist/*", "/css/*", "/fonts/*", "/favicon.ico", "/img/*", "/js/**");
+        return (web) -> web.ignoring().requestMatchers("/main/*", "/resources/*", "/dist/*", "/css/*", "/fonts/*", "/favicon.ico", "/img/*", "/js/*, ...");
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
-                .cors().configurationSource(corsConfigurationSource()).and()
+                .cors()
+                .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
@@ -148,15 +149,26 @@ public class SecurityConfig {
      * */
     @Bean
     public UrlBasedCorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
+        UrlBasedCorsConfigurationSource corsConfigSource = new UrlBasedCorsConfigurationSource();
 
-        configuration.addAllowedOrigin("https://acoe.vercel.app");
-        configuration.addAllowedHeader("*");
-        configuration.addAllowedMethod("*");
-        configuration.setAllowCredentials(true);
+        CorsConfiguration corsConfig = new CorsConfiguration();
+        corsConfig.setAllowedMethods(Arrays.asList("https://acoe.vercel.app"));
+        corsConfig.setAllowedOrigins(Arrays.asList("GET","POST","PUT","PATCH","OPTIONS","DELETE"));
+        corsConfig.setAllowCredentials(true);
+//        corsConfig.setMaxAge(corsConfig.getMaxAge());
+        // 요청 헤더 허용
+        corsConfig.setAllowedHeaders(
+                Arrays.asList("Access-Control-Allow-Origin", "http.cors.allow-headers", "Cache-Control, Pragma, Origin, Authorization, Content-Type, X-Requested-With, If-Match")
+        );
+        // 응답 헤더 허용
+        corsConfig.setExposedHeaders(
+                Arrays.asList("http.cors.exposed-headers", "Access-Control-Allow-Origin", "Access-Control-Allow-Methods", "Access-Control-Allow-Headers", "Access-Control-Max-Age", "Access-Control-Request-Headers", "Access-Control-Request-Method")
+        );
 
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
+        corsConfigSource.registerCorsConfiguration("/**", corsConfig);
+//        corsConfigSource.registerCorsConfiguration("/api/*", corsConfig);
+//        corsConfigSource.registerCorsConfiguration("/admin/*", corsConfig);
+//        corsConfigSource.registerCorsConfiguration("/main/*", corsConfig);
+        return corsConfigSource;
     }
 }
