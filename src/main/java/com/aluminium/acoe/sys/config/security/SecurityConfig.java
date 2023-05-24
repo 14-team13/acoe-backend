@@ -150,8 +150,6 @@ public class SecurityConfig {
      * */
     @Bean
     public UrlBasedCorsConfigurationSource corsConfigurationSource() {
-        UrlBasedCorsConfigurationSource corsConfigSource = new UrlBasedCorsConfigurationSource();
-
         CorsConfiguration corsConfig = new CorsConfiguration();
         corsConfig.setAllowedMethods(Arrays.asList(corsProperties.getAllowedMethods().split(",")));
 //        corsConfig.setAllowedOrigins(Arrays.asList("https://acoe.vercel.app"));
@@ -173,6 +171,6 @@ public class SecurityConfig {
 //        corsConfigSource.registerCorsConfiguration("/**", corsConfig);
 //        corsConfigSource.registerCorsConfiguration("/admin/*", corsConfig);
 //        corsConfigSource.registerCorsConfiguration("/main/*", corsConfig);
-        return corsConfigSource;
+        return source;
     }
 }
