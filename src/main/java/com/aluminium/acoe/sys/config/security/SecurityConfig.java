@@ -154,7 +154,8 @@ public class SecurityConfig {
 
         CorsConfiguration corsConfig = new CorsConfiguration();
         corsConfig.setAllowedMethods(Arrays.asList(corsProperties.getAllowedMethods().split(",")));
-        corsConfig.setAllowedOrigins(Arrays.asList("https://acoe.vercel.app"));
+//        corsConfig.setAllowedOrigins(Arrays.asList("https://acoe.vercel.app"));
+        corsConfig.addAllowedOrigin("https://acoe.vercel.app");
         corsConfig.setAllowCredentials(true);
         corsConfig.setMaxAge(corsConfig.getMaxAge());
         // 요청 헤더 허용
@@ -166,9 +167,12 @@ public class SecurityConfig {
                 Arrays.asList("http.cors.exposed-headers", "Access-Control-Allow-Origin", "Access-Control-Allow-Methods", "Access-Control-Allow-Headers", "Access-Control-Max-Age", "Access-Control-Request-Headers", "Access-Control-Request-Method")
         );
 
-        corsConfigSource.registerCorsConfiguration("/api/*", corsConfig);
-        corsConfigSource.registerCorsConfiguration("/admin/*", corsConfig);
-        corsConfigSource.registerCorsConfiguration("/main/*", corsConfig);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", corsConfig);
+
+//        corsConfigSource.registerCorsConfiguration("/**", corsConfig);
+//        corsConfigSource.registerCorsConfiguration("/admin/*", corsConfig);
+//        corsConfigSource.registerCorsConfiguration("/main/*", corsConfig);
         return corsConfigSource;
     }
 }
