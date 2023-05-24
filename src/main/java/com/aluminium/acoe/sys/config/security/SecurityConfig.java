@@ -150,27 +150,15 @@ public class SecurityConfig {
      * */
     @Bean
     public UrlBasedCorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration corsConfig = new CorsConfiguration();
-        corsConfig.setAllowedMethods(Arrays.asList(corsProperties.getAllowedMethods().split(",")));
-//        corsConfig.setAllowedOrigins(Arrays.asList("https://acoe.vercel.app"));
-        corsConfig.addAllowedOrigin("https://acoe.vercel.app");
-        corsConfig.setAllowCredentials(true);
-        corsConfig.setMaxAge(corsConfig.getMaxAge());
-        // 요청 헤더 허용
-        corsConfig.setAllowedHeaders(
-                Arrays.asList("Access-Control-Allow-Origin", "http.cors.allow-headers", "Cache-Control, Pragma, Origin, Authorization, Content-Type, X-Requested-With, If-Match")
-        );
-        // 응답 헤더 허용
-        corsConfig.setExposedHeaders(
-                Arrays.asList("http.cors.exposed-headers", "Access-Control-Allow-Origin", "Access-Control-Allow-Methods", "Access-Control-Allow-Headers", "Access-Control-Max-Age", "Access-Control-Request-Headers", "Access-Control-Request-Method")
-        );
+        CorsConfiguration configuration = new CorsConfiguration();
+
+        configuration.addAllowedOrigin("https://acoe.vercel.app");
+        configuration.addAllowedHeader("*");
+        configuration.addAllowedMethod("*");
+        configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", corsConfig);
-
-//        corsConfigSource.registerCorsConfiguration("/**", corsConfig);
-//        corsConfigSource.registerCorsConfiguration("/admin/*", corsConfig);
-//        corsConfigSource.registerCorsConfiguration("/main/*", corsConfig);
+        source.registerCorsConfiguration("/**", configuration);
         return source;
     }
 }
