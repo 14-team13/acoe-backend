@@ -81,7 +81,7 @@ public class AdminCafeController {
     /**
      * 관리자 카페 상세 등록(ADMIN)
      */
-    @PostMapping("")
+    @PostMapping("/")
     @Operation(summary = "관리자 카페 정보 상세 등록", description  = "관리자 화면에서 카페 상세 정보를 등록한다.(권한필요)"
         + "Id값은 비워둔 채 등록될 대상 컬럼들의 정보를 Resource에 세팅하여 요청한다.\n"
         + "프랜차이즈인 경우 Reousrce의 franchise 객체에 franchiseId를 담아서 던진다."
