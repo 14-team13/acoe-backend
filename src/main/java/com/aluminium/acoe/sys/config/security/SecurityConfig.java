@@ -55,7 +55,7 @@ public class SecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/main/**", "/login/**", "logout/**");
+        return (web) -> web.ignoring().requestMatchers("/main/**", "/login/**", "logout/**", "/admin/**/**");
     }
 
     @Bean
@@ -76,7 +76,7 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .requestMatchers(HttpMethod.OPTIONS, "/main/**").permitAll()
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                .requestMatchers("/v3/api-docs/**", "/admin/**", "/swagger*/**", "/main/**", "/api/**", "/**/oauth2/**").permitAll()
+                .requestMatchers("/v3/api-docs/**", "/admin/**/**", "/swagger*/**", "/main/**", "/api/**", "/**/oauth2/**").permitAll()
                 .requestMatchers("/api/*").hasAnyAuthority(RoleType.USER.getCode())
                 .anyRequest().authenticated()
                 .and()
