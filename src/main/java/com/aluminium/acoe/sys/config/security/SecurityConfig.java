@@ -74,8 +74,8 @@ public class SecurityConfig {
                 .accessDeniedHandler(tokenAccessDeniedHandler)
                 .and()
                 .authorizeRequests()
-                .requestMatchers(HttpMethod.OPTIONS, "/main/**").permitAll()
-                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+//                .requestMatchers(HttpMethod.OPTIONS, "/main/**").permitAll()
+//                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 .requestMatchers("/v3/api-docs/**", "/admin/**", "/swagger*/**", "/main/**", "/api/**", "/**/oauth2/**").permitAll()
 //                .requestMatchers("/api/*").hasAnyAuthority(RoleType.USER.getCode())
                 .anyRequest().authenticated()
@@ -152,8 +152,8 @@ public class SecurityConfig {
         UrlBasedCorsConfigurationSource corsConfigSource = new UrlBasedCorsConfigurationSource();
 
         CorsConfiguration corsConfig = new CorsConfiguration();
-        corsConfig.setAllowedMethods(Arrays.asList("https://acoe.vercel.app"));
-        corsConfig.setAllowedOrigins(Arrays.asList("GET","POST","PUT","PATCH","OPTIONS","DELETE"));
+        corsConfig.setAllowedOrigins(Arrays.asList("https://acoe.vercel.app"));
+        corsConfig.setAllowedMethods(Arrays.asList("GET","POST","PUT","PATCH","OPTIONS","DELETE"));
         corsConfig.setAllowCredentials(true);
 //        corsConfig.setMaxAge(corsConfig.getMaxAge());
         // 요청 헤더 허용
