@@ -5,6 +5,7 @@ import com.aluminium.acoe.app.admin.enums.MasterType;
 import com.aluminium.acoe.app.admin.service.AdminCafeService;
 import com.aluminium.acoe.app.admin.service.AdminFranchiseService;
 import com.aluminium.acoe.app.admin.service.AdminMenuService;
+import com.aluminium.acoe.app.main.converter.CafeConverter;
 import com.aluminium.acoe.app.main.dto.CafeDto;
 import com.aluminium.acoe.app.main.entity.Cafe;
 import com.aluminium.acoe.app.main.entity.Franchise;
@@ -33,11 +34,11 @@ public class AdminCafeServiceImpl implements AdminCafeService {
     private final CafeRepository cafeRepository;
     private final AdminFranchiseService adminFranchiseService;
     private final AdminMenuService adminMenuService;
-    private final CommonConverter commonConverter;
+    private final CafeConverter cafeConverter;
 
     @Override
     public Page<CafeDto> searchAdminCafeDtoPage(AdminCafeSearchDto searchDto, Pageable pageable) {
-        return cafeRepository.searchListByDynamicCond(searchDto, pageable).map(e -> commonConverter.convertToGeneric(e, CafeDto.class));
+        return cafeRepository.searchListByDynamicCond(searchDto, pageable).map(cafeConverter::convertEntityToDto);
     }
 
     @Override

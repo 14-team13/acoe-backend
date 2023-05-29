@@ -66,7 +66,7 @@ public class Cafe extends BaseEntity {
     private Boolean useYn;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "franchise_id", updatable = false)
+    @JoinColumn(name = "franchise_id")
     private Franchise franchise;
 
 

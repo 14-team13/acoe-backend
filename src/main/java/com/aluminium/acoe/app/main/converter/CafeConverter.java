@@ -28,10 +28,10 @@ public class CafeConverter extends CommonConverter {
     }
 
     public CafeDto convertEntityToDto(Cafe cafe){
-        FranchiseDto franchiseDto = convertToGeneric(cafe.getFranchise(), FranchiseDto.class);
         CafeDto cafeDto = convertToGeneric(cafe, CafeDto.class);
-        cafeDto.setFranchiseDto(franchiseDto);
-
+        if(cafe.getFranchise() != null){
+            cafeDto.setFranchiseDto(convertToGeneric(cafe.getFranchise(), FranchiseDto.class));
+        }
         return cafeDto;
     }
 
