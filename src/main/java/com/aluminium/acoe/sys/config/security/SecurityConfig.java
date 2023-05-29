@@ -55,7 +55,7 @@ public class SecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/main/**", "/login/**", "logout/**", "/admin/**");
+        return (web) -> web.ignoring().requestMatchers("/resources/**", "/dist/**", "/css/**", "/fonts/**", "/favicon.ico", "/img/**", "/js/**");
     }
 
     @Bean
@@ -77,7 +77,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.OPTIONS, "/main/**").permitAll()
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 .requestMatchers("/v3/api-docs/**", "/admin/**", "/swagger*/**", "/main/**", "/api/**", "/**/oauth2/**").permitAll()
-                .requestMatchers("/api/*").hasAnyAuthority(RoleType.USER.getCode())
+//                .requestMatchers("/api/*").hasAnyAuthority(RoleType.USER.getCode())
                 .anyRequest().authenticated()
                 .and()
                 .oauth2Login()
@@ -165,10 +165,10 @@ public class SecurityConfig {
                 Arrays.asList("Content-Type")
         );
 
-        corsConfigSource.registerCorsConfiguration("/**", corsConfig);
-//        corsConfigSource.registerCorsConfiguration("/api/*", corsConfig);
-//        corsConfigSource.registerCorsConfiguration("/admin/*", corsConfig);
-//        corsConfigSource.registerCorsConfiguration("/main/*", corsConfig);
+//        corsConfigSource.registerCorsConfiguration("/**", corsConfig);
+        corsConfigSource.registerCorsConfiguration("/api/**", corsConfig);
+        corsConfigSource.registerCorsConfiguration("/admin/**", corsConfig);
+        corsConfigSource.registerCorsConfiguration("/main/**", corsConfig);
         return corsConfigSource;
     }
 }
