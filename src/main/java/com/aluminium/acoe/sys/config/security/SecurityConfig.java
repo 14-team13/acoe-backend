@@ -158,7 +158,7 @@ public class SecurityConfig {
 //        corsConfig.setMaxAge(corsConfig.getMaxAge());
         // 요청 헤더 허용
         corsConfig.setAllowedHeaders(
-                Arrays.asList("*")
+                Arrays.asList("Authorization", "Authorization-refresh", "Cache-Control", "Content-Type")
         );
         // 응답 헤더 허용
         corsConfig.setExposedHeaders(
