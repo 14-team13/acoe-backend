@@ -1,7 +1,7 @@
 # A Cup Of Earth(ACOE) 
-> 💻  Aluminum
-> Hyesoo Kim
-> Seunghoon Han
+> 💻  Aluminum  
+> Hyesoo Kim  
+> Seunghoon Han  
 
 ##  About ACOE
 ### A Cup Of Earth ❓
