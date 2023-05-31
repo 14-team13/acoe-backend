@@ -1,5 +1,7 @@
 # A Cup Of Earth(ACOE) 
-> 💻  비사이드 14기, Team 알루미늄, ACOE 프로젝트  
+> 💻  Aluminum
+> Hyesoo Kim
+> Seunghoon Han
 
 ##  About ACOE
 ### A Cup Of Earth ❓
