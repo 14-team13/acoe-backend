@@ -2,7 +2,8 @@ name: Daily Batch Job
 
 on:
   schedule:
-    - cron: '0 8 * * *'  # 매일 오전 8시에 실행
+    #- cron: '0 8 * * *'  # 매일 오전 8시에 실행
+    - cron: ''
 
 jobs:
   run_batch_job:
