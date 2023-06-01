@@ -162,7 +162,7 @@ public class SecurityConfig {
         );
         // 응답 헤더 허용
         corsConfig.setExposedHeaders(
-                Arrays.asList("Authorization", "Authorization-refresh");
+                Arrays.asList("Authorization", "Authorization-refresh")
         );
 
 //        corsConfigSource.registerCorsConfiguration("/**", corsConfig);
